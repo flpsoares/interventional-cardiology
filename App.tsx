@@ -1,19 +1,28 @@
+import React, { useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import styled from 'styled-components/native'
-
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`
+import * as Updates from 'expo-updates'
+import { AuthRoutes } from './src/routes/AuthRoutes'
 
 export default function App() {
+  useEffect(() => {
+    const updateApp = async () => {
+      const { isAvailable } = await Updates.checkForUpdateAsync()
+
+      if (isAvailable) {
+        await Updates.fetchUpdateAsync()
+
+        await Updates.reloadAsync()
+      }
+    }
+
+    updateApp()
+  }, [])
+
   return (
-    <Container>
-      <Text>Open up App.js to start working on your app!</Text>
+    <NavigationContainer>
       <StatusBar style="auto" />
-    </Container>
+      <AuthRoutes />
+    </NavigationContainer>
   )
 }
