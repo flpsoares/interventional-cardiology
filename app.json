@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "interventional-cardiology",
+    "slug": "interventional-cardiology",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
