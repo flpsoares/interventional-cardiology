@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "interventional-cardiology",
-    "slug": "interventional-cardiology",
+    "name": "Interventional Cardiology",
+    "slug": "InterventionalCardiology",
+    "owner": "digitalott",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
