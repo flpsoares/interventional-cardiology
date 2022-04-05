@@ -1,9 +1,9 @@
 import styled from 'styled-components/native'
-import { primary } from '../../styles/globalCssVar'
+import { primary, text } from '../../styles/globalCssVar'
 
 export const ScrollableContainer = styled.ScrollView``
 
-export const Container = styled.View`
+export const Container = styled.Pressable`
   flex: 1;
 `
 
@@ -88,7 +88,7 @@ export const SubmitButtonText = styled.Text`
 export const RegisterButton = styled.TouchableOpacity``
 
 export const RegisterButtonText = styled.Text`
-  color: #797f8e;
+  color: ${text};
   font-size: 20px;
   margin-top: 16px;
 `

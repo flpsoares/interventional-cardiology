@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
 import * as Updates from 'expo-updates'
 import { AuthRoutes } from './src/routes/AuthRoutes'
+import { NavigateProvider } from './src/contexts/NavigateContext'
 
 export default function App() {
   useEffect(() => {
@@ -16,13 +17,15 @@ export default function App() {
       }
     }
 
-    // updateApp()
+    updateApp()
   }, [])
 
   return (
     <NavigationContainer>
-      <StatusBar style="auto" />
-      <AuthRoutes />
+      <NavigateProvider>
+        <StatusBar style="auto" />
+        <AuthRoutes />
+      </NavigateProvider>
     </NavigationContainer>
   )
 }
