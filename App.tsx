@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'react-native'
 import * as Updates from 'expo-updates'
 import { AuthRoutes } from './src/routes/AuthRoutes'
 import { NavigateProvider } from './src/contexts/NavigateContext'
@@ -23,7 +23,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <NavigateProvider>
-        <StatusBar style="auto" />
+        <StatusBar barStyle={'dark-content'} backgroundColor="#F2F2F2" />
         <AuthRoutes />
       </NavigateProvider>
     </NavigationContainer>

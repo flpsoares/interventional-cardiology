@@ -1,10 +1,12 @@
 import styled from 'styled-components/native'
 import { primary, text } from '../../styles/globalCssVar'
 
-export const ScrollableContainer = styled.ScrollView``
+export const ScrollableContainer = styled.ScrollView`
+  height: 100%;
+`
 
 export const Container = styled.Pressable`
-  flex: 1;
+  height: 100%;
 `
 
 export const Banner = styled.Image`
