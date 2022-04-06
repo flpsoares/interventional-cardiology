@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { Keyboard, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native'
+import {
+  ActivityIndicator,
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView
+} from 'react-native'
 import {
   Container,
   Banner,
@@ -19,11 +26,29 @@ import {
 import { FontAwesome, Entypo, Fontisto, Foundation } from '@expo/vector-icons'
 import { useNavigate } from '../../contexts/NavigateContext'
 
+import auth from '@react-native-firebase/auth'
+import { primary } from '../../styles/globalCssVar'
+
 export const Register: React.FC = () => {
   const { navigateToLogin } = useNavigate()
   const [passwordIsHide, setPasswordIsHide] = useState(true)
 
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const [isClicked, setIsClicked] = useState(false)
+
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
+
+  const handleNewAccount = () => {
+    setIsClicked(true)
+
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
+      .catch((error) => console.log(error))
+      .finally(() => setIsClicked(false))
+  }
 
   return (
     <KeyboardAvoidingView
@@ -64,7 +89,7 @@ export const Register: React.FC = () => {
                 <InputIcon>
                   <Fontisto name="email" size={28} color="rgba(77, 86, 109, 0.46)" />
                 </InputIcon>
-                <Input placeholder="E-mail" />
+                <Input onChangeText={setEmail} value={email} placeholder="E-mail" />
               </InputItem>
               <InputItem style={{ elevation: 10 }}>
                 <InputIcon>
@@ -85,6 +110,8 @@ export const Register: React.FC = () => {
                   />
                 </InputIcon>
                 <Input
+                  onChangeText={setPassword}
+                  value={password}
                   placeholder="Digite sua senha"
                   secureTextEntry={passwordIsHide}
                 />
@@ -104,9 +131,13 @@ export const Register: React.FC = () => {
                   )}
                 </InputIconPassword>
               </InputItem>
-              <SubmitButton>
-                <SubmitButtonText>Cadastrar</SubmitButtonText>
-              </SubmitButton>
+              {isClicked ? (
+                <ActivityIndicator size="large" color={primary} />
+              ) : (
+                <SubmitButton onPress={handleNewAccount}>
+                  <SubmitButtonText>Cadastrar</SubmitButtonText>
+                </SubmitButton>
+              )}
               <LoginButton onPress={navigateToLogin}>
                 <LoginButtonText>Login</LoginButtonText>
               </LoginButton>
