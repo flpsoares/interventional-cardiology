@@ -7,6 +7,7 @@ export const ScrollableContainer = styled.ScrollView`
 
 export const Container = styled.Pressable`
   height: 100%;
+  position: relative;
 `
 
 export const Banner = styled.Image`

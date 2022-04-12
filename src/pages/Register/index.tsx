@@ -26,11 +26,13 @@ import {
 import { FontAwesome, Entypo, Fontisto, Foundation } from '@expo/vector-icons'
 import { useNavigate } from '../../contexts/NavigateContext'
 
-import auth from '@react-native-firebase/auth'
 import { primary } from '../../styles/globalCssVar'
+import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../../firebase'
 
 export const Register: React.FC = () => {
-  const { navigateToLogin } = useNavigate()
+  const { navigateToLogin, navigateToTimeline } = useNavigate()
   const [passwordIsHide, setPasswordIsHide] = useState(true)
 
   const [email, setEmail] = useState('')
@@ -41,10 +43,9 @@ export const Register: React.FC = () => {
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
 
   const handleNewAccount = () => {
+    navigateToTimeline()
     setIsClicked(true)
-
-    auth()
-      .createUserWithEmailAndPassword(email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
       .catch((error) => console.log(error))
       .finally(() => setIsClicked(false))
@@ -62,6 +63,7 @@ export const Register: React.FC = () => {
       >
         <SafeAreaView>
           <Container onPress={Keyboard.dismiss}>
+            <LanguageDropdown isOpen={false} />
             <Banner source={require('../../../assets/register/banner.png')} />
             <Wrapper>
               <Title>Faça seu Cadastro</Title>

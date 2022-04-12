@@ -15,10 +15,13 @@ import Carousel, { Pagination } from 'react-native-snap-carousel'
 import carouselData from '../../initialData'
 import { primary } from '../../styles/globalCssVar'
 import { useNavigate } from '../../contexts/NavigateContext'
+import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 const screen = Dimensions.get('screen')
 
 export const Initial: React.FC = () => {
+  const { language } = useLanguage()
   const { navigateToLogin } = useNavigate()
   const [activeSlide, setActiveSlide] = useState(0)
 
@@ -54,6 +57,7 @@ export const Initial: React.FC = () => {
 
   return (
     <>
+      <LanguageDropdown isOpen={false} />
       <Carousel
         ref={(c) => setCarousel(c)}
         data={carouselData}

@@ -1,10 +1,13 @@
 import React from 'react'
 import { Container, Title, Button, ButtonText } from './style'
-import auth from '@react-native-firebase/auth'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../../firebase'
 
 export const Timeline: React.FC = () => {
+  const { navigateToLogin } = useNavigate()
   const handleLogOut = () => {
-    auth().signOut()
+    signOut(auth)
   }
 
   return (

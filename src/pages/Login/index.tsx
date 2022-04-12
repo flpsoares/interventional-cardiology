@@ -28,11 +28,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigate } from '../../contexts/NavigateContext'
 
-import auth from '@react-native-firebase/auth'
+// import auth from '@react-native-firebase/auth'
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
 import { primary } from '../../styles/globalCssVar'
+import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { auth } from '../../../firebase'
 
 export const Login: React.FC = () => {
-  const { navigateToRegister } = useNavigate()
+  const { navigateToRegister, navigateToTimeline } = useNavigate()
   const [passwordIsHide, setPasswordIsHide] = useState(true)
   const [forgotPasswordIsActive, setForgotPasswordIsActive] = useState(false)
 
@@ -44,25 +47,29 @@ export const Login: React.FC = () => {
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
 
   const handleLogin = () => {
-    if (email !== '' && password !== '') {
-      setIsClicked(true)
-      auth()
-        .signInWithEmailAndPassword(email, password)
-        .catch(() => {
-          Alert.alert('Erro', 'Email ou senha inválidos')
-          setPassword('')
-        })
-        .finally(() => setIsClicked(false))
-    } else {
-      Alert.alert('Erro', 'Preencha todos os campos')
+    try {
+      if (email !== '' && password !== '') {
+        setIsClicked(true)
+        signInWithEmailAndPassword(auth, email, password)
+          .catch(() => {
+            Alert.alert('Erro', 'Email ou senha inválidos')
+            setIsClicked(false)
+            setPassword('')
+          })
+          .catch((error) => Alert.alert(error))
+      } else {
+        Alert.alert('Erro', 'Preencha todos os campos')
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
   const handleForgotPassword = () => {
+    // Alert.alert('Aviso', 'Enviamos um email para você')
     if (email !== '') {
       setIsClicked(true)
-      auth()
-        .sendPasswordResetEmail(email)
+      sendPasswordResetEmail(auth, email)
         .then(() => {
           Alert.alert('Redefinir senha', 'Enviamos um email para você')
           setForgotPasswordIsActive(false)
@@ -88,6 +95,7 @@ export const Login: React.FC = () => {
       >
         <SafeAreaView>
           <Container onPress={Keyboard.dismiss}>
+            <LanguageDropdown isOpen={false} />
             <Banner source={require('../../../assets/login/banner.png')} />
             <Wrapper>
               {!forgotPasswordIsActive ? (
@@ -140,7 +148,9 @@ export const Login: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Title>Informe o email para recuperar sua senha</Title>
+                  <Title style={{ width: '80%' }}>
+                    Informe o email para recuperar sua senha
+                  </Title>
                   <InputItem style={{ elevation: 10 }}>
                     <InputIcon>
                       <FontAwesome

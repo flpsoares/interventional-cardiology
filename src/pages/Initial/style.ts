@@ -1,7 +1,9 @@
 import styled from 'styled-components/native'
 import { primary, text } from '../../styles/globalCssVar'
 
-export const Container = styled.View``
+export const Container = styled.View`
+  position: relative;
+`
 
 export const Banner = styled.Image`
   height: 350px;
