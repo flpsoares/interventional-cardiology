@@ -5,23 +5,27 @@ interface ContainerProps {
 }
 
 export const Container = styled.Pressable<ContainerProps>`
-  background: ${(props) => (props.isOpen ? '#f4f8f7' : 'transparent')};
+  background: #fff;
   position: absolute;
-  top: 10px;
-  right: 12px;
-  height: ${(props) => (props.isOpen ? '160px' : '55px')};
-  padding: 6px;
-  border-radius: 50px;
-  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 59px;
+  height: ${(props) => (props.isOpen ? '160px' : '56px')};
+  border-bottom-left-radius: 20px;
+  z-index: 10;
+  padding-top: 12px;
+
+  display: flex;
+  align-items: center;
 `
 
 export const Item = styled.Pressable`
-  margin-bottom: 12px;
+  margin-bottom: 20px;
   border-radius: 50px;
 `
 
 export const Image = styled.Image`
-  width: 40px;
-  height: 40px;
+  width: 31px;
+  height: 31px;
   border-radius: 50px;
 `

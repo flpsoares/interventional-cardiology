@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { primary, text } from '../../styles/globalCssVar'
+import { primary, secondary, text } from '../../styles/globalCssVar'
 
 export const ScrollableContainer = styled.ScrollView`
   height: 100%;
@@ -10,18 +10,40 @@ export const Container = styled.Pressable`
   position: relative;
 `
 
+export const BannerArea = styled.View`
+  width: 100%;
+  height: 340px;
+  position: relative;
+  background: #fff;
+`
+
 export const Banner = styled.Image`
   height: 340px;
   width: 100%;
+  z-index: 1;
+`
+export const FirstSupportImage = styled.Image`
+  position: absolute;
+  right: -30px;
+  bottom: 100px;
+  width: 198px;
+  height: 119px;
+  z-index: 3;
+`
+export const SecondSupportImage = styled.Image`
+  position: absolute;
+  width: 152px;
+  height: 112px;
+  right: 26px;
+  bottom: 60px;
+  transform: rotate(-50deg);
+  z-index: 2;
 `
 
 export const Wrapper = styled.View`
   background: #fff;
   flex: 1;
   margin-top: -50px;
-
-  border-top-left-radius: 72px;
-  border-top-right-radius: 72px;
 
   align-items: center;
 `
@@ -37,11 +59,11 @@ export const Title = styled.Text`
 export const InputItem = styled.View`
   flex-direction: row;
   align-items: center;
-  height: 70px;
+  height: 76px;
   width: 80%;
   padding: 0 12px;
   margin-bottom: 16px;
-  border-radius: 6px;
+  border-radius: 100px;
   background: #fff;
 `
 
@@ -62,6 +84,7 @@ export const Input = styled.TextInput`
   height: 100%;
   font-size: 18px;
   padding-left: 12px;
+  color: #838e99;
 `
 
 export const ForgotPassword = styled.TouchableOpacity``
@@ -73,10 +96,10 @@ export const ForgotPasswordText = styled.Text`
 `
 
 export const SubmitButton = styled.TouchableOpacity`
-  background: ${primary};
+  background: ${secondary};
   width: 80%;
-  height: 60px;
-  border-radius: 6px;
+  height: 65px;
+  border-radius: 100px;
   margin-top: 22px;
   justify-content: center;
   align-items: center;

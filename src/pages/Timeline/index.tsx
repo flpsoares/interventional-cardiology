@@ -5,7 +5,6 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../../../firebase'
 
 export const Timeline: React.FC = () => {
-  const { navigateToLogin } = useNavigate()
   const handleLogOut = () => {
     signOut(auth)
   }

@@ -54,7 +54,7 @@ export default function App() {
     <NavigationContainer>
       <NavigateProvider>
         <LanguageProvider>
-          <StatusBar barStyle={'dark-content'} backgroundColor="#F2F2F2" />
+          <StatusBar barStyle={'dark-content'} backgroundColor="#fff" />
           {user ? <Routes /> : <AuthRoutes />}
         </LanguageProvider>
       </NavigateProvider>

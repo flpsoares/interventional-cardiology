@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { Dimensions, SafeAreaView, ScrollView } from 'react-native'
 import {
   Banner,
+  BannerArea,
   Container,
   Description,
+  FirstSupportImage,
   NextButton,
   NextButtonText,
   PaginationArea,
+  SecondSupportImage,
   SubTitle,
   Title,
   Wrapper
@@ -21,7 +24,6 @@ import { useLanguage } from '../../contexts/LanguageContext'
 const screen = Dimensions.get('screen')
 
 export const Initial: React.FC = () => {
-  const { language } = useLanguage()
   const { navigateToLogin } = useNavigate()
   const [activeSlide, setActiveSlide] = useState(0)
 
@@ -43,7 +45,15 @@ export const Initial: React.FC = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ flexGrow: 1 }}
           >
-            <Banner source={item.image} />
+            <BannerArea>
+              <Banner source={item.image} />
+              <FirstSupportImage
+                source={require('../../../assets/support_02.png')}
+              />
+              <SecondSupportImage
+                source={require('../../../assets/support_01.png')}
+              />
+            </BannerArea>
             <Wrapper>
               <SubTitle>{item.subTitle}</SubTitle>
               <Title>{item.title}</Title>

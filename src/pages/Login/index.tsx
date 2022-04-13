@@ -14,7 +14,10 @@ import {
   SubmitButtonText,
   RegisterButton,
   RegisterButtonText,
-  ScrollableContainer
+  ScrollableContainer,
+  BannerArea,
+  FirstSupportImage,
+  SecondSupportImage
 } from './style'
 
 import { FontAwesome } from '@expo/vector-icons'
@@ -28,14 +31,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigate } from '../../contexts/NavigateContext'
 
-// import auth from '@react-native-firebase/auth'
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
 import { primary } from '../../styles/globalCssVar'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
 import { auth } from '../../../firebase'
 
 export const Login: React.FC = () => {
-  const { navigateToRegister, navigateToTimeline } = useNavigate()
+  const { navigateToRegister } = useNavigate()
   const [passwordIsHide, setPasswordIsHide] = useState(true)
   const [forgotPasswordIsActive, setForgotPasswordIsActive] = useState(false)
 
@@ -47,26 +49,21 @@ export const Login: React.FC = () => {
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
 
   const handleLogin = () => {
-    try {
-      if (email !== '' && password !== '') {
-        setIsClicked(true)
-        signInWithEmailAndPassword(auth, email, password)
-          .catch(() => {
-            Alert.alert('Erro', 'Email ou senha inválidos')
-            setIsClicked(false)
-            setPassword('')
-          })
-          .catch((error) => Alert.alert(error))
-      } else {
-        Alert.alert('Erro', 'Preencha todos os campos')
-      }
-    } catch (e) {
-      console.log(e)
+    if (email !== '' && password !== '') {
+      setIsClicked(true)
+      signInWithEmailAndPassword(auth, email, password)
+        .catch(() => {
+          Alert.alert('Erro', 'Email ou senha inválidos')
+          setIsClicked(false)
+          setPassword('')
+        })
+        .catch((error) => Alert.alert(error))
+    } else {
+      Alert.alert('Erro', 'Preencha todos os campos')
     }
   }
 
   const handleForgotPassword = () => {
-    // Alert.alert('Aviso', 'Enviamos um email para você')
     if (email !== '') {
       setIsClicked(true)
       sendPasswordResetEmail(auth, email)
@@ -95,8 +92,16 @@ export const Login: React.FC = () => {
       >
         <SafeAreaView>
           <Container onPress={Keyboard.dismiss}>
-            <LanguageDropdown isOpen={false} />
-            <Banner source={require('../../../assets/login/banner.png')} />
+            <BannerArea>
+              <LanguageDropdown isOpen={false} />
+              <Banner source={require('../../../assets/login/banner.png')} />
+              <FirstSupportImage
+                source={require('../../../assets/support_02.png')}
+              />
+              <SecondSupportImage
+                source={require('../../../assets/support_01.png')}
+              />
+            </BannerArea>
             <Wrapper>
               {!forgotPasswordIsActive ? (
                 <>
@@ -110,6 +115,7 @@ export const Login: React.FC = () => {
                       />
                     </InputIcon>
                     <Input
+                      autoCapitalize="none"
                       onChangeText={setEmail}
                       value={email}
                       placeholder="E-mail"
@@ -124,6 +130,7 @@ export const Login: React.FC = () => {
                       />
                     </InputIcon>
                     <Input
+                      autoCapitalize="none"
                       onChangeText={setPassword}
                       value={password}
                       placeholder="Senha"
