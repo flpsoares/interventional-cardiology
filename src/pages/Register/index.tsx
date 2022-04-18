@@ -63,13 +63,29 @@ export const Register: React.FC = () => {
   const handleNewAccount = () => {
     setIsClicked(true)
     if (email !== '' && password !== '') {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
-        .catch((error) => console.log(error))
-        .finally(() => setIsClicked(false))
+      if (password.length >= 6) {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
+          .catch((error) => {
+            if (error.code === 'auth/email-already-in-use') {
+              Alert.alert('Aviso', 'Esse email já está em uso')
+            }
+            if (error.code === 'auth/invalid-email') {
+              Alert.alert('Erro', 'E-mail inválido')
+            }
+          })
+          .finally(() => setIsClicked(false))
+      } else {
+        setIsClicked(false)
+        Alert.alert('Erro', 'A senha deve conter pelo menso 6 dígitos')
+      }
     } else {
       Alert.alert('Erro', 'Preencha todos os campos')
     }
+    // createUserWithEmailAndPassword(auth, email, password)
+    //   .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
+    //   .catch((error) => console.log(JSON.stringify(error.code)))
+    //   .finally(() => setIsClicked(false))
   }
 
   return (
