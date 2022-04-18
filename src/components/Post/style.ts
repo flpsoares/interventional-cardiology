@@ -4,6 +4,7 @@ export const Container = styled.View`
   width: 100%;
   padding: 12px;
   margin-bottom: 12px;
+  background: #fff;
 `
 
 export const Top = styled.View`
@@ -41,6 +42,11 @@ export const Options = styled.TouchableOpacity``
 export const Wrapper = styled.View`
   margin-top: 12px;
   align-items: center;
+`
+
+export const ContentArea = styled.View`
+  width: 100%;
+  padding: 0 12px;
 `
 
 export const Content = styled.Text`

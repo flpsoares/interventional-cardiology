@@ -15,20 +15,28 @@ import {
   ButtonArea,
   ButtonTitle,
   PostInfoArea,
-  Button
+  Button,
+  ContentArea
 } from './style'
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
+import { PostDataProps } from '../../postData'
 
-export const Post: React.FC = () => {
+type Props = {
+  data: PostDataProps
+}
+
+export const Post: React.FC<Props> = ({ data }) => {
   return (
     <Container>
       <Top>
         <TopLeftContent>
-          <UserPhoto source={require('../../../assets/default-user.png')} />
+          <UserPhoto source={data.userPhoto} />
           <Info>
-            <Name>Felipe Bruno</Name>
-            <Date>21/03/2022 - 5 horas</Date>
+            <Name>{data.name}</Name>
+            <Date>
+              {data.date} - {data.time}
+            </Date>
           </Info>
         </TopLeftContent>
         <Options>
@@ -36,18 +44,21 @@ export const Post: React.FC = () => {
         </Options>
       </Top>
       <Wrapper>
-        <Content>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod
-          bibendum laoreet. Proin gravida dolor sit amet lacus
-        </Content>
-        <Photo source={require('../../../assets/post-content.png')} />
+        <ContentArea>
+          <Content>{data.content}</Content>
+        </ContentArea>
+        <Photo source={data.image} />
         <PostInfoArea>
-          <PostInfo>332 curtidas</PostInfo>
-          <PostInfo>3 comentários</PostInfo>
+          <PostInfo>{data.likes} curtidas</PostInfo>
+          <PostInfo>{data.comments} comentários</PostInfo>
         </PostInfoArea>
         <ButtonArea>
           <Button>
-            <AntDesign name="like2" size={22} color="rgba(4, 20, 50, 0.8)" />
+            <AntDesign
+              name={data.isLiked ? 'like1' : 'like2'}
+              size={22}
+              color="rgba(4, 20, 50, 0.8)"
+            />
             <ButtonTitle>Curtir</ButtonTitle>
           </Button>
           <Button>
