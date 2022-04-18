@@ -1,11 +1,18 @@
 import React from 'react'
-import { Text } from 'react-native'
-import { Container } from './style'
+import { auth } from '../../../firebase'
+import { signOut } from 'firebase/auth'
+import { Button, ButtonText, Container } from './style'
 
 export const Account: React.FC = () => {
+  const logOut = () => {
+    signOut(auth)
+  }
+
   return (
     <Container>
-      <Text>Conta</Text>
+      <Button onPress={logOut}>
+        <ButtonText>LogOut</ButtonText>
+      </Button>
     </Container>
   )
 }

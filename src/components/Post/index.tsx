@@ -85,7 +85,7 @@ export const Post: React.FC<Props> = ({ data }) => {
           <PostInfo>{data.comments} comentários</PostInfo>
         </PostInfoArea>
         <ButtonArea>
-          <Button onPress={() => Alert.alert(activeSlide.toString())}>
+          <Button>
             <AntDesign
               name={data.isLiked ? 'like1' : 'like2'}
               size={22}
