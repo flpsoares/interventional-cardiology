@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Container,
   Content,
@@ -21,12 +21,19 @@ import {
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
 import { PostDataProps } from '../../postData'
+import { Dimensions, FlatList, ImageSourcePropType } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
 
 type Props = {
   data: PostDataProps
 }
 
 export const Post: React.FC<Props> = ({ data }) => {
+  const [activeSlide, setActiveSlide] = useState(0)
+  const [carousel, setCarousel] = useState<Carousel<ImageSourcePropType> | null>()
+
+  const SCREEN_WIDTH = Dimensions.get('window').width
+
   return (
     <Container>
       <Top>
@@ -47,7 +54,24 @@ export const Post: React.FC<Props> = ({ data }) => {
         <ContentArea>
           <Content>{data.content}</Content>
         </ContentArea>
-        <Photo source={data.image} />
+        {/* <FlatList
+          data={data.image}
+          keyExtractor={(_, index) => String(index)}
+          renderItem={({ item }) => <Photo source={item} />}
+          horizontal
+          snapToAlignment={'end'}
+          viewabilityConfig={{ itemVisiblePercentThreshold: 10 }}
+          pagingEnabled={true}
+          decelerationRate={'fast'}
+        /> */}
+        <Carousel
+          ref={(c) => setCarousel(c)}
+          data={data.image}
+          renderItem={({ item }) => <Photo source={item} />}
+          sliderWidth={SCREEN_WIDTH}
+          itemWidth={SCREEN_WIDTH - 50}
+          layout="default"
+        />
         <PostInfoArea>
           <PostInfo>{data.likes} curtidas</PostInfo>
           <PostInfo>{data.comments} comentários</PostInfo>
