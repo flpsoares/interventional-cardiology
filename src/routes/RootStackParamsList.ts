@@ -3,5 +3,5 @@ export type RootStackParamsList = {
   ChooseAuth: undefined
   Login: undefined
   Register: undefined
-  Timeline: undefined
+  Home: undefined
 }

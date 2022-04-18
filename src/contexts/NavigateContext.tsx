@@ -5,12 +5,12 @@ import { RootStackParamsList } from '../routes/RootStackParamsList'
 
 type LoginScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Login'>
 type RegisterScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Register'>
-type TimelineScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Timeline'>
+type HomeScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Home'>
 
 interface NavigateContextData {
   navigateToLogin: () => void
   navigateToRegister: () => void
-  navigateToTimeline: () => void
+  navigateToHome: () => void
 }
 
 interface NavigateProviderProps {
@@ -22,7 +22,7 @@ export const NavigateContext = createContext({} as NavigateContextData)
 export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigationLogin = useNavigation<LoginScreenProps>()
   const navigationRegister = useNavigation<RegisterScreenProps>()
-  const navigationTimeline = useNavigation<TimelineScreenProps>()
+  const navigationHome = useNavigation<HomeScreenProps>()
 
   const navigateToLogin = () => {
     navigationLogin.navigate('Login')
@@ -30,8 +30,8 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigateToRegister = () => {
     navigationRegister.navigate('Register')
   }
-  const navigateToTimeline = () => {
-    navigationTimeline.navigate('Timeline')
+  const navigateToHome = () => {
+    navigationHome.navigate('Home')
   }
 
   return (
@@ -39,7 +39,7 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
       value={{
         navigateToLogin,
         navigateToRegister,
-        navigateToTimeline
+        navigateToHome
       }}
     >
       {children}

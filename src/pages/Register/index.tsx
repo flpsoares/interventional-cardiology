@@ -43,7 +43,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../../firebase'
 
 export const Register: React.FC = () => {
-  const { navigateToLogin, navigateToTimeline } = useNavigate()
+  const { navigateToLogin, navigateToHome } = useNavigate()
   const [passwordIsHide, setPasswordIsHide] = useState(true)
 
   const [name, setName] = useState('')
