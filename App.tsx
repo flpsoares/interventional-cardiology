@@ -9,6 +9,7 @@ import { LanguageProvider } from './src/contexts/LanguageContext'
 import { auth } from './firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { primary } from './src/styles/globalCssVar'
+import { ModalProvider } from './src/contexts/ModalContext'
 
 export default function App() {
   const [user, setUser] = useState<boolean>()
@@ -54,8 +55,10 @@ export default function App() {
     <NavigationContainer>
       <NavigateProvider>
         <LanguageProvider>
-          <StatusBar barStyle={'dark-content'} backgroundColor="#fff" />
-          {user ? <Routes /> : <AuthRoutes />}
+          <ModalProvider>
+            <StatusBar barStyle={'dark-content'} backgroundColor="#fff" />
+            {user ? <Routes /> : <AuthRoutes />}
+          </ModalProvider>
         </LanguageProvider>
       </NavigateProvider>
     </NavigationContainer>

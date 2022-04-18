@@ -5,8 +5,17 @@ import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { Post } from '../../components/Post'
 import { FlatList } from 'react-native'
 import { postData } from '../../postData'
+import { ModalImage } from '../../components/ModalImage'
+import { useModal } from '../../contexts/ModalContext'
 
 export const Home: React.FC = () => {
+  const {
+    modalImageIsOpen,
+    modalImageData,
+    modalImageQuantity,
+    modalImageOpenItem
+  } = useModal()
+
   return (
     <Container>
       <Top>
@@ -18,6 +27,13 @@ export const Home: React.FC = () => {
         <Ionicons name="notifications-outline" size={24} />
       </Top>
       <Wrapper>
+        {modalImageIsOpen && (
+          <ModalImage
+            data={modalImageData!}
+            quantity={modalImageQuantity}
+            openItem={modalImageOpenItem}
+          />
+        )}
         <FlatList
           data={postData}
           keyExtractor={(item) => String(item.id)}

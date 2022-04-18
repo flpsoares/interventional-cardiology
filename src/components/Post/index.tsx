@@ -21,14 +21,23 @@ import {
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
 import { PostDataProps } from '../../postData'
-import { Dimensions, FlatList, ImageSourcePropType } from 'react-native'
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  ImageSourcePropType,
+  TouchableWithoutFeedback
+} from 'react-native'
 import Carousel from 'react-native-snap-carousel'
+import { useModal } from '../../contexts/ModalContext'
 
 type Props = {
   data: PostDataProps
 }
 
 export const Post: React.FC<Props> = ({ data }) => {
+  const { openModalImage } = useModal()
+
   const [activeSlide, setActiveSlide] = useState(0)
   const [carousel, setCarousel] = useState<Carousel<ImageSourcePropType> | null>()
 
@@ -54,20 +63,19 @@ export const Post: React.FC<Props> = ({ data }) => {
         <ContentArea>
           <Content>{data.content}</Content>
         </ContentArea>
-        {/* <FlatList
-          data={data.image}
-          keyExtractor={(_, index) => String(index)}
-          renderItem={({ item }) => <Photo source={item} />}
-          horizontal
-          snapToAlignment={'end'}
-          viewabilityConfig={{ itemVisiblePercentThreshold: 10 }}
-          pagingEnabled={true}
-          decelerationRate={'fast'}
-        /> */}
         <Carousel
           ref={(c) => setCarousel(c)}
           data={data.image}
-          renderItem={({ item }) => <Photo source={item} />}
+          renderItem={({ item }) => (
+            <TouchableWithoutFeedback
+              onPress={() =>
+                openModalImage(data.image, data.image.length, activeSlide)
+              }
+            >
+              <Photo source={item} />
+            </TouchableWithoutFeedback>
+          )}
+          onSnapToItem={(index) => setActiveSlide(index)}
           sliderWidth={SCREEN_WIDTH}
           itemWidth={SCREEN_WIDTH - 50}
           layout="default"
@@ -77,7 +85,7 @@ export const Post: React.FC<Props> = ({ data }) => {
           <PostInfo>{data.comments} comentários</PostInfo>
         </PostInfoArea>
         <ButtonArea>
-          <Button>
+          <Button onPress={() => Alert.alert(activeSlide.toString())}>
             <AntDesign
               name={data.isLiked ? 'like1' : 'like2'}
               size={22}
