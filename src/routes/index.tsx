@@ -9,6 +9,7 @@ import { secondary } from '../styles/globalCssVar'
 
 import { Foundation, FontAwesome, Entypo } from '@expo/vector-icons'
 import { PublishButton } from '../components/PublishButton'
+import { HomeStackRoutes } from './homeStackRoutes'
 
 const Tab = createBottomTabNavigator()
 
@@ -27,9 +28,10 @@ export const Routes: React.FC = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="HomeStackRoutes"
+        component={HomeStackRoutes}
         options={{
+          tabBarLabel: 'Home',
           headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <Foundation name="home" size={size} color={color} />

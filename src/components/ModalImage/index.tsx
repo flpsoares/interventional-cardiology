@@ -3,7 +3,7 @@ import { Container, Photo, PhotoQuantity, Wrapper } from './style'
 
 import Modal from 'react-native-modal'
 import Carousel from 'react-native-snap-carousel'
-import { Alert, Dimensions, ImageSourcePropType } from 'react-native'
+import { Dimensions, ImageSourcePropType } from 'react-native'
 import { useModal } from '../../contexts/ModalContext'
 
 type Props = {
@@ -18,7 +18,6 @@ export const ModalImage: React.FC<Props> = ({ data, quantity, openItem }) => {
   const [activeSlide, setActiveSlide] = useState(openItem)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
-
   return (
     <Container>
       <Modal

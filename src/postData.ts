@@ -52,8 +52,9 @@ export const postData = [
     content: 'Conteúdo do terceiro post',
     userPhoto: require('../assets/default-user.png'),
     image: [
-      require('../assets/post-content.png'),
-      require('../assets/post-content.png')
+      require('../assets/t1.jpg'),
+      require('../assets/t2.jpg'),
+      require('../assets/t3.jpg')
     ],
     likes: 12,
     comments: 0,

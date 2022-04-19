@@ -39,11 +39,12 @@ import { useNavigate } from '../../contexts/NavigateContext'
 
 import { primary } from '../../styles/globalCssVar'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
+
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../../firebase'
 
 export const Register: React.FC = () => {
-  const { navigateToLogin, navigateToHome } = useNavigate()
+  const { navigateToLogin } = useNavigate()
   const [passwordIsHide, setPasswordIsHide] = useState(true)
 
   const [name, setName] = useState('')
@@ -82,10 +83,6 @@ export const Register: React.FC = () => {
     } else {
       Alert.alert('Erro', 'Preencha todos os campos')
     }
-    // createUserWithEmailAndPassword(auth, email, password)
-    //   .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
-    //   .catch((error) => console.log(JSON.stringify(error.code)))
-    //   .finally(() => setIsClicked(false))
   }
 
   return (
@@ -265,16 +262,6 @@ export const Register: React.FC = () => {
                   )}
                 </InputIconPassword>
               </InputItem>
-              {/* <InputItem style={{ elevation: 10 }}>
-                <InputIcon>
-                  <Entypo
-                    name="newsletter"
-                    size={28}
-                    color="rgba(77, 86, 109, 0.46)"
-                  />
-                </InputIcon>
-                <Input keyboardType="number-pad" placeholder="CPF" />
-              </InputItem> */}
               {isClicked ? (
                 <ActivityIndicator size="large" color={primary} />
               ) : (

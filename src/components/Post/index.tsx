@@ -16,7 +16,9 @@ import {
   ButtonTitle,
   PostInfoArea,
   Button,
-  ContentArea
+  ContentArea,
+  SeeMoreButton,
+  SeeMoreButtonText
 } from './style'
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
@@ -30,6 +32,7 @@ import {
 } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 import { useModal } from '../../contexts/ModalContext'
+import { useNavigate } from '../../contexts/NavigateContext'
 
 type Props = {
   data: PostDataProps
@@ -37,6 +40,7 @@ type Props = {
 
 export const Post: React.FC<Props> = ({ data }) => {
   const { openModalImage } = useModal()
+  const { navigateToPostDetails } = useNavigate()
 
   const [activeSlide, setActiveSlide] = useState(0)
   const [carousel, setCarousel] = useState<Carousel<ImageSourcePropType> | null>()
@@ -72,13 +76,14 @@ export const Post: React.FC<Props> = ({ data }) => {
                 openModalImage(data.image, data.image.length, activeSlide)
               }
             >
-              <Photo source={item} />
+              <Photo resizeMode="contain" source={item} />
             </TouchableWithoutFeedback>
           )}
           onSnapToItem={(index) => setActiveSlide(index)}
           sliderWidth={SCREEN_WIDTH}
-          itemWidth={SCREEN_WIDTH - 50}
+          itemWidth={SCREEN_WIDTH - 80}
           layout="default"
+          style={{ maxHeight: '300px', backgroundColor: 'blue' }}
         />
         <PostInfoArea>
           <PostInfo>{data.likes} curtidas</PostInfo>
@@ -93,7 +98,7 @@ export const Post: React.FC<Props> = ({ data }) => {
             />
             <ButtonTitle>Curtir</ButtonTitle>
           </Button>
-          <Button>
+          <Button onPress={navigateToPostDetails}>
             <Fontisto name="commenting" size={22} color="rgba(4, 20, 50, 0.8)" />
             <ButtonTitle>Comentar</ButtonTitle>
           </Button>

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { primary } from '../../styles/globalCssVar'
+import { primary, secondary } from '../../styles/globalCssVar'
 
 export const Container = styled.View`
   width: 100%;
@@ -43,6 +43,7 @@ export const Options = styled.TouchableOpacity``
 export const Wrapper = styled.View`
   margin-top: 12px;
   align-items: center;
+  max-height: 400px;
 `
 
 export const ContentArea = styled.View`
@@ -55,7 +56,12 @@ export const Content = styled.Text`
   margin-bottom: 12px;
 `
 
-export const Photo = styled.Image``
+export const Photo = styled.Image`
+  align-self: center;
+  max-width: 100%;
+  border-radius: 3px;
+  max-height: 300px;
+`
 
 export const PostInfoArea = styled.View`
   flex-direction: row;
@@ -82,4 +88,15 @@ export const Button = styled.TouchableOpacity`
 
 export const ButtonTitle = styled.Text`
   color: rgba(4, 20, 50, 0.6);
+`
+
+export const SeeMoreButton = styled.TouchableOpacity`
+  /* border: 1px solid red; */
+  align-self: center;
+  margin: auto;
+`
+
+export const SeeMoreButtonText = styled.Text`
+  color: ${secondary};
+  font-weight: bold;
 `
