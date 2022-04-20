@@ -45,9 +45,6 @@ export const Plans: React.FC = () => {
   return (
     <Container>
       <Header>
-        <BackButton>
-          <FontAwesome name="arrow-left" size={24} color="#777d8c" />
-        </BackButton>
         <Notification>
           <Ionicons name="notifications-outline" size={22} color="#777d8c" />
         </Notification>

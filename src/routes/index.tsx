@@ -10,6 +10,7 @@ import { secondary } from '../styles/globalCssVar'
 import { Foundation, FontAwesome, Entypo } from '@expo/vector-icons'
 import { PublishButton } from '../components/PublishButton'
 import { HomeStackRoutes } from './homeStackRoutes'
+import { AccountStackRoutes } from './accountStackRoutes'
 
 const Tab = createBottomTabNavigator()
 
@@ -59,8 +60,8 @@ export const Routes: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="Account"
-        component={Account}
+        name="AccountStackRoutes"
+        component={AccountStackRoutes}
         options={{
           tabBarLabel: 'Conta',
           headerShown: false,

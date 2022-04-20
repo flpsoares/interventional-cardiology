@@ -48,9 +48,7 @@ export const Register: React.FC = () => {
   const [passwordIsHide, setPasswordIsHide] = useState(true)
 
   const [name, setName] = useState('')
-  const [isDoctor, setIsDoctor] = useState(false)
-  const [isMedicineStudent, setIsMedicineStudent] = useState(false)
-  const [others, setOthers] = useState('')
+  const [isDoctor, setIsDoctor] = useState(true)
   const [crm, setCrm] = useState('')
   const [institution, setInstitution] = useState('')
   const [email, setEmail] = useState('')
@@ -132,8 +130,8 @@ export const Register: React.FC = () => {
                     selectedValue={isDoctor}
                     onValueChange={(value) => setIsDoctor(value)}
                   >
-                    <Picker.Item label="Paciente" value={false} />
                     <Picker.Item label="Médico" value={true} />
+                    <Picker.Item label="Estudante" value={false} />
                   </Picker>
                 </PickerButton>
               </InputItem>
@@ -165,41 +163,7 @@ export const Register: React.FC = () => {
                   </InputItem>
                 </>
               ) : (
-                <>
-                  <InputItem style={{ elevation: 3 }}>
-                    <PickerButton>
-                      <Picker
-                        style={{ color: 'rgba(77, 86, 109, 1)' }}
-                        dropdownIconColor="rgba(77, 86, 109, 1)"
-                        selectedValue={isMedicineStudent}
-                        onValueChange={(value) => setIsMedicineStudent(value)}
-                      >
-                        <Picker.Item
-                          label="Não sou estudante de medicina"
-                          value={false}
-                        />
-                        <Picker.Item
-                          label="Sou estudante de medicina"
-                          value={true}
-                        />
-                      </Picker>
-                    </PickerButton>
-                  </InputItem>
-                  <InputItem style={{ elevation: 3 }}>
-                    <InputIcon>
-                      <MaterialCommunityIcons
-                        name="frequently-asked-questions"
-                        size={28}
-                        color="rgba(77, 86, 109, 0.46)"
-                      />
-                    </InputIcon>
-                    <Input
-                      onChangeText={setOthers}
-                      value={others}
-                      placeholder="Outros"
-                    />
-                  </InputItem>
-                </>
+                <></>
               )}
               <InputItem style={{ elevation: 3 }}>
                 <InputIcon>

@@ -10,12 +10,18 @@ type PostDetailsScreenProps = NativeStackNavigationProp<
   RootStackParamsList,
   'PostDetails'
 >
+type EditAccountScreenProps = NativeStackNavigationProp<
+  RootStackParamsList,
+  'EditAccount'
+>
 
 interface NavigateContextData {
   navigateToLogin: () => void
   navigateToRegister: () => void
   navigateToHome: () => void
   navigateToPostDetails: () => void
+  navigateToEditAccount: () => void
+  editAccountGoBack: () => void
 }
 
 interface NavigateProviderProps {
@@ -29,6 +35,7 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigationRegister = useNavigation<RegisterScreenProps>()
   const navigationHome = useNavigation<HomeScreenProps>()
   const navigationPostDetails = useNavigation<PostDetailsScreenProps>()
+  const navigationEditAccount = useNavigation<EditAccountScreenProps>()
 
   const navigateToLogin = () => {
     navigationLogin.navigate('Login')
@@ -42,6 +49,13 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigateToPostDetails = () => {
     navigationPostDetails.navigate('PostDetails')
   }
+  const navigateToEditAccount = () => {
+    navigationEditAccount.navigate('EditAccount')
+  }
+
+  const editAccountGoBack = () => {
+    navigationEditAccount.goBack()
+  }
 
   return (
     <NavigateContext.Provider
@@ -49,7 +63,9 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
         navigateToLogin,
         navigateToRegister,
         navigateToHome,
-        navigateToPostDetails
+        navigateToPostDetails,
+        navigateToEditAccount,
+        editAccountGoBack
       }}
     >
       {children}

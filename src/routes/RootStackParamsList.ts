@@ -5,4 +5,6 @@ export type RootStackParamsList = {
   Register: undefined
   Home: undefined
   PostDetails: undefined
+  Account: undefined
+  EditAccount: undefined
 }
