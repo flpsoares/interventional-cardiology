@@ -33,6 +33,7 @@ import {
 import Carousel from 'react-native-snap-carousel'
 import { useModal } from '../../contexts/ModalContext'
 import { useNavigate } from '../../contexts/NavigateContext'
+import { PostDropdown } from '../PostDropdown'
 
 type Props = {
   data: PostDataProps
@@ -45,10 +46,12 @@ export const Post: React.FC<Props> = ({ data }) => {
   const [activeSlide, setActiveSlide] = useState(0)
   const [carousel, setCarousel] = useState<Carousel<ImageSourcePropType> | null>()
 
+  const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
+
   const SCREEN_WIDTH = Dimensions.get('window').width
 
   return (
-    <Container>
+    <Container onPress={() => setDropdownIsOpen(false)}>
       <Top>
         <TopLeftContent>
           <UserPhoto source={data.userPhoto} />
@@ -59,9 +62,10 @@ export const Post: React.FC<Props> = ({ data }) => {
             </Date>
           </Info>
         </TopLeftContent>
-        <Options>
+        <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
           <Entypo name="dots-three-vertical" size={26} color="#596988" />
         </Options>
+        {dropdownIsOpen && <PostDropdown name={data.name} />}
       </Top>
       <Wrapper>
         <ContentArea>

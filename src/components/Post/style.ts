@@ -1,7 +1,7 @@
 import styled from 'styled-components/native'
 import { primary, secondary } from '../../styles/globalCssVar'
 
-export const Container = styled.View`
+export const Container = styled.Pressable`
   width: 100%;
   padding: 12px;
   margin-bottom: 12px;
@@ -12,6 +12,7 @@ export const Top = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 `
 
 export const TopLeftContent = styled.View`
@@ -61,6 +62,7 @@ export const Photo = styled.Image`
   max-width: 100%;
   border-radius: 3px;
   max-height: 300px;
+  z-index: -1;
 `
 
 export const PostInfoArea = styled.View`
@@ -91,7 +93,6 @@ export const ButtonTitle = styled.Text`
 `
 
 export const SeeMoreButton = styled.TouchableOpacity`
-  /* border: 1px solid red; */
   align-self: center;
   margin: auto;
 `

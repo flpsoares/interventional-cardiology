@@ -12,6 +12,10 @@ interface ModalContextData {
   modalImageData: ImageSourcePropType[] | undefined
   modalImageQuantity: number
   modalImageOpenItem: number
+  postDropdownIsOpen: boolean
+  postDropdownUserName: string
+  openPostDropdown: (name: string) => void
+  closePostDropdown: () => void
 }
 
 interface ModalProviderProps {
@@ -25,6 +29,9 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [modalImageData, setModalImageData] = useState<ImageSourcePropType[]>()
   const [modalImageQuantity, setModalImageQuantity] = useState(0)
   const [modalImageOpenItem, setModalImageOpenItem] = useState(0)
+
+  const [postDropdownIsOpen, setPostDropdownIsOpen] = useState(false)
+  const [postDropdownUserName, setPostDropdownUserName] = useState('')
 
   const openModalImage = (
     data: ImageSourcePropType[],
@@ -43,6 +50,16 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
     setModalImageQuantity(0)
   }
 
+  const openPostDropdown = (name: string) => {
+    setPostDropdownIsOpen(true)
+    setPostDropdownUserName(name)
+  }
+
+  const closePostDropdown = () => {
+    setPostDropdownIsOpen(false)
+    setPostDropdownUserName('')
+  }
+
   return (
     <ModalContext.Provider
       value={{
@@ -51,8 +68,11 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
         closeModalImage,
         modalImageData,
         modalImageQuantity,
-
-        modalImageOpenItem
+        modalImageOpenItem,
+        postDropdownIsOpen,
+        postDropdownUserName,
+        openPostDropdown,
+        closePostDropdown
       }}
     >
       {children}
