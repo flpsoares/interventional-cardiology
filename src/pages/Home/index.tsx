@@ -24,7 +24,7 @@ export const Home: React.FC = () => {
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
           <TopInput placeholder="Pesquisar..." />
         </TopInputArea>
-        <Ionicons name="notifications-outline" size={24} />
+        <Ionicons name="notifications-outline" size={22} color="#777d8c" />
       </Top>
       <Wrapper>
         {modalImageIsOpen && (
