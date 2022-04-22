@@ -37,7 +37,7 @@ export const UserPhotoBack = styled.View`
   justify-content: center;
   align-items: center;
   align-self: center;
-  background: #f2f2f2;
+  background: #fff;
 `
 
 export const UserPhoto = styled.Image`

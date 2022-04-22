@@ -60,17 +60,6 @@ export const Routes: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="AccountStackRoutes"
-        component={AccountStackRoutes}
-        options={{
-          tabBarLabel: 'Conta',
-          headerShown: false,
-          tabBarIcon: ({ size, color }) => (
-            <FontAwesome name="user" size={size} color={color} />
-          )
-        }}
-      />
-      <Tab.Screen
         name="Favorites"
         component={Favorites}
         options={{
@@ -78,6 +67,17 @@ export const Routes: React.FC = () => {
           headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <Entypo name="heart" size={size} color={color} />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="AccountStackRoutes"
+        component={AccountStackRoutes}
+        options={{
+          tabBarLabel: 'Conta',
+          headerShown: false,
+          tabBarIcon: ({ size, color }) => (
+            <FontAwesome name="user" size={size} color={color} />
           )
         }}
       />
