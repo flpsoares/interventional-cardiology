@@ -1,9 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Home } from '../pages/Home'
 import { Plans } from '../pages/Plans'
-import { Publish } from '../pages/Publish'
-import { Account } from '../pages/Account'
 import { Favorites } from '../pages/Favorites'
 import { secondary } from '../styles/globalCssVar'
 
@@ -11,6 +8,7 @@ import { Foundation, FontAwesome, Entypo } from '@expo/vector-icons'
 import { PublishButton } from '../components/PublishButton'
 import { HomeStackRoutes } from './homeStackRoutes'
 import { AccountStackRoutes } from './accountStackRoutes'
+import { PublishStackRoutes } from './publishStackRoutes'
 
 const Tab = createBottomTabNavigator()
 
@@ -51,8 +49,8 @@ export const Routes: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="Publish"
-        component={Publish}
+        name="PublishStackRoutes"
+        component={PublishStackRoutes}
         options={{
           tabBarLabel: '',
           headerShown: false,

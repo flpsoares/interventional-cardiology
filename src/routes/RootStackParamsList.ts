@@ -7,4 +7,5 @@ export type RootStackParamsList = {
   PostDetails: undefined
   Account: undefined
   EditAccount: undefined
+  PublishTwo: undefined
 }
