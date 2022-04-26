@@ -80,14 +80,17 @@ export const PlanText = styled.Text<PlanProps>`
 `
 
 export const Button = styled.TouchableOpacity`
-  background: ${secondary};
+  width: 100%;
+  height: 70px;
   justify-content: center;
   align-items: center;
-  padding: 2px;
-  height: 65px;
+  border-radius: 100px;
+  background: ${secondary};
   margin: 32px 0;
 `
 
 export const ButtonText = styled.Text`
+  font-size: 20px;
   color: #fff;
+  font-weight: bold;
 `

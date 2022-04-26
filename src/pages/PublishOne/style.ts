@@ -88,14 +88,17 @@ export const Input = styled.TextInput`
 `
 
 export const SubmitButton = styled.TouchableOpacity`
-  background: ${secondary};
+  width: 100%;
+  height: 70px;
   justify-content: center;
   align-items: center;
-  padding: 2px;
-  height: 65px;
+  border-radius: 100px;
+  background: ${secondary};
   margin-bottom: 32px;
 `
 
 export const SubmitButtonText = styled.Text`
+  font-size: 20px;
   color: #fff;
+  font-weight: bold;
 `

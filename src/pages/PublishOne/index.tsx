@@ -143,10 +143,10 @@ export const PublishOne: React.FC = () => {
             onChangeText={(value) => setMedicamentos(value)}
           />
         </InputItem>
+        <SubmitButton onPress={handleSubmit}>
+          <SubmitButtonText>Prosseguir</SubmitButtonText>
+        </SubmitButton>
       </Wrapper>
-      <SubmitButton onPress={handleSubmit}>
-        <SubmitButtonText>Prosseguir</SubmitButtonText>
-      </SubmitButton>
     </Container>
   )
 }

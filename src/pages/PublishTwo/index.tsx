@@ -65,10 +65,10 @@ export const PublishTwo: React.FC = () => {
           <Ionicons name="images" size={46} color="#596988" />
           <ButtonImageText>Insira até 8 imagens sobre o caso</ButtonImageText>
         </ButtonImage>
+        <SubmitButton>
+          <SubmitButtonText>Publicar</SubmitButtonText>
+        </SubmitButton>
       </Wrapper>
-      <SubmitButton>
-        <SubmitButtonText>Publicar</SubmitButtonText>
-      </SubmitButton>
     </Container>
   )
 }

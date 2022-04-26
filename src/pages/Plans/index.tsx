@@ -73,10 +73,10 @@ export const Plans: React.FC = () => {
             <PlanText isActive={twelveMonthIsActive}>meses</PlanText>
           </Plan>
         </PlanArea>
+        <Button>
+          <ButtonText>Contratar</ButtonText>
+        </Button>
       </Wrapper>
-      <Button>
-        <ButtonText>Contratar</ButtonText>
-      </Button>
     </Container>
   )
 }

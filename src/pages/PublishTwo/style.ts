@@ -66,14 +66,17 @@ export const ButtonImageText = styled.Text`
 `
 
 export const SubmitButton = styled.TouchableOpacity`
-  background: ${secondary};
+  width: 100%;
+  height: 70px;
   justify-content: center;
   align-items: center;
-  padding: 2px;
-  height: 65px;
-  margin-bottom: 32px;
+  border-radius: 100px;
+  background: ${secondary};
+  margin: 32px 0;
 `
 
 export const SubmitButtonText = styled.Text`
+  font-size: 20px;
   color: #fff;
+  font-weight: bold;
 `
