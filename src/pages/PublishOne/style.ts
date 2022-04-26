@@ -2,8 +2,8 @@ import styled from 'styled-components/native'
 import { secondary } from '../../styles/globalCssVar'
 
 export const Container = styled.ScrollView`
+  height: 100%;
   background: #fff;
-  flex: 1;
 `
 
 export const Header = styled.View`
@@ -37,10 +37,9 @@ export const Wrapper = styled.View`
 `
 
 export const InputItem = styled.View`
-  height: 60px;
-  border-radius: 100px;
+  height: 100px;
   background: #fff;
-  margin-bottom: 72px;
+  margin-bottom: 42px;
 `
 
 export const InputTitle = styled.Text`
@@ -52,7 +51,7 @@ export const InputTitle = styled.Text`
 
 export const PickerButton = styled.TouchableOpacity`
   border-radius: 5px;
-  height: 100%;
+  height: 60%;
   justify-content: center;
   width: 100%;
   border-radius: 100px;
@@ -68,15 +67,15 @@ export const HalfItemArea = styled.View`
 
 export const HalfItem = styled.View`
   width: 48%;
-  height: 60px;
+  height: 100px;
   border-radius: 100px;
   background: #fff;
-  margin-bottom: 72px;
+  margin-bottom: 42px;
 `
 
 export const Input = styled.TextInput`
   border-radius: 5px;
-  height: 100%;
+  height: 60%;
   justify-content: center;
   width: 100%;
   border-radius: 100px;

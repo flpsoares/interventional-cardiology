@@ -27,6 +27,7 @@ export const PublishOne: React.FC = () => {
   const [area, setArea] = useState('Doença coronariana')
   const [idade, setIdade] = useState('')
   const [genero, setGenero] = useState('Masculino')
+  const [sintomas, setSintomas] = useState('Dor precordial')
   const [comorbidades, setComorbidades] = useState('Hipertensão arterial sistêmica')
   const [medicamentos, setMedicamentos] = useState('')
 
@@ -49,7 +50,7 @@ export const PublishOne: React.FC = () => {
   }
 
   return (
-    <Container>
+    <Container contentContainerStyle={{ flexGrow: 1 }}>
       <Header>
         <UserPhoto source={require('../../../assets/default-user.png')} />
         <Title>Publicar caso clínico</Title>
@@ -102,6 +103,24 @@ export const PublishOne: React.FC = () => {
             </PickerButton>
           </HalfItem>
         </HalfItemArea>
+        <InputItem>
+          <InputTitle>Sintomas</InputTitle>
+          <PickerButton style={{ elevation: 10 }}>
+            <Picker
+              style={{ color: 'rgba(77, 86, 109, 1)' }}
+              dropdownIconColor="rgba(77, 86, 109, 1)"
+              selectedValue={sintomas}
+              onValueChange={(value) => setSintomas(value)}
+            >
+              <Picker.Item label="Dor precordial" value="Dor precordial" />
+              <Picker.Item label="Dispnéia" value="Dispnéia" />
+              <Picker.Item label="Palpitações" value="Palpitações" />
+              <Picker.Item label="Síncope" value="Síncope" />
+              <Picker.Item label="Cianose" value="Cianose" />
+              <Picker.Item label="Outros" value="Outros" />
+            </Picker>
+          </PickerButton>
+        </InputItem>
         <InputItem>
           <InputTitle>Comorbidades</InputTitle>
           <PickerButton style={{ elevation: 10 }}>

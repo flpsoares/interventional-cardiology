@@ -58,6 +58,7 @@ export const ButtonImage = styled.TouchableOpacity`
   border-radius: 2px;
   justify-content: center;
   align-items: center;
+  margin-top: 12px;
 `
 
 export const ButtonImageText = styled.Text`
