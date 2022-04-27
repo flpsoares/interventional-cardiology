@@ -31,10 +31,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigate } from '../../contexts/NavigateContext'
 
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
+import firebase from '../../../firebase'
 import { primary } from '../../styles/globalCssVar'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
-import { auth } from '../../../firebase'
 
 export const Login: React.FC = () => {
   const { navigateToRegister } = useNavigate()
@@ -51,7 +50,9 @@ export const Login: React.FC = () => {
   const handleLogin = () => {
     if (email !== '' && password !== '') {
       setIsClicked(true)
-      signInWithEmailAndPassword(auth, email, password)
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
         .catch(() => {
           Alert.alert('Erro', 'Email ou senha inválidos')
           setIsClicked(false)
@@ -66,7 +67,9 @@ export const Login: React.FC = () => {
   const handleForgotPassword = () => {
     if (email !== '') {
       setIsClicked(true)
-      sendPasswordResetEmail(auth, email)
+      firebase
+        .auth()
+        .sendPasswordResetEmail(email)
         .then(() => {
           Alert.alert('Redefinir senha', 'Enviamos um email para você')
           setForgotPasswordIsActive(false)

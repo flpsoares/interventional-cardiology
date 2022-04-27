@@ -39,9 +39,7 @@ import { useNavigate } from '../../contexts/NavigateContext'
 
 import { primary } from '../../styles/globalCssVar'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
-
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../../firebase'
+import firebase from '../../../firebase'
 
 export const Register: React.FC = () => {
   const { navigateToLogin } = useNavigate()
@@ -59,11 +57,34 @@ export const Register: React.FC = () => {
 
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
 
-  const handleNewAccount = () => {
+  const handleNewAccount = async () => {
     setIsClicked(true)
     if (email !== '' && password !== '') {
       if (password.length >= 6) {
-        createUserWithEmailAndPassword(auth, email, password)
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then((res) => {
+            const uid = res.user?.uid
+            const users = firebase.firestore().collection('users')
+            if (isDoctor) {
+              users.doc(uid).set({
+                name,
+                isDoctor,
+                crm,
+                institution,
+                email,
+                telephone
+              })
+            } else {
+              users.doc(uid).set({
+                name,
+                isDoctor,
+                email,
+                telephone
+              })
+            }
+          })
           .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
           .catch((error) => {
             if (error.code === 'auth/email-already-in-use') {
@@ -79,6 +100,7 @@ export const Register: React.FC = () => {
         Alert.alert('Erro', 'A senha deve conter pelo menso 6 dígitos')
       }
     } else {
+      setIsClicked(false)
       Alert.alert('Erro', 'Preencha todos os campos')
     }
   }

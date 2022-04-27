@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
+import firebase from 'firebase'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBwrGQDe7uN1i8ihuRMjaWnG0mugt1i5zs',
@@ -12,5 +11,7 @@ const firebaseConfig = {
   measurementId: 'G-H1HCBEZWL4'
 }
 
-const app = initializeApp(firebaseConfig)
-export const auth = getAuth(app)
+const app = firebase.initializeApp(firebaseConfig)
+firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true })
+
+export default app

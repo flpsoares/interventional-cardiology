@@ -1,6 +1,5 @@
 import React from 'react'
-import { auth } from '../../../firebase'
-import { signOut } from 'firebase/auth'
+import firebase from '../../../firebase'
 import {
   Banner,
   Container,
@@ -25,7 +24,7 @@ export const Account: React.FC = () => {
   const { navigateToEditAccount } = useNavigate()
 
   const logOut = () => {
-    signOut(auth)
+    firebase.auth().signOut()
   }
 
   return (

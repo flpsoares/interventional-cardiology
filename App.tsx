@@ -6,8 +6,7 @@ import { AuthRoutes } from './src/routes/AuthRoutes'
 import { Routes } from './src/routes'
 import { NavigateProvider } from './src/contexts/NavigateContext'
 import { LanguageProvider } from './src/contexts/LanguageContext'
-import { auth } from './firebase'
-import { onAuthStateChanged } from 'firebase/auth'
+import firebase from './firebase'
 import { primary } from './src/styles/globalCssVar'
 import { ModalProvider } from './src/contexts/ModalContext'
 
@@ -16,7 +15,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const subscriber = onAuthStateChanged(auth, (user) => {
+    const subscriber = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUser(true)
         setIsLoading(false)
