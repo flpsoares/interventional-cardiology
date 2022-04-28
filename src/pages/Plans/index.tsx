@@ -14,15 +14,23 @@ import {
   PlanNumber,
   PlanText,
   Title,
+  WebViewCloseButton,
+  WebViewContainer,
+  WebViewHeader,
   Wrapper
 } from './style'
 
-import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
+import MercadoPagoApi from '../../services/MercadoPagoApi'
+import { WebView } from 'react-native-webview'
 
 export const Plans: React.FC = () => {
   const [threeMonthIsActive, setThreeMonthIsActive] = useState(false)
   const [sixMonthIsActive, setSixMonthIsActive] = useState(true)
   const [twelveMonthIsActive, setTwelveMonthIsActive] = useState(false)
+
+  const [isOpen, setIsOpen] = useState(false)
+  const [url, setUrl] = useState('')
 
   const activeThreeMonth = () => {
     setThreeMonthIsActive(true)
@@ -40,6 +48,40 @@ export const Plans: React.FC = () => {
     setThreeMonthIsActive(false)
     setSixMonthIsActive(false)
     setTwelveMonthIsActive(true)
+  }
+
+  const monthActive = () => {
+    if (threeMonthIsActive) {
+      return 3
+    } else if (sixMonthIsActive) {
+      return 6
+    } else {
+      return 12
+    }
+  }
+
+  const handleSale = (month: number) => {
+    MercadoPagoApi.createPreference(month).then((res) => {
+      setUrl(res.data.body.sandbox_init_point)
+      setIsOpen(true)
+    })
+  }
+
+  if (isOpen && url) {
+    return (
+      <WebViewContainer>
+        <WebViewHeader>
+          <WebViewCloseButton onPress={() => setIsOpen(false)}>
+            <Ionicons name="close" size={28} color="#000" />
+          </WebViewCloseButton>
+        </WebViewHeader>
+        <WebView
+          source={{
+            uri: url
+          }}
+        />
+      </WebViewContainer>
+    )
   }
 
   return (
@@ -73,7 +115,7 @@ export const Plans: React.FC = () => {
             <PlanText isActive={twelveMonthIsActive}>meses</PlanText>
           </Plan>
         </PlanArea>
-        <Button>
+        <Button onPress={() => handleSale(monthActive())}>
           <ButtonText>Contratar</ButtonText>
         </Button>
       </Wrapper>

@@ -176,12 +176,12 @@ export const Register: React.FC = () => {
             <BannerArea>
               <LanguageDropdown isOpen={false} />
               <Banner source={require('../../../assets/register/banner.png')} />
-              <FirstSupportImage
+              {/* <FirstSupportImage
                 source={require('../../../assets/support_02.png')}
               />
               <SecondSupportImage
                 source={require('../../../assets/support_01.png')}
-              />
+              /> */}
             </BannerArea>
             <Wrapper>
               <Title>Faça seu Cadastro</Title>

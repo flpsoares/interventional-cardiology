@@ -97,13 +97,16 @@ export const Login: React.FC = () => {
           <Container onPress={Keyboard.dismiss}>
             <BannerArea>
               <LanguageDropdown isOpen={false} />
-              <Banner source={require('../../../assets/login/banner.png')} />
-              <FirstSupportImage
+              <Banner
+                resizeMode="cover"
+                source={require('../../../assets/login/banner.png')}
+              />
+              {/* <FirstSupportImage
                 source={require('../../../assets/support_02.png')}
               />
               <SecondSupportImage
                 source={require('../../../assets/support_01.png')}
-              />
+              /> */}
             </BannerArea>
             <Wrapper>
               {!forgotPasswordIsActive ? (

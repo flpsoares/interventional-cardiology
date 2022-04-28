@@ -4,6 +4,17 @@ import { primary, secondary } from '../../styles/globalCssVar'
 export const Container = styled.ScrollView`
   flex: 1;
 `
+export const WebViewContainer = styled.View`
+  flex: 1;
+  background: #fff;
+`
+
+export const WebViewHeader = styled.View`
+  flex-direction: row;
+  justify-content: flex-end;
+`
+
+export const WebViewCloseButton = styled.TouchableOpacity``
 
 export const Header = styled.View`
   flex-direction: row;

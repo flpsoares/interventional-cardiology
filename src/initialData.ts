@@ -5,7 +5,7 @@ const initialData = [
     title: 'Cadastre-se',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor',
-    image: require('../assets/initial/banner_01.png')
+    image: require('../assets/initial/banner_02.png')
   },
   {
     id: 1,

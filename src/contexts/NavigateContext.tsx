@@ -5,6 +5,10 @@ import { RootStackParamsList } from '../routes/RootStackParamsList'
 
 type LoginScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Login'>
 type RegisterScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Register'>
+type ChooseAuthScreenProps = NativeStackNavigationProp<
+  RootStackParamsList,
+  'ChooseAuth'
+>
 type HomeScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Home'>
 type PostDetailsScreenProps = NativeStackNavigationProp<
   RootStackParamsList,
@@ -23,6 +27,7 @@ type PublishScreenProps = NativeStackNavigationProp<
 interface NavigateContextData {
   navigateToLogin: () => void
   navigateToRegister: () => void
+  navigateToChooseAuth: () => void
   navigateToHome: () => void
   navigateToPostDetails: () => void
   navigateToEditAccount: () => void
@@ -40,6 +45,7 @@ export const NavigateContext = createContext({} as NavigateContextData)
 export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigationLogin = useNavigation<LoginScreenProps>()
   const navigationRegister = useNavigation<RegisterScreenProps>()
+  const navigationChooseAuth = useNavigation<ChooseAuthScreenProps>()
   const navigationHome = useNavigation<HomeScreenProps>()
   const navigationPostDetails = useNavigation<PostDetailsScreenProps>()
   const navigationEditAccount = useNavigation<EditAccountScreenProps>()
@@ -50,6 +56,9 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   }
   const navigateToRegister = () => {
     navigationRegister.navigate('Register')
+  }
+  const navigateToChooseAuth = () => {
+    navigationChooseAuth.navigate('ChooseAuth')
   }
   const navigateToHome = () => {
     navigationHome.navigate('Home')
@@ -81,7 +90,8 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
         navigateToEditAccount,
         editAccountGoBack,
         navigateToPublish,
-        publishGoBack
+        publishGoBack,
+        navigateToChooseAuth
       }}
     >
       {children}

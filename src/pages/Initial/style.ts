@@ -9,13 +9,13 @@ export const Container = styled.View`
 
 export const BannerArea = styled.View`
   width: 100%;
-  height: 340px;
+  height: 350px;
   position: relative;
   background: #fff;
 `
 
 export const Banner = styled.Image`
-  height: 340px;
+  height: 100%;
   width: 100%;
   z-index: 1;
 `

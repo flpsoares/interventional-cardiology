@@ -12,13 +12,13 @@ export const Container = styled.Pressable`
 
 export const BannerArea = styled.View`
   width: 100%;
-  height: 340px;
+  height: 350px;
   position: relative;
   background: #fff;
 `
 
 export const Banner = styled.Image`
-  height: 340px;
+  height: 100%;
   width: 100%;
   z-index: 1;
 `
@@ -43,9 +43,9 @@ export const SecondSupportImage = styled.Image`
 export const Wrapper = styled.View`
   background: #fff;
   flex: 1;
-  margin-top: -50px;
 
   align-items: center;
+  padding-bottom: 42px;
 `
 
 export const Title = styled.Text`

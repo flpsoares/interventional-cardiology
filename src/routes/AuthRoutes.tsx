@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { Login } from '../pages/Login'
 import { Register } from '../pages/Register'
 import { Initial } from '../pages/Initial'
+import { ChooseAuth } from '../pages/ChooseAuth'
 
 const Stack = createNativeStackNavigator()
 
@@ -22,6 +23,11 @@ export const AuthRoutes: React.FC = () => {
       <Stack.Screen
         name="Register"
         component={Register}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChooseAuth"
+        component={ChooseAuth}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

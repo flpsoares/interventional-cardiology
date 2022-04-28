@@ -24,7 +24,7 @@ import { useLanguage } from '../../contexts/LanguageContext'
 const screen = Dimensions.get('screen')
 
 export const Initial: React.FC = () => {
-  const { navigateToLogin } = useNavigate()
+  const { navigateToChooseAuth } = useNavigate()
   const [activeSlide, setActiveSlide] = useState(0)
 
   const [carousel, setCarousel] = useState<any>()
@@ -33,7 +33,7 @@ export const Initial: React.FC = () => {
     if (activeSlide !== carouselData.length - 1) {
       carousel.snapToNext()
     } else {
-      navigateToLogin()
+      navigateToChooseAuth()
     }
   }
 
@@ -47,12 +47,12 @@ export const Initial: React.FC = () => {
           >
             <BannerArea>
               <Banner source={item.image} />
-              <FirstSupportImage
+              {/* <FirstSupportImage
                 source={require('../../../assets/support_02.png')}
               />
               <SecondSupportImage
                 source={require('../../../assets/support_01.png')}
-              />
+              /> */}
             </BannerArea>
             <Wrapper>
               <SubTitle>{item.subTitle}</SubTitle>
@@ -78,7 +78,7 @@ export const Initial: React.FC = () => {
         layout="default"
       />
       <PaginationArea>
-        <NextButton onPress={navigateToLogin}>
+        <NextButton onPress={navigateToChooseAuth}>
           <NextButtonText>Pular</NextButtonText>
         </NextButton>
         <Pagination
