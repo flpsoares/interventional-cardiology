@@ -57,51 +57,107 @@ export const Register: React.FC = () => {
 
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
 
+  const isValidated = (value: string) => {
+    return value !== ''
+  }
+
+  const validatedDoctor = () => {
+    if (
+      isValidated(name) &&
+      isValidated(crm) &&
+      isValidated(institution) &&
+      isValidated(email) &&
+      isValidated(telephone) &&
+      isValidated(password)
+    ) {
+      return true
+    } else {
+      setIsClicked(false)
+      return Alert.alert('Erro', 'Preencha todos os campos')
+    }
+  }
+
+  const validatedStudent = () => {
+    if (
+      isValidated(name) &&
+      isValidated(email) &&
+      isValidated(telephone) &&
+      isValidated(password)
+    ) {
+      return true
+    } else {
+      setIsClicked(false)
+      return Alert.alert('Erro', 'Preencha todos os campos')
+    }
+  }
+
   const handleNewAccount = async () => {
     setIsClicked(true)
-    if (email !== '' && password !== '') {
-      if (password.length >= 6) {
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(email, password)
-          .then((res) => {
-            const uid = res.user?.uid
-            const users = firebase.firestore().collection('users')
-            if (isDoctor) {
+    if (isDoctor) {
+      if (validatedDoctor()) {
+        if (password.length >= 6) {
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((res) => {
+              const uid = res.user?.uid
+              const users = firebase.firestore().collection('users')
               users.doc(uid).set({
                 name,
                 isDoctor,
+                isSubscriber: false,
                 crm,
                 institution,
                 email,
                 telephone
               })
-            } else {
-              users.doc(uid).set({
-                name,
-                isDoctor,
-                email,
-                telephone
-              })
-            }
-          })
-          .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
-          .catch((error) => {
-            if (error.code === 'auth/email-already-in-use') {
-              Alert.alert('Aviso', 'Esse email já está em uso')
-            }
-            if (error.code === 'auth/invalid-email') {
-              Alert.alert('Erro', 'E-mail inválido')
-            }
-          })
-          .finally(() => setIsClicked(false))
-      } else {
-        setIsClicked(false)
-        Alert.alert('Erro', 'A senha deve conter pelo menso 6 dígitos')
+            })
+            .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
+            .catch((error) => {
+              if (error.code === 'auth/email-already-in-use') {
+                Alert.alert('Aviso', 'Esse email já está em uso')
+              }
+              if (error.code === 'auth/invalid-email') {
+                Alert.alert('Erro', 'E-mail inválido')
+              }
+            })
+            .finally(() => setIsClicked(false))
+        } else {
+          setIsClicked(false)
+          Alert.alert('Erro', 'A senha deve conter pelo menos 6 dígitos')
+        }
       }
     } else {
-      setIsClicked(false)
-      Alert.alert('Erro', 'Preencha todos os campos')
+      if (validatedStudent()) {
+        if (password.length >= 6) {
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((res) => {
+              const uid = res.user?.uid
+              const users = firebase.firestore().collection('users')
+              users.doc(uid).set({
+                name,
+                email,
+                isDoctor,
+                telephone
+              })
+            })
+            .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
+            .catch((error) => {
+              if (error.code === 'auth/email-already-in-use') {
+                Alert.alert('Aviso', 'Esse email já está em uso')
+              }
+              if (error.code === 'auth/invalid-email') {
+                Alert.alert('Erro', 'E-mail inválido')
+              }
+            })
+            .finally(() => setIsClicked(false))
+        } else {
+          setIsClicked(false)
+          Alert.alert('Erro', 'A senha deve conter pelo menos 6 dígitos')
+        }
+      }
     }
   }
 
