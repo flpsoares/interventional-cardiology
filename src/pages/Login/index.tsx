@@ -31,12 +31,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigate } from '../../contexts/NavigateContext'
 
-import firebase from '../../../firebase'
+import firebase, { database } from '../../../firebase'
 import { primary } from '../../styles/globalCssVar'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { useUser } from '../../contexts/UserContext'
 
 export const Login: React.FC = () => {
   const { navigateToRegister } = useNavigate()
+  const { setUser } = useUser()
   const [passwordIsHide, setPasswordIsHide] = useState(true)
   const [forgotPasswordIsActive, setForgotPasswordIsActive] = useState(false)
 
@@ -53,6 +55,29 @@ export const Login: React.FC = () => {
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
+        .then(async (res) => {
+          const userInfo = await database.doc(`users/${res.user?.uid}`).get()
+          if (userInfo.data()?.isDoctor === true) {
+            const data = {
+              email: userInfo.data()?.email,
+              isDoctor: userInfo.data()?.isDoctor,
+              name: userInfo.data()?.name,
+              telephone: userInfo.data()?.telephone,
+              crm: userInfo.data()?.crm,
+              institution: userInfo.data()?.institution,
+              isSubscriber: userInfo.data()?.isSubscriber
+            }
+            setUser(data)
+          } else {
+            const data = {
+              email: userInfo.data()?.email,
+              isDoctor: userInfo.data()?.isDoctor,
+              name: userInfo.data()?.name,
+              telephone: userInfo.data()?.telephone
+            }
+            setUser(data)
+          }
+        })
         .catch(() => {
           Alert.alert('Erro', 'Email ou senha inválidos')
           setIsClicked(false)

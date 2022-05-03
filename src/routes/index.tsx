@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Plans } from '../pages/Plans'
 import { Favorites } from '../pages/Favorites'
@@ -9,10 +9,36 @@ import { PublishButton } from '../components/PublishButton'
 import { HomeStackRoutes } from './homeStackRoutes'
 import { AccountStackRoutes } from './accountStackRoutes'
 import { PublishStackRoutes } from './publishStackRoutes'
+import app, { database } from '../../firebase'
+import { useUser } from '../contexts/UserContext'
 
 const Tab = createBottomTabNavigator()
 
 export const Routes: React.FC = () => {
+  const { setUser } = useUser()
+
+  useEffect(() => {
+    const subscribe = database
+      .collection('users')
+      .doc(app.auth().currentUser!.uid)
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.data()
+        setUser({
+          name: data!.name,
+          email: data!.email,
+          telephone: data!.telephone,
+          isDoctor: data!.isDoctor,
+          crm: data!.crm,
+          institution: data!.institution,
+          isSubscriber: data!.isSubscriber
+        })
+      })
+
+    return () => {
+      subscribe()
+    }
+  }, [])
+
   return (
     <Tab.Navigator
       screenOptions={{

@@ -3,7 +3,6 @@ import { secondary } from '../../styles/globalCssVar'
 
 export const Container = styled.View`
   flex: 1;
-  background: red;
   position: relative;
   justify-content: flex-end;
 `

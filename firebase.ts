@@ -13,5 +13,6 @@ const firebaseConfig = {
 
 const app = firebase.initializeApp(firebaseConfig)
 firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true })
+export const database = app.firestore()
 
 export default app

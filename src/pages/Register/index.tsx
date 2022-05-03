@@ -39,7 +39,7 @@ import { useNavigate } from '../../contexts/NavigateContext'
 
 import { primary } from '../../styles/globalCssVar'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
-import firebase from '../../../firebase'
+import firebase, { database } from '../../../firebase'
 
 export const Register: React.FC = () => {
   const { navigateToLogin } = useNavigate()
@@ -135,7 +135,7 @@ export const Register: React.FC = () => {
             .createUserWithEmailAndPassword(email, password)
             .then((res) => {
               const uid = res.user?.uid
-              const users = firebase.firestore().collection('users')
+              const users = database.collection('users')
               users.doc(uid).set({
                 name,
                 email,

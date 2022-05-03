@@ -9,6 +9,7 @@ import { LanguageProvider } from './src/contexts/LanguageContext'
 import firebase from './firebase'
 import { primary } from './src/styles/globalCssVar'
 import { ModalProvider } from './src/contexts/ModalContext'
+import { UserProvider } from './src/contexts/UserContext'
 
 export default function App() {
   const [user, setUser] = useState<boolean>()
@@ -39,7 +40,7 @@ export default function App() {
       }
     }
 
-    // updateApp()
+    updateApp()
   }, [])
 
   if (isLoading) {
@@ -55,8 +56,10 @@ export default function App() {
       <NavigateProvider>
         <LanguageProvider>
           <ModalProvider>
-            <StatusBar barStyle={'dark-content'} backgroundColor="#fff" />
-            {user ? <Routes /> : <AuthRoutes />}
+            <UserProvider>
+              <StatusBar barStyle={'dark-content'} backgroundColor="#fff" />
+              {user ? <Routes /> : <AuthRoutes />}
+            </UserProvider>
           </ModalProvider>
         </LanguageProvider>
       </NavigateProvider>

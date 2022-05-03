@@ -19,9 +19,11 @@ import { postData } from '../../postData'
 import { Post } from '../../components/Post'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigate } from '../../contexts/NavigateContext'
+import { useUser } from '../../contexts/UserContext'
 
 export const Account: React.FC = () => {
   const { navigateToEditAccount } = useNavigate()
+  const { user } = useUser()
 
   const logOut = () => {
     firebase.auth().signOut()
@@ -41,8 +43,8 @@ export const Account: React.FC = () => {
           <UserPhoto source={require('../../../assets/default-user.png')} />
         </UserPhotoBack>
         <Info>
-          <Name>Felipe Bruno</Name>
-          <Email>email@email.com</Email>
+          <Name>{user?.name}</Name>
+          <Email>{user?.email}</Email>
         </Info>
         <EditButton onPress={navigateToEditAccount}>
           <EditButtonText>EDITAR PERFIL</EditButtonText>

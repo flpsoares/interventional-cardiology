@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   BackButton,
   Button,
@@ -30,12 +30,47 @@ import {
   MaterialCommunityIcons,
   Foundation
 } from '@expo/vector-icons'
+import { useUser } from '../../contexts/UserContext'
+import app, { database } from '../../../firebase'
+import { Alert } from 'react-native'
 
 export const EditAccount: React.FC = () => {
+  const { user } = useUser()
   const { editAccountGoBack } = useNavigate()
+
+  const [name, setName] = useState(user!.name)
+  const [email, setEmail] = useState(user!.email)
+  const [telephone, setTelephone] = useState(user!.telephone)
+
+  const [crm, setCrm] = useState(user?.crm)
+  const [institution, setInstitution] = useState(user?.institution)
 
   const [passwordIsHide, setPasswordIsHide] = useState(true)
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
+
+  const handleSubmit = () => {
+    if (user!.isDoctor === false) {
+      database
+        .collection('users')
+        .doc(app.auth().currentUser!.uid)
+        .set({ name, email, telephone }, { merge: true })
+        .then(() => Alert.alert('Sucesso', 'Dados alterados com sucesso!'))
+        .catch((e) => {
+          Alert.alert('Aviso', 'Algo deu errado')
+          console.log(e)
+        })
+    } else {
+      database
+        .collection('users')
+        .doc(app.auth().currentUser!.uid)
+        .set({ name, email, telephone, crm, institution }, { merge: true })
+        .then(() => Alert.alert('Sucesso', 'Dados alterados com sucesso!'))
+        .catch((e) => {
+          Alert.alert('Aviso', 'Algo deu errado')
+          console.log(e)
+        })
+    }
+  }
 
   return (
     <Container>
@@ -54,7 +89,7 @@ export const EditAccount: React.FC = () => {
         </EditButton>
       </UserPhotoArea>
       <Info>
-        <Name>Felipe Bruno</Name>
+        <Name>{user!.name}</Name>
         <Date>Cadastrado em 22/03/2021</Date>
       </Info>
       <Wrapper>
@@ -63,13 +98,7 @@ export const EditAccount: React.FC = () => {
           <Icon>
             <FontAwesome name="user-o" size={28} color="rgba(77, 86, 109, 0.46)" />
           </Icon>
-          <Input value="Felipe Bruno" />
-        </InputItem>
-        <InputItem style={{ elevation: 10 }}>
-          <Icon>
-            <AntDesign name="idcard" size={28} color="rgba(77, 86, 109, 0.46)" />
-          </Icon>
-          <Input value="443.443.234-45" />
+          <Input onChangeText={setName} value={name} />
         </InputItem>
         <InputItem style={{ elevation: 10 }}>
           <Icon>
@@ -79,32 +108,57 @@ export const EditAccount: React.FC = () => {
               color="rgba(77, 86, 109, 0.46)"
             />
           </Icon>
-          <Input value="email@email.com" />
+          <Input onChangeText={setEmail} value={email} />
         </InputItem>
         <InputItem style={{ elevation: 10 }}>
           <Icon>
             <Foundation name="telephone" size={28} color="rgba(77, 86, 109, 0.46)" />
           </Icon>
-          <Input value="11 9 2833-4421" />
+          <Input onChangeText={setTelephone} value={telephone} />
         </InputItem>
-        <InputItem style={{ elevation: 10 }}>
-          <Icon>
-            <FontAwesome name="key" size={28} color="rgba(77, 86, 109, 0.46)" />
-          </Icon>
-          <Input placeholder="Alterar Senha" secureTextEntry={passwordIsHide} />
-          <PasswordIcon onPress={toggleHidePassword}>
-            {passwordIsHide ? (
-              <FontAwesome name="eye" size={28} color="rgba(77, 86, 109, 0.46)" />
-            ) : (
-              <FontAwesome
-                name="eye-slash"
-                size={28}
-                color="rgba(77, 86, 109, 0.46)"
-              />
-            )}
-          </PasswordIcon>
-        </InputItem>
-        <Button>
+        {user!.isDoctor === true && (
+          <>
+            <InputItem style={{ elevation: 10 }}>
+              <Icon>
+                <AntDesign name="idcard" size={28} color="rgba(77, 86, 109, 0.46)" />
+              </Icon>
+              <Input onChangeText={setCrm} value={crm} />
+            </InputItem>
+            <InputItem style={{ elevation: 10 }}>
+              <Icon>
+                <FontAwesome
+                  name="institution"
+                  size={28}
+                  color="rgba(77, 86, 109, 0.46)"
+                />
+              </Icon>
+              <Input onChangeText={setInstitution} value={institution} />
+            </InputItem>
+          </>
+        )}
+        {/* <InputItem style={{ elevation: 10 }}>
+              <Icon>
+                <FontAwesome name="key" size={28} color="rgba(77, 86, 109, 0.46)" />
+              </Icon>
+              <Input placeholder="Alterar Senha" secureTextEntry={passwordIsHide} />
+              <PasswordIcon onPress={toggleHidePassword}>
+                {passwordIsHide ? (
+                  <FontAwesome
+                    name="eye"
+                    size={28}
+                    color="rgba(77, 86, 109, 0.46)"
+                  />
+                ) : (
+                  <FontAwesome
+                    name="eye-slash"
+                    size={28}
+                    color="rgba(77, 86, 109, 0.46)"
+                  />
+                )}
+              </PasswordIcon>
+            </InputItem> */}
+
+        <Button onPress={handleSubmit}>
           <ButtonText>Atualizar Dados</ButtonText>
         </Button>
       </Wrapper>
