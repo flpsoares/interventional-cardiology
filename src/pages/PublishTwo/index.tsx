@@ -17,12 +17,19 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import Constants from 'expo-constants'
 import * as ImagePicker from 'expo-image-picker'
-import { Platform } from 'react-native'
+import { Alert, Platform } from 'react-native'
+import { RouteProp, useRoute } from '@react-navigation/core'
+import { RootStackParamsList } from '../../routes/RootStackParamsList'
+import app, { database } from '../../../firebase'
 
 export const PublishTwo: React.FC = () => {
+  const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
+
+  const [text, setText] = useState('')
   const [images, setImages] = useState('')
 
   useEffect(() => {
+    console.log(route.params)
     const verifyPermission = async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -46,16 +53,41 @@ export const PublishTwo: React.FC = () => {
     }
   }
 
+  const handleSubmit = () => {
+    if (text !== '') {
+      const data: App.Post = {
+        autorId: app.auth().currentUser!.uid,
+        area: route.params.area,
+        idade: route.params.idade,
+        genero: route.params.genero,
+        sintoma: route.params.sintoma,
+        comorbidades: route.params.comorbidades,
+        medicamentos: route.params.medicamentos,
+        descricao: text
+      }
+      database
+        .collection('posts')
+        .add(data)
+        .then(() => Alert.alert('Sucesso', 'Post criado com sucesso'))
+        .catch((e) => {
+          Alert.alert('Erro', 'Algo deu errado')
+          console.log(e)
+        })
+    }
+  }
+
   return (
     <Container>
       <Header>
         <UserPhoto source={require('../../../assets/default-user.png')} />
         <Title>Publicar caso clínico</Title>
-        <Button>{/* <Fontisto name="close-a" size={18} /> */}</Button>
+        <Button></Button>
       </Header>
       <Wrapper>
         <InputTitle>Descreva o Caso</InputTitle>
         <Input
+          onChangeText={setText}
+          value={text}
           multiline={true}
           numberOfLines={4}
           placeholder="Digite aqui..."
@@ -65,7 +97,7 @@ export const PublishTwo: React.FC = () => {
           <Ionicons name="images" size={46} color="#596988" />
           <ButtonImageText>Insira até 8 imagens sobre o caso</ButtonImageText>
         </ButtonImage>
-        <SubmitButton>
+        <SubmitButton onPress={handleSubmit}>
           <SubmitButtonText>Publicar</SubmitButtonText>
         </SubmitButton>
       </Wrapper>

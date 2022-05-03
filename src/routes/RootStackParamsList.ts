@@ -7,5 +7,12 @@ export type RootStackParamsList = {
   PostDetails: undefined
   Account: undefined
   EditAccount: undefined
-  PublishTwo: undefined
+  PublishTwo: {
+    area: string
+    genero: string
+    idade: string
+    sintoma: string
+    comorbidades: string
+    medicamentos: string
+  }
 }

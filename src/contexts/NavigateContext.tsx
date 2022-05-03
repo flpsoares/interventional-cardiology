@@ -32,7 +32,14 @@ interface NavigateContextData {
   navigateToPostDetails: () => void
   navigateToEditAccount: () => void
   editAccountGoBack: () => void
-  navigateToPublish: () => void
+  navigateToPublish: (
+    area: string,
+    genero: string,
+    idade: string,
+    sintoma: string,
+    comorbidades: string,
+    medicamentos: string
+  ) => void
   publishGoBack: () => void
 }
 
@@ -69,8 +76,22 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigateToEditAccount = () => {
     navigationEditAccount.navigate('EditAccount')
   }
-  const navigateToPublish = () => {
-    navigationPublish.navigate('PublishTwo')
+  const navigateToPublish = (
+    area: string,
+    genero: string,
+    idade: string,
+    sintoma: string,
+    comorbidades: string,
+    medicamentos: string
+  ) => {
+    navigationPublish.navigate('PublishTwo', {
+      area,
+      genero,
+      idade,
+      sintoma,
+      comorbidades,
+      medicamentos
+    })
   }
 
   const editAccountGoBack = () => {

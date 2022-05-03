@@ -27,7 +27,7 @@ export const PublishOne: React.FC = () => {
   const [area, setArea] = useState('Doença coronariana')
   const [idade, setIdade] = useState('')
   const [genero, setGenero] = useState('Masculino')
-  const [sintomas, setSintomas] = useState('Dor precordial')
+  const [sintoma, setSintoma] = useState('Dor precordial')
   const [comorbidades, setComorbidades] = useState('Hipertensão arterial sistêmica')
   const [medicamentos, setMedicamentos] = useState('')
 
@@ -37,16 +37,16 @@ export const PublishOne: React.FC = () => {
     setGenero('Masculino')
     setComorbidades('Hipertensão arterial sistêmica')
     setMedicamentos('')
+    setSintoma('')
   }
 
   const handleSubmit = () => {
-    // if (area !== '' && idade !== '' && genero !== '' && comorbidades !== '') {
-    //   clear()
-    //   navigateToPublish()
-    // } else {
-    //   Alert.alert('Aviso', 'Preencha todos os campos')
-    // }
-    navigateToPublish()
+    if (idade !== '' && medicamentos !== '') {
+      clear()
+      navigateToPublish(area, genero, idade, sintoma, comorbidades, medicamentos)
+    } else {
+      Alert.alert('Aviso', 'Preencha todos os campos')
+    }
   }
 
   return (
@@ -54,7 +54,7 @@ export const PublishOne: React.FC = () => {
       <Header>
         <UserPhoto source={require('../../../assets/default-user.png')} />
         <Title>Publicar caso clínico</Title>
-        <Button>{/* <Fontisto name="close-a" size={18} /> */}</Button>
+        <Button></Button>
       </Header>
       <Wrapper>
         <InputItem>
@@ -109,8 +109,8 @@ export const PublishOne: React.FC = () => {
             <Picker
               style={{ color: 'rgba(77, 86, 109, 1)' }}
               dropdownIconColor="rgba(77, 86, 109, 1)"
-              selectedValue={sintomas}
-              onValueChange={(value) => setSintomas(value)}
+              selectedValue={sintoma}
+              onValueChange={(value) => setSintoma(value)}
             >
               <Picker.Item label="Dor precordial" value="Dor precordial" />
               <Picker.Item label="Dispnéia" value="Dispnéia" />
