@@ -21,15 +21,21 @@ import { Alert, Platform } from 'react-native'
 import { RouteProp, useRoute } from '@react-navigation/core'
 import { RootStackParamsList } from '../../routes/RootStackParamsList'
 import app, { database } from '../../../firebase'
+import { useUser } from '../../contexts/UserContext'
+import firebase from 'firebase'
+import { useNavigate } from '../../contexts/NavigateContext'
 
 export const PublishTwo: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
+  const { navigateToHome } = useNavigate()
+  const { user } = useUser()
 
   const [text, setText] = useState('')
   const [images, setImages] = useState('')
 
+  const timestamp = firebase.firestore.FieldValue.serverTimestamp()
+
   useEffect(() => {
-    console.log(route.params)
     const verifyPermission = async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -57,18 +63,20 @@ export const PublishTwo: React.FC = () => {
     if (text !== '') {
       const data: App.Post = {
         autorId: app.auth().currentUser!.uid,
+        autorNome: user?.name,
         area: route.params.area,
         idade: route.params.idade,
         genero: route.params.genero,
         sintoma: route.params.sintoma,
         comorbidades: route.params.comorbidades,
         medicamentos: route.params.medicamentos,
-        descricao: text
+        descricao: text,
+        dataCriacao: timestamp
       }
       database
         .collection('posts')
         .add(data)
-        .then(() => Alert.alert('Sucesso', 'Post criado com sucesso'))
+        .then(() => navigateToHome())
         .catch((e) => {
           Alert.alert('Erro', 'Algo deu errado')
           console.log(e)

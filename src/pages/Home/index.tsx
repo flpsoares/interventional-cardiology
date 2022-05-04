@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
 
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
@@ -7,6 +7,7 @@ import { FlatList } from 'react-native'
 import { postData } from '../../postData'
 import { ModalImage } from '../../components/ModalImage'
 import { useModal } from '../../contexts/ModalContext'
+import { database } from '../../../firebase'
 
 export const Home: React.FC = () => {
   const {
@@ -15,6 +16,25 @@ export const Home: React.FC = () => {
     modalImageQuantity,
     modalImageOpenItem
   } = useModal()
+
+  const [posts, setPosts] = useState<App.Post[]>()
+
+  useEffect(() => {
+    const subscriber = database
+      .collection('posts')
+      .orderBy('dataCriacao')
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        }) as App.Post[]
+        setPosts(data)
+      })
+
+    return subscriber
+  }, [])
 
   return (
     <Container>
@@ -35,7 +55,7 @@ export const Home: React.FC = () => {
           />
         )}
         <FlatList
-          data={postData}
+          data={posts}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => <Post data={item} />}
           contentContainerStyle={{ paddingBottom: 100 }}
