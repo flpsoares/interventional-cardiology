@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Container,
   Content,
@@ -28,7 +28,8 @@ import {
   Dimensions,
   FlatList,
   ImageSourcePropType,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  View
 } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 import { useModal } from '../../contexts/ModalContext'
@@ -50,42 +51,54 @@ export const Post: React.FC<Props> = ({ data }) => {
   const [carousel, setCarousel] = useState<Carousel<ImageSourcePropType> | null>()
 
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
+  const [isLiked, setIsLiked] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
 
+  useEffect(() => {
+    database
+      .collection(`/posts/${data.id}/likes`)
+      .where('autorId', '==', app.auth().currentUser!.uid)
+      .get()
+      .then((like) => {
+        if (like.docs[0] !== undefined) {
+          setIsLiked(true)
+        } else {
+          setIsLiked(false)
+        }
+      })
+      .finally(() => setIsLoading(false))
+  }, [])
+
   const handleLike = async (likeId: string) => {
-    const likes = await database.collection(`/posts/${data.id}/likes`).get()
-    if (likes.empty) {
-      return database
-        .collection(`/posts/${data.id}/likes`)
-        .add({ autorId: likeId })
-        .then(() => Alert.alert('Like'))
-        .catch((e) => console.log(e))
-    }
-    // eslint-disable-next-line array-callback-return
-    // likes.docs.map((doc) => {
-    //   if (likeId === doc.data().autorId) {
-    //     console.log('entrou no de baixo')
-    //     return database
-    //       .collection(`/posts/${data.id}/likes`)
-    //       .onSnapshot((querySnapshot) => {
-    //         const data = querySnapshot.docs.map((doc) => {
-    //           return {
-    //             id: doc.id,
-    //             ...doc.data()
-    //           }
-    //         })
-    //         console.log(data)
-    //       })
-    //   } else {
-    //     console.log('entrou no de baixo')
-    //     return database
-    //       .collection(`/posts/${data.id}/likes`)
-    //       .add({ autorId: likeId })
-    //       .then(() => Alert.alert('Like'))
-    //       .catch((e) => console.log(e))
-    //   }
-    // })
+    database
+      .collection(`/posts/${data.id}/likes`)
+      .where('autorId', '==', likeId)
+      .get()
+      .then(async (like) => {
+        if (like.docs[0] === undefined) {
+          return database
+            .collection(`/posts/${data.id}/likes`)
+            .add({ autorId: likeId })
+            .then(() => {
+              setIsLiked(true)
+            })
+            .catch((e) => console.log(e))
+        } else {
+          return await database
+            .collection(`/posts/${data.id}/likes`)
+            .doc(like.docs[0].id)
+            .delete()
+            .then(() => {
+              setIsLiked(false)
+            })
+        }
+      })
+  }
+
+  if (isLoading) {
+    return <View></View>
   }
 
   return (
@@ -134,13 +147,11 @@ export const Post: React.FC<Props> = ({ data }) => {
         </PostInfoArea>
         <ButtonArea>
           <Button onPress={() => handleLike(app.auth().currentUser!.uid)}>
-            <AntDesign name="like1" size={22} color="rgba(4, 20, 50, 0.8)" />
-            {/* <Button>
             <AntDesign
-              name={data.isLiked ? 'like1' : 'like2'}
+              name={isLiked ? 'like1' : 'like2'}
               size={22}
               color="rgba(4, 20, 50, 0.8)"
-            /> */}
+            />
             <ButtonTitle>Curtir</ButtonTitle>
           </Button>
           <Button onPress={navigateToPostDetails}>
