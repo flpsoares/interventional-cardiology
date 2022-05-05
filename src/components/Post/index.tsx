@@ -52,10 +52,18 @@ export const Post: React.FC<Props> = ({ data }) => {
 
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
 
+  useEffect(() => {
+    database.collection(`/posts/${data.id}/likes`).onSnapshot((querySnapshot) => {
+      setLikeCount(querySnapshot.docs.length)
+    })
+  }, [])
+
+  // isLiked
   useEffect(() => {
     database
       .collection(`/posts/${data.id}/likes`)
@@ -142,7 +150,7 @@ export const Post: React.FC<Props> = ({ data }) => {
         <PostInfoArea>
           {/* <PostInfo>{data.likes} curtidas</PostInfo>
           <PostInfo>{data.comments} comentários</PostInfo> */}
-          <PostInfo>0 curtidas</PostInfo>
+          <PostInfo>{likeCount} curtidas</PostInfo>
           <PostInfo>0 comentários</PostInfo>
         </PostInfoArea>
         <ButtonArea>
