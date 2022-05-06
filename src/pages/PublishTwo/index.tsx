@@ -24,6 +24,8 @@ import app, { database } from '../../../firebase'
 import { useUser } from '../../contexts/UserContext'
 import firebase from 'firebase'
 import { useNavigate } from '../../contexts/NavigateContext'
+import { formatter } from '../../utils/date'
+import moment from 'moment'
 
 export const PublishTwo: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
@@ -32,8 +34,6 @@ export const PublishTwo: React.FC = () => {
 
   const [text, setText] = useState('')
   const [images, setImages] = useState('')
-
-  const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 
   useEffect(() => {
     const verifyPermission = async () => {
@@ -71,7 +71,7 @@ export const PublishTwo: React.FC = () => {
         comorbidades: route.params.comorbidades,
         medicamentos: route.params.medicamentos,
         descricao: text,
-        dataCriacao: timestamp
+        dataCriacao: moment().format('DD/MM/YYYY H:mm:ss')
       }
       database
         .collection('posts')

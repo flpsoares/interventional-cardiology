@@ -4,7 +4,7 @@ export type RootStackParamsList = {
   Login: undefined
   Register: undefined
   Home: undefined
-  PostDetails: undefined
+  PostDetails: { postId: string }
   Account: undefined
   EditAccount: undefined
   PublishTwo: {

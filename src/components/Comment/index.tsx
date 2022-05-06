@@ -16,30 +16,28 @@ import {
 } from './style'
 
 type Props = {
-  data: CommentProp
+  data: App.Comment
 }
 
 export const Comment: React.FC<Props> = ({ data }) => {
   return (
     <Container>
-      <UserPhoto source={data.userPhoto} />
+      <UserPhoto source={require('../../../assets/default-user.png')} />
       <Wrapper>
         <Content>
           <Info>
-            <Name>{data.name}</Name>
-            <Date>
-              {data.date} - {data.time}
-            </Date>
+            <Name>{data.autorNome}</Name>
+            {/* <Date>{data.dataCriacao.seconds}</Date> */}
           </Info>
-          <Text>{data.content}</Text>
+          <Text>{data.texto}</Text>
         </Content>
         <ButtonArea>
           <Button>
             <ButtonText>Curtir</ButtonText>
           </Button>
-          <Button>
+          {/* <Button>
             <ButtonText>Responder</ButtonText>
-          </Button>
+          </Button> */}
         </ButtonArea>
       </Wrapper>
     </Container>

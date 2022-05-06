@@ -22,7 +22,6 @@ import {
 } from './style'
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
-import { PostDataProps } from '../../postData'
 import {
   Alert,
   Dimensions,
@@ -40,9 +39,10 @@ import app, { database } from '../../../firebase'
 
 type Props = {
   data: App.Post
+  isDetail?: boolean
 }
 
-export const Post: React.FC<Props> = ({ data }) => {
+export const Post: React.FC<Props> = ({ data, isDetail }) => {
   const { openModalImage } = useModal()
   const { navigateToPostDetails } = useNavigate()
   const { user } = useUser()
@@ -53,13 +53,19 @@ export const Post: React.FC<Props> = ({ data }) => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(0)
+  const [commentCount, setCommentCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
 
+  // likeCount
   useEffect(() => {
+    console.log(data.dataCriacao)
     database.collection(`/posts/${data.id}/likes`).onSnapshot((querySnapshot) => {
       setLikeCount(querySnapshot.docs.length)
+    })
+    database.collection(`/posts/${data.id}/comments`).onSnapshot((querySnapshot) => {
+      setCommentCount(querySnapshot.docs.length)
     })
   }, [])
 
@@ -116,8 +122,7 @@ export const Post: React.FC<Props> = ({ data }) => {
           <UserPhoto source={require('../../../assets/default-user.png')} />
           <Info>
             <Name>{data.autorNome}</Name>
-            <Date>{/* {data.date} - {data.time} */}2 minutos</Date>
-            {/* <Date>{data.dataCriacao.seconds}</Date> */}
+            <Date>{data.dataCriacao}</Date>
           </Info>
         </TopLeftContent>
         <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
@@ -127,7 +132,14 @@ export const Post: React.FC<Props> = ({ data }) => {
       </Top>
       <Wrapper>
         <ContentArea>
-          <Content>{data.descricao}</Content>
+          <Content numberOfLines={10} ellipsizeMode="tail">
+            {data.descricao}
+          </Content>
+          {!isDetail && (
+            <SeeMoreButton onPress={() => navigateToPostDetails(data.id!)}>
+              <SeeMoreButtonText>Ver detalhes</SeeMoreButtonText>
+            </SeeMoreButton>
+          )}
         </ContentArea>
         {/* <Carousel
           ref={(c) => setCarousel(c)}
@@ -151,7 +163,7 @@ export const Post: React.FC<Props> = ({ data }) => {
           {/* <PostInfo>{data.likes} curtidas</PostInfo>
           <PostInfo>{data.comments} comentários</PostInfo> */}
           <PostInfo>{likeCount} curtidas</PostInfo>
-          <PostInfo>0 comentários</PostInfo>
+          <PostInfo>{commentCount} comentários</PostInfo>
         </PostInfoArea>
         <ButtonArea>
           <Button onPress={() => handleLike(app.auth().currentUser!.uid)}>
@@ -162,7 +174,7 @@ export const Post: React.FC<Props> = ({ data }) => {
             />
             <ButtonTitle>Curtir</ButtonTitle>
           </Button>
-          <Button onPress={navigateToPostDetails}>
+          <Button>
             <Fontisto name="commenting" size={22} color="rgba(4, 20, 50, 0.8)" />
             <ButtonTitle>Comentar</ButtonTitle>
           </Button>

@@ -54,7 +54,6 @@ export const ContentArea = styled.View`
 
 export const Content = styled.Text`
   color: rgba(51, 51, 51, 0.8);
-  margin-bottom: 12px;
 `
 
 export const Photo = styled.Image`
@@ -94,10 +93,13 @@ export const ButtonTitle = styled.Text`
 
 export const SeeMoreButton = styled.TouchableOpacity`
   align-self: center;
-  margin: auto;
+  margin: 8px 0;
+  /* margin-top: 22px; */
+  /* height: 40px; */
 `
 
 export const SeeMoreButtonText = styled.Text`
   color: ${secondary};
   font-weight: bold;
+  /* margin-top: 12px; */
 `

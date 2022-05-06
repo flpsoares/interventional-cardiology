@@ -29,7 +29,7 @@ interface NavigateContextData {
   navigateToRegister: () => void
   navigateToChooseAuth: () => void
   navigateToHome: () => void
-  navigateToPostDetails: () => void
+  navigateToPostDetails: (postId: string) => void
   navigateToEditAccount: () => void
   editAccountGoBack: () => void
   navigateToPublish: (
@@ -70,8 +70,8 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigateToHome = () => {
     navigationHome.navigate('Home')
   }
-  const navigateToPostDetails = () => {
-    navigationPostDetails.navigate('PostDetails')
+  const navigateToPostDetails = (postId: string) => {
+    navigationPostDetails.navigate('PostDetails', { postId })
   }
   const navigateToEditAccount = () => {
     navigationEditAccount.navigate('EditAccount')
