@@ -1,5 +1,5 @@
-import React from 'react'
-import firebase from '../../../firebase'
+import React, { useEffect, useState } from 'react'
+import app, { database } from '../../../firebase'
 import {
   Banner,
   Container,
@@ -25,9 +25,27 @@ export const Account: React.FC = () => {
   const { navigateToEditAccount } = useNavigate()
   const { user } = useUser()
 
+  const [posts, setPosts] = useState<App.Post[]>()
+
   const logOut = () => {
-    firebase.auth().signOut()
+    app.auth().signOut()
   }
+
+  useEffect(() => {
+    database
+      .collection('/posts')
+      .where('autorId', '==', app.auth().currentUser!.uid)
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        }) as App.Post[]
+        console.log(data)
+        setPosts(data)
+      })
+  }, [])
 
   return (
     <Container>
@@ -46,15 +64,15 @@ export const Account: React.FC = () => {
           <Name>{user?.name}</Name>
           <Email>{user?.email}</Email>
         </Info>
-        <EditButton onPress={navigateToEditAccount}>
+        {/* <EditButton onPress={navigateToEditAccount}>
           <EditButtonText>EDITAR PERFIL</EditButtonText>
         </EditButton>
         <EditButton onPress={logOut}>
           <EditButtonText>LogOut</EditButtonText>
-        </EditButton>
+        </EditButton> */}
       </Profile>
       <PostArea>
-        {postData.map((post) => {
+        {posts?.map((post) => {
           return <Post key={post.id} data={post} />
         })}
       </PostArea>
