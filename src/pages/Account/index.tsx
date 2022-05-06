@@ -3,8 +3,6 @@ import app, { database } from '../../../firebase'
 import {
   Banner,
   Container,
-  EditButton,
-  EditButtonText,
   Email,
   Header,
   Info,
@@ -15,21 +13,16 @@ import {
   UserPhotoBack,
   Notification
 } from './style'
-import { postData } from '../../postData'
 import { Post } from '../../components/Post'
 import { Ionicons } from '@expo/vector-icons'
-import { useNavigate } from '../../contexts/NavigateContext'
 import { useUser } from '../../contexts/UserContext'
+import { SettingsDropdown } from '../../components/SettingsDropdown'
 
 export const Account: React.FC = () => {
-  const { navigateToEditAccount } = useNavigate()
   const { user } = useUser()
 
   const [posts, setPosts] = useState<App.Post[]>()
-
-  const logOut = () => {
-    app.auth().signOut()
-  }
+  const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
 
   useEffect(() => {
     database
@@ -42,21 +35,24 @@ export const Account: React.FC = () => {
             ...doc.data()
           }
         }) as App.Post[]
-        console.log(data)
         setPosts(data)
       })
   }, [])
 
   return (
     <Container>
-      <Profile>
+      <Profile onPress={() => setDropdownIsOpen(false)}>
         <Banner>
           <Header>
+            <Notification onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
+              <Ionicons name="settings-outline" size={22} color="#fff" />
+            </Notification>
             <Notification>
               <Ionicons name="notifications-outline" size={22} color="#fff" />
             </Notification>
           </Header>
         </Banner>
+        {dropdownIsOpen && <SettingsDropdown />}
         <UserPhotoBack>
           <UserPhoto source={require('../../../assets/default-user.png')} />
         </UserPhotoBack>

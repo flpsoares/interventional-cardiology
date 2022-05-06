@@ -5,7 +5,7 @@ export const Container = styled.ScrollView`
   flex: 1;
 `
 
-export const Profile = styled.View`
+export const Profile = styled.Pressable`
   background: #fff;
   width: 100%;
   padding-bottom: 22px;
@@ -26,6 +26,7 @@ export const Header = styled.View`
 
 export const Notification = styled.TouchableOpacity`
   z-index: 2;
+  margin-left: 12px;
 `
 
 export const UserPhotoBack = styled.View`

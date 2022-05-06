@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://api.cardiology.filipe.mathews.com.br'
+  baseURL: 'http://10.0.2.2:3333'
 })
 
 axios.defaults.headers.post['Content-Type'] = 'application/json'

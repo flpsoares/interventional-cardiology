@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, Text } from 'react-native'
 import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
 
@@ -7,6 +7,7 @@ import { ModalImage } from '../../components/ModalImage'
 import { Post } from '../../components/Post'
 import { postData } from '../../postData'
 import { useModal } from '../../contexts/ModalContext'
+import app, { database } from '../../../firebase'
 
 export const Favorites: React.FC = () => {
   const {
@@ -15,6 +16,23 @@ export const Favorites: React.FC = () => {
     modalImageQuantity,
     modalImageOpenItem
   } = useModal()
+
+  const [posts, setPosts] = useState<App.Post[]>()
+
+  useEffect(() => {
+    database
+      .collection('/posts')
+      .where('favoritos', 'array-contains', app.auth().currentUser!.uid)
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        }) as App.Post[]
+        setPosts(data)
+      })
+  }, [])
 
   return (
     <Container>
@@ -34,12 +52,15 @@ export const Favorites: React.FC = () => {
             openItem={modalImageOpenItem}
           />
         )}
-        <FlatList
+        {posts?.map((post) => {
+          return <Post key={post.id} data={post} />
+        })}
+        {/* <FlatList
           data={postData}
           keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => <Post data={item} />}
+          renderItem={({ item }) => <Post data={data} />}
           contentContainerStyle={{ paddingBottom: 100 }}
-        />
+        /> */}
       </Wrapper>
     </Container>
   )

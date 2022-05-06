@@ -55,7 +55,6 @@ export const ContentArea = styled.View`
 export const Content = styled.Text`
   color: rgba(51, 51, 51, 0.8);
 `
-
 export const Photo = styled.Image`
   align-self: center;
   max-width: 100%;

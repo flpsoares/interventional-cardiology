@@ -2,9 +2,9 @@ import styled from 'styled-components/native'
 
 export const Container = styled.Pressable`
   background: #596988;
-  /* width: 208px; */
+  width: 208px;
 
-  z-index: 10;
+  z-index: 100;
 
   position: absolute;
   right: 6px;

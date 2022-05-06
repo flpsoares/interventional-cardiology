@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CommentInput,
   CommentInputArea,
@@ -16,8 +16,6 @@ import { EvilIcons, Ionicons, FontAwesome } from '@expo/vector-icons'
 import { Post } from '../../components/Post'
 import { Comment } from '../../components/Comment'
 import { ActivityIndicator, Alert, FlatList, TextInput, View } from 'react-native'
-import { commentData } from '../../commentData'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import app, { database } from '../../../firebase'
 import { RouteProp, useRoute } from '@react-navigation/core'
 import { RootStackParamsList } from '../../routes/RootStackParamsList'
@@ -33,8 +31,6 @@ export const PostDetails: React.FC = () => {
   const [comments, setComments] = useState<any>()
   const [isLoading, setIsLoading] = useState(true)
   const [commentText, setCommentText] = useState('')
-
-  const inputRef = useRef(null)
 
   const createComment = () => {
     database
@@ -110,7 +106,6 @@ export const PostDetails: React.FC = () => {
           <UserPhoto source={require('../../../assets/default-user.png')} />
           <CommentInputBox>
             <CommentInput
-              autoFocus={true}
               onChangeText={setCommentText}
               value={commentText}
               placeholder="Comentar"

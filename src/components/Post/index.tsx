@@ -55,18 +55,29 @@ export const Post: React.FC<Props> = ({ data, isDetail }) => {
   const [likeCount, setLikeCount] = useState(0)
   const [commentCount, setCommentCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [isFavorited, setIsFavorited] = useState(false)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
 
   // likeCount
   useEffect(() => {
-    console.log(data.dataCriacao)
     database.collection(`/posts/${data.id}/likes`).onSnapshot((querySnapshot) => {
       setLikeCount(querySnapshot.docs.length)
     })
     database.collection(`/posts/${data.id}/comments`).onSnapshot((querySnapshot) => {
       setCommentCount(querySnapshot.docs.length)
     })
+    database
+      .collection('posts')
+      .doc(data.id)
+      .onSnapshot((querySnapshot) => {
+        if (querySnapshot.data()?.favoritos !== undefined) {
+          setIsFavorited(
+            querySnapshot.data()?.favoritos.indexOf(app.auth().currentUser!.uid) !==
+              -1
+          )
+        }
+      })
   }, [])
 
   // isLiked
@@ -128,13 +139,29 @@ export const Post: React.FC<Props> = ({ data, isDetail }) => {
         <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
           <Entypo name="dots-three-vertical" size={26} color="#596988" />
         </Options>
-        {dropdownIsOpen && <PostDropdown name={data.autorNome} />}
+        {dropdownIsOpen && (
+          <PostDropdown
+            isFavorited={isFavorited}
+            postId={data.id!}
+            name={data.autorNome}
+          />
+        )}
       </Top>
       <Wrapper>
         <ContentArea>
           <Content numberOfLines={10} ellipsizeMode="tail">
             {data.descricao}
           </Content>
+          {isDetail && (
+            <>
+              <Content style={{ marginTop: 18 }}>Área: {data.area}</Content>
+              <Content>Idade: {data.idade}</Content>
+              <Content>Gênero: {data.genero}</Content>
+              <Content>Sintoma: {data.sintoma}</Content>
+              <Content>Comorbidade: {data.comorbidades}</Content>
+              <Content>Medicamentos: {data.medicamentos}</Content>
+            </>
+          )}
           {!isDetail && (
             <SeeMoreButton onPress={() => navigateToPostDetails(data.id!)}>
               <SeeMoreButtonText>Ver detalhes</SeeMoreButtonText>
@@ -160,8 +187,6 @@ export const Post: React.FC<Props> = ({ data, isDetail }) => {
           style={{ maxHeight: '300px', backgroundColor: 'blue' }}
         /> */}
         <PostInfoArea>
-          {/* <PostInfo>{data.likes} curtidas</PostInfo>
-          <PostInfo>{data.comments} comentários</PostInfo> */}
           <PostInfo>{likeCount} curtidas</PostInfo>
           <PostInfo>{commentCount} comentários</PostInfo>
         </PostInfoArea>
