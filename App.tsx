@@ -10,6 +10,7 @@ import firebase from './firebase'
 import { primary } from './src/styles/globalCssVar'
 import { ModalProvider } from './src/contexts/ModalContext'
 import { UserProvider } from './src/contexts/UserContext'
+import { NotificationProvider } from './src/contexts/NotificationContext'
 
 export default function App() {
   const [user, setUser] = useState<boolean>()
@@ -57,8 +58,10 @@ export default function App() {
         <LanguageProvider>
           <ModalProvider>
             <UserProvider>
-              <StatusBar barStyle={'dark-content'} backgroundColor="#fff" />
-              {user ? <Routes /> : <AuthRoutes />}
+              <NotificationProvider>
+                <StatusBar barStyle={'dark-content'} backgroundColor="#fff" />
+                {user ? <Routes /> : <AuthRoutes />}
+              </NotificationProvider>
             </UserProvider>
           </ModalProvider>
         </LanguageProvider>

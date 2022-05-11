@@ -10,7 +10,7 @@ declare namespace App {
     comorbidades: string
     medicamentos: string
     descricao: string
-    dataCriacao: string
+    dataCriacao: firebase.firestore.FieldValue
     favoritos?: string[]
   }
 }

@@ -28,6 +28,7 @@ export const Account: React.FC = () => {
     database
       .collection('/posts')
       .where('autorId', '==', app.auth().currentUser!.uid)
+      .orderBy('dataCriacao', 'desc')
       .onSnapshot((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => {
           return {

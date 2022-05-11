@@ -21,15 +21,18 @@ export const Home: React.FC = () => {
   const [posts, setPosts] = useState<App.Post[]>()
 
   useEffect(() => {
-    const subscriber = database.collection('posts').onSnapshot((querySnapshot) => {
-      const data = querySnapshot.docs.map((doc) => {
-        return {
-          id: doc.id,
-          ...doc.data()
-        }
-      }) as App.Post[]
-      setPosts(data)
-    })
+    const subscriber = database
+      .collection('posts')
+      .orderBy('dataCriacao', 'desc')
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        }) as App.Post[]
+        setPosts(data)
+      })
 
     return subscriber
   }, [])

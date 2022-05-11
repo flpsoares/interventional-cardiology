@@ -35,6 +35,8 @@ export const PublishTwo: React.FC = () => {
   const [text, setText] = useState('')
   const [images, setImages] = useState('')
 
+  const timestamp = firebase.firestore.FieldValue.serverTimestamp()
+
   useEffect(() => {
     const verifyPermission = async () => {
       if (Platform.OS !== 'web') {
@@ -71,7 +73,7 @@ export const PublishTwo: React.FC = () => {
         comorbidades: route.params.comorbidades,
         medicamentos: route.params.medicamentos,
         descricao: text,
-        dataCriacao: moment().format('DD/MM/YYYY H:mm:ss'),
+        dataCriacao: timestamp,
         favoritos: ['']
       }
       database

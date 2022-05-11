@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#fff"
       },
-      "package": "com.digitalott.InterventionalCardiology"
+      "package": "com.digitalott.interventionalcardiology"
     }
   }
 }

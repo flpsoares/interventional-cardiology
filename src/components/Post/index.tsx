@@ -133,7 +133,7 @@ export const Post: React.FC<Props> = ({ data, isDetail }) => {
           <UserPhoto source={require('../../../assets/default-user.png')} />
           <Info>
             <Name>{data.autorNome}</Name>
-            <Date>{data.dataCriacao}</Date>
+            {/* <Date>{data.dataCriacao}</Date> */}
           </Info>
         </TopLeftContent>
         <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
@@ -141,6 +141,7 @@ export const Post: React.FC<Props> = ({ data, isDetail }) => {
         </Options>
         {dropdownIsOpen && (
           <PostDropdown
+            autorId={data.autorId}
             isFavorited={isFavorited}
             postId={data.id!}
             name={data.autorNome}
@@ -199,7 +200,7 @@ export const Post: React.FC<Props> = ({ data, isDetail }) => {
             />
             <ButtonTitle>Curtir</ButtonTitle>
           </Button>
-          <Button>
+          <Button onPress={() => navigateToPostDetails(data.id!)}>
             <Fontisto name="commenting" size={22} color="rgba(4, 20, 50, 0.8)" />
             <ButtonTitle>Comentar</ButtonTitle>
           </Button>
