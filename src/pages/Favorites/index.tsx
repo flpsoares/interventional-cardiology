@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Text } from 'react-native'
-import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
+import {
+  ChooseArea,
+  ChooseItem,
+  ChooseItemText,
+  Container,
+  Top,
+  TopInput,
+  TopInputArea,
+  UserPhoto,
+  Wrapper
+} from './style'
 
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { ModalImage } from '../../components/ModalImage'
@@ -18,21 +28,49 @@ export const Favorites: React.FC = () => {
   } = useModal()
 
   const [posts, setPosts] = useState<App.Post[]>()
+  const [favoriteIsActive, setFavoriteIsActive] = useState(true)
+  const [popularIsActive, setPopularIsActive] = useState(false)
+
+  const toggle = () => {
+    if (favoriteIsActive) {
+      setPopularIsActive(true)
+      setFavoriteIsActive(false)
+    } else {
+      setPopularIsActive(false)
+      setFavoriteIsActive(true)
+    }
+  }
 
   useEffect(() => {
-    database
-      .collection('/posts')
-      .where('favoritos', 'array-contains', app.auth().currentUser!.uid)
-      .onSnapshot((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data()
-          }
-        }) as App.Post[]
-        setPosts(data)
-      })
-  }, [])
+    if (favoriteIsActive) {
+      database
+        .collection('/posts')
+        .where('favoritos', 'array-contains', app.auth().currentUser!.uid)
+        .onSnapshot((querySnapshot) => {
+          const data = querySnapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data()
+            }
+          }) as App.Post[]
+          setPosts(data)
+        })
+    } else {
+      database
+        .collection('/posts')
+        .orderBy('favoritos', 'desc')
+        .limit(50)
+        .onSnapshot((querySnapshot) => {
+          const data = querySnapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data()
+            }
+          }) as App.Post[]
+          setPosts(data)
+        })
+    }
+  }, [favoriteIsActive])
 
   return (
     <Container>
@@ -44,6 +82,16 @@ export const Favorites: React.FC = () => {
         </TopInputArea>
         <Ionicons name="notifications-outline" size={22} color="#777d8c" />
       </Top>
+      <ChooseArea>
+        <ChooseItem onPress={toggle} isActive={favoriteIsActive}>
+          <ChooseItemText isActive={favoriteIsActive}>Seus favoritos</ChooseItemText>
+        </ChooseItem>
+        <ChooseItem onPress={toggle} isActive={popularIsActive}>
+          <ChooseItemText isActive={popularIsActive}>
+            Mais favoritados
+          </ChooseItemText>
+        </ChooseItem>
+      </ChooseArea>
       <Wrapper>
         {modalImageIsOpen && (
           <ModalImage
@@ -53,7 +101,7 @@ export const Favorites: React.FC = () => {
           />
         )}
         {posts?.map((post) => {
-          return <Post key={post.id} data={post} />
+          return <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
         })}
         {/* <FlatList
           data={postData}

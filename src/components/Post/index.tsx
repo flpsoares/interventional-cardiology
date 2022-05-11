@@ -40,9 +40,10 @@ import app, { database } from '../../../firebase'
 type Props = {
   data: App.Post
   isDetail?: boolean
+  isFavoriteList?: boolean
 }
 
-export const Post: React.FC<Props> = ({ data, isDetail }) => {
+export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const { openModalImage } = useModal()
   const { navigateToPostDetails } = useNavigate()
   const { user } = useUser()
@@ -133,7 +134,7 @@ export const Post: React.FC<Props> = ({ data, isDetail }) => {
           <UserPhoto source={require('../../../assets/default-user.png')} />
           <Info>
             <Name>{data.autorNome}</Name>
-            {/* <Date>{data.dataCriacao}</Date> */}
+            {isFavoriteList && <Date>Favoritos: {data.favoritos?.length}</Date>}
           </Info>
         </TopLeftContent>
         <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>

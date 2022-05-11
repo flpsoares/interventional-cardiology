@@ -1,6 +1,33 @@
 import styled from 'styled-components/native'
+import { primary } from '../../styles/globalCssVar'
+
+interface ChooseProps {
+  isActive: boolean
+}
 
 export const Container = styled.ScrollView``
+
+export const ChooseArea = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px;
+`
+
+export const ChooseItem = styled.TouchableOpacity<ChooseProps>`
+  width: 48%;
+  padding: 14px 12px;
+  background: ${(props) => (props.isActive ? primary : 'transparent')};
+  border: 1px solid ${primary};
+  border-radius: 50px;
+`
+
+export const ChooseItemText = styled.Text<ChooseProps>`
+  color: ${(props) => (props.isActive ? '#fff' : primary)};
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+`
 
 export const Top = styled.View`
   flex-direction: row;
