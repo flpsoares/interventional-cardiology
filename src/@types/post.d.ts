@@ -11,6 +11,5 @@ declare namespace App {
     medicamentos: string
     descricao: string
     dataCriacao: firebase.firestore.FieldValue
-    favoritos?: string[]
   }
 }

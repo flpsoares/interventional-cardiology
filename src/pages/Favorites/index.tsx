@@ -31,30 +31,42 @@ export const Favorites: React.FC = () => {
   const [favoriteIsActive, setFavoriteIsActive] = useState(true)
   const [popularIsActive, setPopularIsActive] = useState(false)
 
-  const toggle = () => {
-    if (favoriteIsActive) {
-      setPopularIsActive(true)
-      setFavoriteIsActive(false)
-    } else {
-      setPopularIsActive(false)
-      setFavoriteIsActive(true)
-    }
+  const activeFavorite = () => {
+    setFavoriteIsActive(true)
+    setPopularIsActive(false)
   }
 
+  const activePopular = () => {
+    setFavoriteIsActive(false)
+    setPopularIsActive(true)
+  }
   useEffect(() => {
     if (favoriteIsActive) {
       database
-        .collection('/posts')
-        .where('favoritos', 'array-contains', app.auth().currentUser!.uid)
+        .collection('/posts/favorites')
+        // .where('autorId', '==', app.auth().currentUser!.uid)
         .onSnapshot((querySnapshot) => {
-          const data = querySnapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            }
-          }) as App.Post[]
-          setPosts(data)
+          querySnapshot.docs.map((doc) => {
+            return console.log(doc.data())
+          })
+          // const data = querySnapshot.docs.map((doc) => {
+          //   return {
+          //     id: doc.id,
+          //     ...doc.data()
+          //   }
+          // }) as App.Post[]
+          // setPosts(data)
         })
+      // .where('favoritos', 'array-contains', app.auth().currentUser!.uid)
+      // .onSnapshot((querySnapshot) => {
+      //   const data = querySnapshot.docs.map((doc) => {
+      //     return {
+      //       id: doc.id,
+      //       ...doc.data()
+      //     }
+      //   }) as App.Post[]
+      //   setPosts(data)
+      // })
     } else {
       database
         .collection('/posts')
@@ -83,10 +95,10 @@ export const Favorites: React.FC = () => {
         <Ionicons name="notifications-outline" size={22} color="#777d8c" />
       </Top>
       <ChooseArea>
-        <ChooseItem onPress={toggle} isActive={favoriteIsActive}>
+        <ChooseItem onPress={activeFavorite} isActive={favoriteIsActive}>
           <ChooseItemText isActive={favoriteIsActive}>Seus favoritos</ChooseItemText>
         </ChooseItem>
-        <ChooseItem onPress={toggle} isActive={popularIsActive}>
+        <ChooseItem onPress={activePopular} isActive={popularIsActive}>
           <ChooseItemText isActive={popularIsActive}>
             Mais favoritados
           </ChooseItemText>

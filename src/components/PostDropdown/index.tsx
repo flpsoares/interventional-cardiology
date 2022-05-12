@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Icon, Item, Text } from './style'
 
 import { FontAwesome, Feather } from '@expo/vector-icons'
@@ -19,51 +19,30 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
   isFavorited,
   autorId
 }) => {
+  const [favorited, setFavorited] = useState(isFavorited)
+
   const firstName = name.split(' ')[0]
 
   const handleFavorite = () => {
     database
-      .collection('/posts')
-      .doc(postId)
+      .collection(`/posts/${postId}/favorites`)
+      .where('autorId', '==', autorId)
       .get()
-      .then((res) => {
-        if (res.data()!.favoritos.indexOf(app.auth().currentUser!.uid) !== -1) {
-          database
-            .collection('/posts')
-            .doc(postId)
-            .set(
-              {
-                favoritos: firebase.firestore.FieldValue.arrayRemove(
-                  app.auth().currentUser!.uid
-                )
-              },
-              { merge: true }
-            )
+      .then(async (favorite) => {
+        if (favorite.docs[0] === undefined) {
+          return database
+            .collection(`/posts/${postId}/favorites`)
+            .add({ autorId: app.auth().currentUser!.uid })
+            .then(() => setFavorited(true))
             .catch((e) => console.log(e))
         } else {
-          database
-            .collection('/posts')
-            .doc(postId)
-            .set(
-              {
-                favoritos: firebase.firestore.FieldValue.arrayUnion(
-                  app.auth().currentUser!.uid
-                )
-              },
-              { merge: true }
-            )
-            .catch((e) => console.log(e))
+          return await database
+            .collection(`/posts/${postId}/favorites`)
+            .doc(favorite.docs[0].id)
+            .delete()
+            .then(() => setFavorited(false))
         }
       })
-
-    // .then((hasFavorite) => {
-    //   console.log(hasFavorite.docs[0])
-    //   if (hasFavorite.docs[0] !== undefined) {
-    //     console.log('não é favorito')
-    //   } else {
-    //     console.log('é favorito')
-    //   }
-    // })
   }
 
   const deletePost = () => {
@@ -86,7 +65,7 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             <Icon>
               <FontAwesome name="bookmark" size={20} color="#fff" />
             </Icon>
-            <Text>{isFavorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
+            <Text>{favorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
           </Item>
           <Item onPress={deletePost} style={{ marginTop: 22 }}>
             <Icon>
@@ -105,7 +84,7 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             <Icon>
               <FontAwesome name="bookmark" size={20} color="#fff" />
             </Icon>
-            <Text>{isFavorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
+            <Text>{favorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
           </Item>
           <Item
             onPress={() => Alert.alert('Aviso', `Você seguiu ${name}`)}

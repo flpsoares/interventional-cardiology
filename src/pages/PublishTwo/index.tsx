@@ -73,8 +73,7 @@ export const PublishTwo: React.FC = () => {
         comorbidades: route.params.comorbidades,
         medicamentos: route.params.medicamentos,
         descricao: text,
-        dataCriacao: timestamp,
-        favoritos: ['']
+        dataCriacao: timestamp
       }
       database
         .collection('posts')

@@ -57,10 +57,11 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const [commentCount, setCommentCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isFavorited, setIsFavorited] = useState(false)
+  const [favoriteCount, setFavoriteCount] = useState(0)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
 
-  // likeCount
+  // count
   useEffect(() => {
     database.collection(`/posts/${data.id}/likes`).onSnapshot((querySnapshot) => {
       setLikeCount(querySnapshot.docs.length)
@@ -68,21 +69,10 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
     database.collection(`/posts/${data.id}/comments`).onSnapshot((querySnapshot) => {
       setCommentCount(querySnapshot.docs.length)
     })
-    database
-      .collection('posts')
-      .doc(data.id)
-      .onSnapshot((querySnapshot) => {
-        if (querySnapshot.data()?.favoritos !== undefined) {
-          setIsFavorited(
-            querySnapshot.data()?.favoritos.indexOf(app.auth().currentUser!.uid) !==
-              -1
-          )
-        }
-      })
   }, [])
 
-  // isLiked
   useEffect(() => {
+    // isLiked
     database
       .collection(`/posts/${data.id}/likes`)
       .where('autorId', '==', app.auth().currentUser!.uid)
@@ -95,6 +85,25 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
         }
       })
       .finally(() => setIsLoading(false))
+    // isFavorited
+    database
+      .collection(`/posts/${data.id}/favorites`)
+      .where('autorId', '==', app.auth().currentUser!.uid)
+      .get()
+      .then((favorite) => {
+        if (favorite.docs[0] !== undefined) {
+          setIsFavorited(true)
+        } else {
+          setIsFavorited(false)
+        }
+      })
+      .finally(() => setIsLoading(false))
+
+    database
+      .collection(`/posts/${data.id}/favorites`)
+      .onSnapshot((querySnapshot) => {
+        setFavoriteCount(querySnapshot.docs.length)
+      })
   }, [])
 
   const handleLike = async (likeId: string) => {
@@ -134,7 +143,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           <UserPhoto source={require('../../../assets/default-user.png')} />
           <Info>
             <Name>{data.autorNome}</Name>
-            {isFavoriteList && <Date>Favoritos: {data.favoritos?.length}</Date>}
+            {isFavoriteList && <Date>Favoritos: {favoriteCount}</Date>}
           </Info>
         </TopLeftContent>
         <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
