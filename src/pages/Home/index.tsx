@@ -9,15 +9,18 @@ import { ModalImage } from '../../components/ModalImage'
 import { useModal } from '../../contexts/ModalContext'
 import { database } from '../../../firebase'
 import moment from 'moment'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { useUser } from '../../contexts/UserContext'
 
 export const Home: React.FC = () => {
+  const { user } = useUser()
+
   const {
     modalImageIsOpen,
     modalImageData,
     modalImageQuantity,
     modalImageOpenItem
   } = useModal()
-
   const [posts, setPosts] = useState<App.Post[]>()
 
   useEffect(() => {
@@ -40,7 +43,11 @@ export const Home: React.FC = () => {
   return (
     <Container>
       <Top>
-        <UserPhoto source={require('../../../assets/default-user.png')} />
+        {user?.userPhoto ? (
+          <UserPhoto source={{ uri: user.userPhoto }} />
+        ) : (
+          <UserPhoto source={require('../../../assets/default-user.png')} />
+        )}
         <TopInputArea>
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
           <TopInput placeholder="Pesquisar..." />

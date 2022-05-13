@@ -19,7 +19,7 @@ import { useUser } from '../../contexts/UserContext'
 import { SettingsDropdown } from '../../components/SettingsDropdown'
 
 export const Account: React.FC = () => {
-  const { user } = useUser()
+  const { user, userId } = useUser()
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
@@ -27,7 +27,7 @@ export const Account: React.FC = () => {
   useEffect(() => {
     database
       .collection('/posts')
-      .where('autorId', '==', app.auth().currentUser!.uid)
+      .where('autorId', '==', userId)
       .orderBy('dataCriacao', 'desc')
       .onSnapshot((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => {
@@ -55,7 +55,11 @@ export const Account: React.FC = () => {
         </Banner>
         {dropdownIsOpen && <SettingsDropdown />}
         <UserPhotoBack>
-          <UserPhoto source={require('../../../assets/default-user.png')} />
+          {user?.userPhoto ? (
+            <UserPhoto source={{ uri: user.userPhoto }} />
+          ) : (
+            <UserPhoto source={require('../../../assets/default-user.png')} />
+          )}
         </UserPhotoBack>
         <Info>
           <Name>{user?.name}</Name>

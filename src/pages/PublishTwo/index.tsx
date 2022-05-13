@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import {
   Button,
   ButtonImage,
@@ -18,7 +18,12 @@ import { Ionicons } from '@expo/vector-icons'
 import Constants from 'expo-constants'
 import * as ImagePicker from 'expo-image-picker'
 import { Alert, Platform } from 'react-native'
-import { RouteProp, useRoute } from '@react-navigation/core'
+import {
+  RouteProp,
+  useFocusEffect,
+  useIsFocused,
+  useRoute
+} from '@react-navigation/core'
 import { RootStackParamsList } from '../../routes/RootStackParamsList'
 import app, { database } from '../../../firebase'
 import { useUser } from '../../contexts/UserContext'
@@ -30,12 +35,21 @@ import moment from 'moment'
 export const PublishTwo: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
   const { navigateToHome } = useNavigate()
-  const { user } = useUser()
+  const { user, userId } = useUser()
+  const isFocused = useIsFocused()
 
   const [text, setText] = useState('')
   const [images, setImages] = useState('')
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
+
+  useFocusEffect(
+    useCallback(() => {
+      if (route.params.area !== undefined) {
+        // navigateToPublish()
+      }
+    }, [isFocused])
+  )
 
   useEffect(() => {
     const verifyPermission = async () => {
@@ -64,7 +78,7 @@ export const PublishTwo: React.FC = () => {
   const handleSubmit = () => {
     if (text !== '') {
       const data: App.Post = {
-        autorId: app.auth().currentUser!.uid,
+        autorId: userId,
         autorNome: user?.name,
         area: route.params.area,
         idade: route.params.idade,
@@ -78,7 +92,9 @@ export const PublishTwo: React.FC = () => {
       database
         .collection('posts')
         .add(data)
-        .then(() => navigateToHome())
+        .then(() => {
+          navigateToHome()
+        })
         .catch((e) => {
           Alert.alert('Erro', 'Algo deu errado')
           console.log(e)
@@ -89,7 +105,11 @@ export const PublishTwo: React.FC = () => {
   return (
     <Container>
       <Header>
-        <UserPhoto source={require('../../../assets/default-user.png')} />
+        {user?.userPhoto ? (
+          <UserPhoto source={{ uri: user.userPhoto }} />
+        ) : (
+          <UserPhoto source={require('../../../assets/default-user.png')} />
+        )}
         <Title>Publicar caso clínico</Title>
         <Button></Button>
       </Header>

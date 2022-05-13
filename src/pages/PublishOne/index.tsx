@@ -20,8 +20,10 @@ import { Fontisto } from '@expo/vector-icons'
 import { Picker } from '@react-native-picker/picker'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { Alert } from 'react-native'
+import { useUser } from '../../contexts/UserContext'
 
 export const PublishOne: React.FC = () => {
+  const { user } = useUser()
   const { navigateToPublish } = useNavigate()
 
   const [area, setArea] = useState('Doença coronariana')
@@ -52,7 +54,11 @@ export const PublishOne: React.FC = () => {
   return (
     <Container contentContainerStyle={{ flexGrow: 1 }}>
       <Header>
-        <UserPhoto source={require('../../../assets/default-user.png')} />
+        {user?.userPhoto ? (
+          <UserPhoto source={{ uri: user.userPhoto }} />
+        ) : (
+          <UserPhoto source={require('../../../assets/default-user.png')} />
+        )}
         <Title>Publicar caso clínico</Title>
         <Button></Button>
       </Header>

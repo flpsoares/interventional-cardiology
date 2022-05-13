@@ -3,6 +3,8 @@ import React, { createContext, useContext, ReactNode, useState } from 'react'
 interface UserContextData {
   setUser: React.Dispatch<React.SetStateAction<UserProps | undefined>>
   user: UserProps | undefined
+  userId: string
+  setUserId: React.Dispatch<React.SetStateAction<string>>
 }
 
 interface UserProviderProps {
@@ -17,18 +19,22 @@ interface UserProps {
   crm?: any
   institution?: any
   isSubscriber?: any
+  userPhoto?: any
 }
 
 export const UserContext = createContext({} as UserContextData)
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<UserProps>()
+  const [userId, setUserId] = useState('')
 
   return (
     <UserContext.Provider
       value={{
         user,
-        setUser
+        setUser,
+        userId,
+        setUserId
       }}
     >
       {children}

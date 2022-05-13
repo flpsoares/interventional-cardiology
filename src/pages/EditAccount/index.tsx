@@ -22,6 +22,9 @@ import {
 
 import { useNavigate } from '../../contexts/NavigateContext'
 
+import Constants from 'expo-constants'
+import * as ImagePicker from 'expo-image-picker'
+
 import {
   FontAwesome,
   Ionicons,
@@ -31,11 +34,11 @@ import {
   Foundation
 } from '@expo/vector-icons'
 import { useUser } from '../../contexts/UserContext'
-import app, { database } from '../../../firebase'
-import { Alert } from 'react-native'
+import app, { database, storage } from '../../../firebase'
+import { Alert, Platform } from 'react-native'
 
 export const EditAccount: React.FC = () => {
-  const { user } = useUser()
+  const { user, userId } = useUser()
   const { editAccountGoBack } = useNavigate()
 
   const [name, setName] = useState(user!.name)
@@ -45,14 +48,60 @@ export const EditAccount: React.FC = () => {
   const [crm, setCrm] = useState(user?.crm)
   const [institution, setInstitution] = useState(user?.institution)
 
-  const [passwordIsHide, setPasswordIsHide] = useState(true)
-  const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
+  const [image, setImage] = useState<any>()
+
+  useEffect(() => {
+    const verifyPermission = async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+        if (status !== 'granted') {
+          alert('Permission denied!')
+        }
+      }
+    }
+    verifyPermission()
+  }, [])
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1
+    })
+    if (!result.cancelled) {
+      setImage(result.uri)
+      const uploadUri = result.uri
+      const imageExtension = uploadUri.substring(uploadUri.lastIndexOf('.') + 1)
+
+      const storageRef = app.storage().ref()
+
+      const userPerfilRef = storageRef.child(`perfil/${userId}.${imageExtension}`)
+      // const userPerfilRef = storageRef.child('image.jpg')
+
+      const img = fetch(uploadUri)
+      const bytes = await (await img).blob()
+
+      await userPerfilRef
+        .put(bytes)
+        .then((res) => {
+          res.ref.getDownloadURL().then((url) => {
+            database
+              .collection('/users')
+              .doc(userId)
+              .set({ userPhoto: url }, { merge: true })
+              .then(() => console.log('foto de perfil alterada'))
+              .catch(() => console.log('deu merda ai doidão'))
+          })
+        })
+        .catch(() => console.log('kkkkkkkk vamo chorar carai'))
+    }
+  }
 
   const handleSubmit = () => {
     if (user!.isDoctor === false) {
       database
         .collection('users')
-        .doc(app.auth().currentUser!.uid)
+        .doc(userId)
         .set({ name, email, telephone }, { merge: true })
         .then(() => Alert.alert('Sucesso', 'Dados alterados com sucesso!'))
         .catch((e) => {
@@ -62,7 +111,7 @@ export const EditAccount: React.FC = () => {
     } else {
       database
         .collection('users')
-        .doc(app.auth().currentUser!.uid)
+        .doc(userId)
         .set({ name, email, telephone, crm, institution }, { merge: true })
         .then(() => Alert.alert('Sucesso', 'Dados alterados com sucesso!'))
         .catch((e) => {
@@ -83,8 +132,12 @@ export const EditAccount: React.FC = () => {
         </Notification>
       </Header>
       <UserPhotoArea>
-        <UserPhoto source={require('../../../assets/default-user.png')} />
-        <EditButton>
+        {user?.userPhoto ? (
+          <UserPhoto source={{ uri: user.userPhoto }} />
+        ) : (
+          <UserPhoto source={require('../../../assets/default-user.png')} />
+        )}
+        <EditButton onPress={pickImage}>
           <MaterialIcons name="edit" size={24} color="#fff" />
         </EditButton>
       </UserPhotoArea>

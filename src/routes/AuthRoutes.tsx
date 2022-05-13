@@ -11,6 +11,11 @@ export const AuthRoutes: React.FC = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name="ChooseAuth"
+        component={ChooseAuth}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Initial"
         component={Initial}
         options={{ headerShown: false }}
@@ -23,11 +28,6 @@ export const AuthRoutes: React.FC = () => {
       <Stack.Screen
         name="Register"
         component={Register}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ChooseAuth"
-        component={ChooseAuth}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

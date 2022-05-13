@@ -14,7 +14,6 @@ import {
   SubmitButtonText,
   RegisterButton,
   RegisterButtonText,
-  ScrollableContainer,
   BannerArea,
   FirstSupportImage,
   SecondSupportImage
@@ -110,139 +109,105 @@ export const Login: React.FC = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={30}
-    >
-      <ScrollableContainer
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <SafeAreaView>
-          <Container onPress={Keyboard.dismiss}>
-            <BannerArea>
-              <LanguageDropdown isOpen={false} />
-              <Banner
-                resizeMode="cover"
-                source={require('../../../assets/login/banner.png')}
+    // <KeyboardAvoidingView
+    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    //   keyboardVerticalOffset={30}
+    // >
+    <Container onPress={Keyboard.dismiss}>
+      <LanguageDropdown isOpen={false} />
+      <Banner source={require('../../../assets/login/banner.png')} />
+      <Wrapper>
+        {!forgotPasswordIsActive ? (
+          <>
+            <Title>Faça seu Login</Title>
+            <InputItem style={{ elevation: 10 }}>
+              <InputIcon>
+                <FontAwesome name="user" size={28} color="rgba(77, 86, 109, 0.46)" />
+              </InputIcon>
+              <Input
+                autoCapitalize="none"
+                onChangeText={setEmail}
+                value={email}
+                placeholder="E-mail"
               />
-              {/* <FirstSupportImage
-                source={require('../../../assets/support_02.png')}
+            </InputItem>
+            <InputItem style={{ elevation: 10 }}>
+              <InputIcon>
+                <FontAwesome name="key" size={28} color="rgba(77, 86, 109, 0.46)" />
+              </InputIcon>
+              <Input
+                autoCapitalize="none"
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Senha"
+                secureTextEntry={passwordIsHide}
               />
-              <SecondSupportImage
-                source={require('../../../assets/support_01.png')}
-              /> */}
-            </BannerArea>
-            <Wrapper>
-              {!forgotPasswordIsActive ? (
-                <>
-                  <Title>Faça seu Login</Title>
-                  <InputItem style={{ elevation: 10 }}>
-                    <InputIcon>
-                      <FontAwesome
-                        name="user"
-                        size={28}
-                        color="rgba(77, 86, 109, 0.46)"
-                      />
-                    </InputIcon>
-                    <Input
-                      autoCapitalize="none"
-                      onChangeText={setEmail}
-                      value={email}
-                      placeholder="E-mail"
-                    />
-                  </InputItem>
-                  <InputItem style={{ elevation: 10 }}>
-                    <InputIcon>
-                      <FontAwesome
-                        name="key"
-                        size={28}
-                        color="rgba(77, 86, 109, 0.46)"
-                      />
-                    </InputIcon>
-                    <Input
-                      autoCapitalize="none"
-                      onChangeText={setPassword}
-                      value={password}
-                      placeholder="Senha"
-                      secureTextEntry={passwordIsHide}
-                    />
-                    <InputIconPassword onPress={toggleHidePassword}>
-                      {passwordIsHide ? (
-                        <FontAwesome
-                          name="eye"
-                          size={28}
-                          color="rgba(77, 86, 109, 0.46)"
-                        />
-                      ) : (
-                        <FontAwesome
-                          name="eye-slash"
-                          size={28}
-                          color="rgba(77, 86, 109, 0.46)"
-                        />
-                      )}
-                    </InputIconPassword>
-                  </InputItem>
-                </>
-              ) : (
-                <>
-                  <Title style={{ width: '80%' }}>
-                    Informe o email para recuperar sua senha
-                  </Title>
-                  <InputItem style={{ elevation: 10 }}>
-                    <InputIcon>
-                      <FontAwesome
-                        name="user"
-                        size={28}
-                        color="rgba(77, 86, 109, 0.46)"
-                      />
-                    </InputIcon>
-                    <Input
-                      onChangeText={setEmail}
-                      value={email}
-                      placeholder="E-mail"
-                    />
-                  </InputItem>
-                </>
-              )}
+              <InputIconPassword onPress={toggleHidePassword}>
+                {passwordIsHide ? (
+                  <FontAwesome
+                    name="eye"
+                    size={28}
+                    color="rgba(77, 86, 109, 0.46)"
+                  />
+                ) : (
+                  <FontAwesome
+                    name="eye-slash"
+                    size={28}
+                    color="rgba(77, 86, 109, 0.46)"
+                  />
+                )}
+              </InputIconPassword>
+            </InputItem>
+          </>
+        ) : (
+          <>
+            <Title style={{ width: '80%' }}>
+              Informe o email para recuperar sua senha
+            </Title>
+            <InputItem style={{ elevation: 10 }}>
+              <InputIcon>
+                <FontAwesome name="user" size={28} color="rgba(77, 86, 109, 0.46)" />
+              </InputIcon>
+              <Input onChangeText={setEmail} value={email} placeholder="E-mail" />
+            </InputItem>
+          </>
+        )}
 
-              {!forgotPasswordIsActive ? (
-                <ForgotPassword
-                  onPress={() => {
-                    setPassword('')
-                    setForgotPasswordIsActive(true)
-                  }}
-                >
-                  <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
-                </ForgotPassword>
-              ) : (
-                <ForgotPassword onPress={() => setForgotPasswordIsActive(false)}>
-                  <ForgotPasswordText>Voltar ao Login</ForgotPasswordText>
-                </ForgotPassword>
-              )}
+        {!forgotPasswordIsActive ? (
+          <ForgotPassword
+            onPress={() => {
+              setPassword('')
+              setForgotPasswordIsActive(true)
+            }}
+          >
+            <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
+          </ForgotPassword>
+        ) : (
+          <ForgotPassword onPress={() => setForgotPasswordIsActive(false)}>
+            <ForgotPasswordText>Voltar ao Login</ForgotPasswordText>
+          </ForgotPassword>
+        )}
 
-              {isClicked ? (
-                <ActivityIndicator size="large" color={primary} />
-              ) : (
-                <>
-                  {!forgotPasswordIsActive ? (
-                    <SubmitButton onPress={handleLogin}>
-                      <SubmitButtonText>Login</SubmitButtonText>
-                    </SubmitButton>
-                  ) : (
-                    <SubmitButton onPress={handleForgotPassword}>
-                      <SubmitButtonText>Enviar</SubmitButtonText>
-                    </SubmitButton>
-                  )}
-                </>
-              )}
-              <RegisterButton onPress={navigateToRegister}>
-                <RegisterButtonText>Cadastre-se</RegisterButtonText>
-              </RegisterButton>
-            </Wrapper>
-          </Container>
-        </SafeAreaView>
-      </ScrollableContainer>
-    </KeyboardAvoidingView>
+        {isClicked ? (
+          <ActivityIndicator size="large" color={primary} />
+        ) : (
+          <>
+            {!forgotPasswordIsActive ? (
+              <SubmitButton onPress={handleLogin}>
+                <SubmitButtonText>Login</SubmitButtonText>
+              </SubmitButton>
+            ) : (
+              <SubmitButton onPress={handleForgotPassword}>
+                <SubmitButtonText>Enviar</SubmitButtonText>
+              </SubmitButton>
+            )}
+          </>
+        )}
+        <RegisterButton onPress={navigateToRegister}>
+          <RegisterButtonText>Cadastre-se</RegisterButtonText>
+        </RegisterButton>
+      </Wrapper>
+    </Container>
+    // </KeyboardAvoidingView>
   )
 }

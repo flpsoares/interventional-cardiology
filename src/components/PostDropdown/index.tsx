@@ -5,6 +5,7 @@ import { FontAwesome, Feather } from '@expo/vector-icons'
 import { Alert } from 'react-native'
 import app, { database } from '../../../firebase'
 import firebase from 'firebase'
+import { useUser } from '../../contexts/UserContext'
 
 interface PostDropdownProps {
   name: string
@@ -19,28 +20,54 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
   isFavorited,
   autorId
 }) => {
+  const { userId } = useUser()
+
   const [favorited, setFavorited] = useState(isFavorited)
 
   const firstName = name.split(' ')[0]
 
+  // const handleFavorite = () => {
+  //   database
+  //     .collection(`/posts/${postId}/favorites`)
+  //     .where('autorId', '==', autorId)
+  //     .get()
+  //     .then(async (favorite) => {
+  //       if (favorite.docs[0] === undefined) {
+  //         return database
+  //           .collection(`/posts/${postId}/favorites`)
+  //           .add({ autorId: userId })
+  //           .then(() => setFavorited(true))
+  //           .catch((e) => console.log(e))
+  //       } else {
+  //         return await database
+  //           .collection(`/posts/${postId}/favorites`)
+  //           .doc(favorite.docs[0].id)
+  //           .delete()
+  //           .then(() => setFavorited(false))
+  //       }
+  //     })
+  // }
+
   const handleFavorite = () => {
     database
-      .collection(`/posts/${postId}/favorites`)
+      .collection('/posts_favorites')
       .where('autorId', '==', autorId)
+      .where('postId', '==', postId)
       .get()
-      .then(async (favorite) => {
-        if (favorite.docs[0] === undefined) {
-          return database
-            .collection(`/posts/${postId}/favorites`)
-            .add({ autorId: app.auth().currentUser!.uid })
+      .then((res) => {
+        if (res.docs[0] === undefined) {
+          database
+            .collection('/posts_favorites')
+            .add({ postId, autorId })
             .then(() => setFavorited(true))
-            .catch((e) => console.log(e))
+            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
         } else {
-          return await database
-            .collection(`/posts/${postId}/favorites`)
-            .doc(favorite.docs[0].id)
+          database
+            .collection('/posts_favorites')
+            .doc(res.docs[0].id)
             .delete()
             .then(() => setFavorited(false))
+            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
         }
       })
   }
@@ -55,7 +82,7 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
 
   return (
     <Container>
-      {autorId === app.auth().currentUser!.uid ? (
+      {autorId === userId ? (
         <>
           <Item
             onPress={() => {

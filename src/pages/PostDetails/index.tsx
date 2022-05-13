@@ -24,7 +24,7 @@ import { useUser } from '../../contexts/UserContext'
 import firebase from 'firebase'
 
 export const PostDetails: React.FC = () => {
-  const { user } = useUser()
+  const { user, userId } = useUser()
   const route = useRoute<RouteProp<RootStackParamsList, 'PostDetails'>>()
 
   const [post, setPost] = useState<any>()
@@ -36,7 +36,7 @@ export const PostDetails: React.FC = () => {
     database
       .collection(`/posts/${route.params.postId}/comments`)
       .add({
-        autorId: app.auth().currentUser!.uid,
+        autorId: userId,
         autorNome: user?.name,
         texto: commentText,
         dataCriacao: firebase.firestore.FieldValue.serverTimestamp()

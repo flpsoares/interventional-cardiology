@@ -18,7 +18,7 @@ import Constants from 'expo-constants'
 const Tab = createBottomTabNavigator()
 
 export const Routes: React.FC = () => {
-  const { setUser, user } = useUser()
+  const { setUser, user, setUserId } = useUser()
 
   // const [notification, setNotification] = useState<Notifications.Notification>()
   // const notificationListener = useRef<any>()
@@ -100,6 +100,7 @@ export const Routes: React.FC = () => {
   // }
 
   useEffect(() => {
+    setUserId(app.auth().currentUser!.uid)
     const subscribe = database
       .collection('users')
       .doc(app.auth().currentUser!.uid)
@@ -110,9 +111,10 @@ export const Routes: React.FC = () => {
           email: data!.email,
           telephone: data!.telephone,
           isDoctor: data!.isDoctor,
-          crm: data!.crm,
-          institution: data!.institution,
-          isSubscriber: data!.isSubscriber
+          crm: data?.crm,
+          institution: data?.institution,
+          isSubscriber: data?.isSubscriber,
+          userPhoto: data?.userPhoto
         })
       })
 

@@ -46,7 +46,7 @@ type Props = {
 export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const { openModalImage } = useModal()
   const { navigateToPostDetails } = useNavigate()
-  const { user } = useUser()
+  const { userId } = useUser()
 
   const [activeSlide, setActiveSlide] = useState(0)
   const [carousel, setCarousel] = useState<Carousel<ImageSourcePropType> | null>()
@@ -75,7 +75,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
     // isLiked
     database
       .collection(`/posts/${data.id}/likes`)
-      .where('autorId', '==', app.auth().currentUser!.uid)
+      .where('autorId', '==', userId)
       .get()
       .then((like) => {
         if (like.docs[0] !== undefined) {
@@ -88,7 +88,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
     // isFavorited
     database
       .collection(`/posts/${data.id}/favorites`)
-      .where('autorId', '==', app.auth().currentUser!.uid)
+      .where('autorId', '==', userId)
       .get()
       .then((favorite) => {
         if (favorite.docs[0] !== undefined) {
@@ -202,7 +202,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           <PostInfo>{commentCount} comentários</PostInfo>
         </PostInfoArea>
         <ButtonArea>
-          <Button onPress={() => handleLike(app.auth().currentUser!.uid)}>
+          <Button onPress={() => handleLike(userId)}>
             <AntDesign
               name={isLiked ? 'like1' : 'like2'}
               size={22}

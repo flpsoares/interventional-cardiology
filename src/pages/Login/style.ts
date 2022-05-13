@@ -1,23 +1,22 @@
 import styled from 'styled-components/native'
 import { primary, secondary, text } from '../../styles/globalCssVar'
 
-export const ScrollableContainer = styled.ScrollView`
-  height: 100%;
-`
-
 export const Container = styled.Pressable`
-  height: 100%;
+  flex: 1;
   position: relative;
 `
 
 export const BannerArea = styled.View`
   width: 100%;
-  height: 350px;
+  flex: 1;
   position: relative;
   background: #fff;
 `
 
 export const Banner = styled.Image`
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
   z-index: 1;
@@ -41,16 +40,17 @@ export const SecondSupportImage = styled.Image`
 `
 
 export const Wrapper = styled.View`
-  background: #fff;
   flex: 1;
+  z-index: 2;
 
   align-items: center;
+  justify-content: center;
   padding-bottom: 42px;
 `
 
 export const Title = styled.Text`
-  color: ${primary};
-  font-size: 22px;
+  color: ${secondary};
+  font-size: 26px;
   font-weight: 700;
   text-align: center;
   margin: 22px 0;
@@ -91,7 +91,8 @@ export const ForgotPassword = styled.TouchableOpacity``
 
 export const ForgotPasswordText = styled.Text`
   text-decoration: underline;
-  color: rgba(77, 86, 109, 0.46);
+  color: #fff;
+  font-weight: bold;
   font-size: 18px;
 `
 
@@ -114,7 +115,8 @@ export const SubmitButtonText = styled.Text`
 export const RegisterButton = styled.TouchableOpacity``
 
 export const RegisterButtonText = styled.Text`
-  color: ${text};
+  color: #fff;
   font-size: 20px;
   margin-top: 16px;
+  font-weight: bold;
 `

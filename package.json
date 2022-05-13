@@ -28,6 +28,7 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-image-crop-picker": "^0.37.3",
     "react-native-modal": "^13.0.1",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.3.2",
@@ -35,7 +36,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.13.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

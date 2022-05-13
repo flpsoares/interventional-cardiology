@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { createContext, useContext, ReactNode } from 'react'
 import { RootStackParamsList } from '../routes/RootStackParamsList'
 
+type InitialScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Initial'>
 type LoginScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Login'>
 type RegisterScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Register'>
 type ChooseAuthScreenProps = NativeStackNavigationProp<
@@ -25,10 +26,12 @@ type PublishScreenProps = NativeStackNavigationProp<
 >
 
 interface NavigateContextData {
+  navigateToInitial: () => void
   navigateToLogin: () => void
   navigateToRegister: () => void
   navigateToChooseAuth: () => void
   navigateToHome: () => void
+  navigateToHomeWithReset: () => void
   navigateToPostDetails: (postId: string) => void
   navigateToEditAccount: () => void
   editAccountGoBack: () => void
@@ -50,6 +53,7 @@ interface NavigateProviderProps {
 export const NavigateContext = createContext({} as NavigateContextData)
 
 export const NavigateProvider = ({ children }: NavigateProviderProps) => {
+  const navigationInitial = useNavigation<InitialScreenProps>()
   const navigationLogin = useNavigation<LoginScreenProps>()
   const navigationRegister = useNavigation<RegisterScreenProps>()
   const navigationChooseAuth = useNavigation<ChooseAuthScreenProps>()
@@ -58,6 +62,9 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigationEditAccount = useNavigation<EditAccountScreenProps>()
   const navigationPublish = useNavigation<PublishScreenProps>()
 
+  const navigateToInitial = () => {
+    navigationInitial.navigate('Initial')
+  }
   const navigateToLogin = () => {
     navigationLogin.navigate('Login')
   }
@@ -70,6 +77,14 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigateToHome = () => {
     navigationHome.navigate('Home')
   }
+
+  const navigateToHomeWithReset = () => {
+    navigationHome.reset({
+      index: 0,
+      routes: [{ name: 'Home' }]
+    })
+  }
+
   const navigateToPostDetails = (postId: string) => {
     navigationPostDetails.navigate('PostDetails', { postId })
   }
@@ -112,7 +127,9 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
         editAccountGoBack,
         navigateToPublish,
         publishGoBack,
-        navigateToChooseAuth
+        navigateToChooseAuth,
+        navigateToInitial,
+        navigateToHomeWithReset
       }}
     >
       {children}

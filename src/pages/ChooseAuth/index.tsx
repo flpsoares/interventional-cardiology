@@ -12,7 +12,7 @@ import {
 } from './style'
 
 export const ChooseAuth: React.FC = () => {
-  const { navigateToLogin, navigateToRegister } = useNavigate()
+  const { navigateToLogin, navigateToRegister, navigateToInitial } = useNavigate()
 
   return (
     <Container>
@@ -23,8 +23,11 @@ export const ChooseAuth: React.FC = () => {
         <LoginButton onPress={navigateToLogin}>
           <ButtonText>Faça o Login</ButtonText>
         </LoginButton>
-        <RegisterButton onPress={navigateToRegister}>
+        <LoginButton onPress={navigateToRegister}>
           <ButtonText>Cadastre-se</ButtonText>
+        </LoginButton>
+        <RegisterButton onPress={navigateToInitial}>
+          <ButtonText>Entenda como funciona</ButtonText>
         </RegisterButton>
       </Wrapper>
     </Container>

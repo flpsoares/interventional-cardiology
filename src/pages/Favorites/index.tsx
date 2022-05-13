@@ -18,6 +18,7 @@ import { Post } from '../../components/Post'
 import { postData } from '../../postData'
 import { useModal } from '../../contexts/ModalContext'
 import app, { database } from '../../../firebase'
+import { useUser } from '../../contexts/UserContext'
 
 export const Favorites: React.FC = () => {
   const {
@@ -26,6 +27,8 @@ export const Favorites: React.FC = () => {
     modalImageQuantity,
     modalImageOpenItem
   } = useModal()
+
+  const { user, userId } = useUser()
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [favoriteIsActive, setFavoriteIsActive] = useState(true)
@@ -43,30 +46,17 @@ export const Favorites: React.FC = () => {
   useEffect(() => {
     if (favoriteIsActive) {
       database
-        .collection('/posts/favorites')
-        // .where('autorId', '==', app.auth().currentUser!.uid)
+        .collection('/posts_favorites')
+        .where('autorId', '==', userId)
         .onSnapshot((querySnapshot) => {
-          querySnapshot.docs.map((doc) => {
-            return console.log(doc.data())
-          })
-          // const data = querySnapshot.docs.map((doc) => {
-          //   return {
-          //     id: doc.id,
-          //     ...doc.data()
-          //   }
-          // }) as App.Post[]
-          // setPosts(data)
+          const data = querySnapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data()
+            }
+          }) as App.Post[]
+          setPosts(data)
         })
-      // .where('favoritos', 'array-contains', app.auth().currentUser!.uid)
-      // .onSnapshot((querySnapshot) => {
-      //   const data = querySnapshot.docs.map((doc) => {
-      //     return {
-      //       id: doc.id,
-      //       ...doc.data()
-      //     }
-      //   }) as App.Post[]
-      //   setPosts(data)
-      // })
     } else {
       database
         .collection('/posts')
@@ -87,7 +77,11 @@ export const Favorites: React.FC = () => {
   return (
     <Container>
       <Top>
-        <UserPhoto source={require('../../../assets/default-user.png')} />
+        {user?.userPhoto ? (
+          <UserPhoto source={{ uri: user.userPhoto }} />
+        ) : (
+          <UserPhoto source={require('../../../assets/default-user.png')} />
+        )}
         <TopInputArea>
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
           <TopInput placeholder="Pesquisar..." />
