@@ -2,6 +2,7 @@ declare namespace App {
   export interface Post {
     autorId: string
     autorNome: string
+    autorFoto?: string
     id?: string
     area: string
     idade: string
@@ -10,6 +11,7 @@ declare namespace App {
     comorbidades: string
     medicamentos: string
     descricao: string
+    medias: string[]
     dataCriacao: firebase.firestore.FieldValue
   }
 }

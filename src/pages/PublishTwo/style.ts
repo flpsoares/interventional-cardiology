@@ -80,4 +80,31 @@ export const SubmitButtonText = styled.Text`
   font-size: 20px;
   color: #fff;
   font-weight: bold;
+  text-align: center;
+`
+
+export const PreviewImageArea = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`
+
+export const PreviewImage = styled.View`
+  width: 24%;
+  height: 80px;
+  margin-top: 12px;
+  position: relative;
+`
+
+export const Image = styled.Image`
+  width: 100%;
+  height: 90px;
+  border-radius: 4px;
+`
+
+export const CloseButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  z-index: 2;
 `

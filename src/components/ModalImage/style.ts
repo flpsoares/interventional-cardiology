@@ -13,8 +13,8 @@ export const Photo = styled.Image`
   margin: auto;
   align-self: center;
   margin-top: 22px;
-  max-width: 100%;
-  max-height: 90%;
+  width: 200px;
+  height: 400px;
   align-self: center;
   margin: auto;
   padding: 12px 0;
@@ -25,4 +25,15 @@ export const PhotoQuantity = styled.Text`
   font-size: 28px;
   font-weight: bold;
   align-self: center;
+`
+
+export const CarouselButton = styled.View`
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`
+
+export const VideoButton = styled.View`
+  justify-content: center;
+  align-items: center;
 `

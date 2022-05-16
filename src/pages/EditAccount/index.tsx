@@ -64,7 +64,7 @@ export const EditAccount: React.FC = () => {
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1
     })
@@ -76,7 +76,6 @@ export const EditAccount: React.FC = () => {
       const storageRef = app.storage().ref()
 
       const userPerfilRef = storageRef.child(`perfil/${userId}.${imageExtension}`)
-      // const userPerfilRef = storageRef.child('image.jpg')
 
       const img = fetch(uploadUri)
       const bytes = await (await img).blob()

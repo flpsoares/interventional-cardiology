@@ -63,6 +63,12 @@ export const Photo = styled.Image`
   z-index: -1;
 `
 
+export const Image = styled.Image`
+  width: 200px;
+  height: 200px;
+  z-index: 200;
+`
+
 export const PostInfoArea = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -93,12 +99,20 @@ export const ButtonTitle = styled.Text`
 export const SeeMoreButton = styled.TouchableOpacity`
   align-self: center;
   margin: 8px 0;
-  /* margin-top: 22px; */
-  /* height: 40px; */
 `
 
 export const SeeMoreButtonText = styled.Text`
   color: ${secondary};
   font-weight: bold;
-  /* margin-top: 12px; */
+`
+
+export const CarouselButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`
+
+export const VideoButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
 `

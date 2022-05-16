@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from 'react'
 import {
   Button,
   ButtonImage,
@@ -7,16 +13,21 @@ import {
   Header,
   Input,
   InputTitle,
+  PreviewImage,
+  PreviewImageArea,
   SubmitButton,
   SubmitButtonText,
   Title,
   UserPhoto,
-  Wrapper
+  Wrapper,
+  Image,
+  CloseButton
 } from './style'
 
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, AntDesign } from '@expo/vector-icons'
 import Constants from 'expo-constants'
-import * as ImagePicker from 'expo-image-picker'
+import { v4 as uuid } from 'uuid'
+
 import { Alert, Platform } from 'react-native'
 import {
   RouteProp,
@@ -29,8 +40,9 @@ import app, { database } from '../../../firebase'
 import { useUser } from '../../contexts/UserContext'
 import firebase from 'firebase'
 import { useNavigate } from '../../contexts/NavigateContext'
-import { formatter } from '../../utils/date'
-import moment from 'moment'
+
+import * as ImagePicker from 'expo-image-picker'
+import { primary, secondary } from '../../styles/globalCssVar'
 
 export const PublishTwo: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
@@ -39,7 +51,8 @@ export const PublishTwo: React.FC = () => {
   const isFocused = useIsFocused()
 
   const [text, setText] = useState('')
-  const [images, setImages] = useState('')
+  const [images, setImages] = useState([''])
+  const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
 
@@ -67,12 +80,57 @@ export const PublishTwo: React.FC = () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
+      aspect: [4, 3],
       quality: 1
     })
     if (!result.cancelled) {
-      setImages(result.uri)
-      console.log(result)
+      if (images.length <= 7) {
+        const uploadUri = result.uri
+        // const imageExtension = uploadUri.substring(uploadUri.lastIndexOf('.') + 1)
+        const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+
+        const storageRef = app.storage().ref()
+
+        const PostImageRef = storageRef.child(`posts/${filename}`)
+
+        const img = fetch(uploadUri)
+        const bytes = await (await img).blob()
+
+        if (images[0] === '') {
+          await PostImageRef.put(bytes)
+            .then((res) => {
+              res.ref.getDownloadURL().then((url) => {
+                if (storageFilesUrl[0] === '') {
+                  setStorageFilesUrl([url])
+                } else {
+                  setStorageFilesUrl([...storageFilesUrl, url])
+                }
+              })
+            })
+            .then(() => setImages([result.uri]))
+            .catch((e) => console.log(e))
+        } else {
+          await PostImageRef.put(bytes)
+            .then((res) => {
+              res.ref.getDownloadURL().then((url) => {
+                if (storageFilesUrl[0] === '') {
+                  setStorageFilesUrl([url])
+                } else {
+                  setStorageFilesUrl([...storageFilesUrl, url])
+                }
+              })
+            })
+            .then(() => setImages([...images, result.uri]))
+            .catch((e) => console.log(e))
+        }
+      } else {
+        Alert.alert('Erro', 'Você já selecionou 8 arquivos')
+      }
     }
+  }
+
+  const deleteFile = (index: number) => {
+    setImages([...images.slice(0, index), ...images.slice(index + 1)])
   }
 
   const handleSubmit = () => {
@@ -80,6 +138,7 @@ export const PublishTwo: React.FC = () => {
       const data: App.Post = {
         autorId: userId,
         autorNome: user?.name,
+        autorFoto: user?.userPhoto,
         area: route.params.area,
         idade: route.params.idade,
         genero: route.params.genero,
@@ -87,6 +146,7 @@ export const PublishTwo: React.FC = () => {
         comorbidades: route.params.comorbidades,
         medicamentos: route.params.medicamentos,
         descricao: text,
+        medias: storageFilesUrl,
         dataCriacao: timestamp
       }
       database
@@ -94,6 +154,8 @@ export const PublishTwo: React.FC = () => {
         .add(data)
         .then(() => {
           navigateToHome()
+          setImages([''])
+          setStorageFilesUrl([''])
         })
         .catch((e) => {
           Alert.alert('Erro', 'Algo deu errado')
@@ -125,8 +187,25 @@ export const PublishTwo: React.FC = () => {
         />
         <ButtonImage onPress={pickImage}>
           <Ionicons name="images" size={46} color="#596988" />
-          <ButtonImageText>Insira até 8 imagens sobre o caso</ButtonImageText>
+          <ButtonImageText>
+            Insira até 8 imagens ou vídeos sobre o caso
+          </ButtonImageText>
         </ButtonImage>
+        {images[0] !== '' && (
+          <PreviewImageArea>
+            {images.map((url, index) => {
+              return (
+                <PreviewImage key={url}>
+                  <CloseButton onPress={() => deleteFile(index)}>
+                    <AntDesign name="close" color={secondary} size={26} />
+                  </CloseButton>
+                  <Image source={{ uri: url }} />
+                </PreviewImage>
+              )
+            })}
+          </PreviewImageArea>
+        )}
+
         <SubmitButton onPress={handleSubmit}>
           <SubmitButtonText>Publicar</SubmitButtonText>
         </SubmitButton>

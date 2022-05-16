@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+/* eslint-disable indent */
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Container,
   Content,
@@ -18,17 +19,22 @@ import {
   Button,
   ContentArea,
   SeeMoreButton,
-  SeeMoreButtonText
+  SeeMoreButtonText,
+  Image,
+  CarouselButton,
+  VideoButton
 } from './style'
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
 import {
   Alert,
   Dimensions,
-  FlatList,
   ImageSourcePropType,
+  Text,
   TouchableWithoutFeedback,
-  View
+  View,
+  StyleSheet,
+  FlatList
 } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 import { useModal } from '../../contexts/ModalContext'
@@ -36,6 +42,7 @@ import { useNavigate } from '../../contexts/NavigateContext'
 import { PostDropdown } from '../PostDropdown'
 import { useUser } from '../../contexts/UserContext'
 import app, { database } from '../../../firebase'
+import { Video } from 'expo-av'
 
 type Props = {
   data: App.Post
@@ -48,8 +55,11 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const { navigateToPostDetails } = useNavigate()
   const { userId } = useUser()
 
+  const video = useRef(null)
+  const [status, setStatus] = useState({})
+
   const [activeSlide, setActiveSlide] = useState(0)
-  const [carousel, setCarousel] = useState<Carousel<ImageSourcePropType> | null>()
+  const [carousel, setCarousel] = useState<Carousel<string> | null>()
 
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
@@ -140,7 +150,12 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
     <Container onPress={() => setDropdownIsOpen(false)}>
       <Top>
         <TopLeftContent>
-          <UserPhoto source={require('../../../assets/default-user.png')} />
+          {data.autorFoto ? (
+            <UserPhoto source={{ uri: data.autorFoto }} />
+          ) : (
+            <UserPhoto source={require('../../../assets/default-user.png')} />
+          )}
+
           <Info>
             <Name>{data.autorNome}</Name>
             {isFavoriteList && <Date>Favoritos: {favoriteCount}</Date>}
@@ -179,24 +194,68 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             </SeeMoreButton>
           )}
         </ContentArea>
-        {/* <Carousel
-          ref={(c) => setCarousel(c)}
-          data={data.image}
+        {/* <FlatList
+          horizontal
+          data={data.medias}
+          keyExtractor={(_, index) => String(index)}
           renderItem={({ item }) => (
             <TouchableWithoutFeedback
               onPress={() =>
-                openModalImage(data.image, data.image.length, activeSlide)
+                openModalImage(data.medias, data.medias.length, activeSlide)
               }
             >
-              <Photo resizeMode="contain" source={item} />
+              <Image
+                resizeMode="contain"
+                source={{
+                  uri: item
+                }}
+              />
             </TouchableWithoutFeedback>
           )}
+        /> */}
+        <Carousel
+          ref={(c) => setCarousel(c)}
+          data={data.medias}
           onSnapToItem={(index) => setActiveSlide(index)}
           sliderWidth={SCREEN_WIDTH}
           itemWidth={SCREEN_WIDTH - 80}
           layout="default"
           style={{ maxHeight: '300px', backgroundColor: 'blue' }}
-        /> */}
+          renderItem={({ item }) => (
+            <>
+              {item.indexOf('.mp4') !== -1 ||
+              item.indexOf('.wmv') !== -1 ||
+              item.indexOf('.avi') !== -1 ? (
+                <VideoButton>
+                  <Video
+                    ref={video}
+                    style={styles.video}
+                    source={{
+                      uri: item
+                    }}
+                    useNativeControls
+                    resizeMode="cover"
+                    isLooping
+                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+                  />
+                </VideoButton>
+              ) : (
+                <CarouselButton
+                  onPress={() =>
+                    openModalImage(data.medias, data.medias.length, activeSlide)
+                  }
+                >
+                  <Image
+                    resizeMode="cover"
+                    source={{
+                      uri: item
+                    }}
+                  />
+                </CarouselButton>
+              )}
+            </>
+          )}
+        />
         <PostInfoArea>
           <PostInfo>{likeCount} curtidas</PostInfo>
           <PostInfo>{commentCount} comentários</PostInfo>
@@ -219,3 +278,10 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
     </Container>
   )
 }
+
+const styles = StyleSheet.create({
+  video: {
+    width: '100%',
+    height: '100%'
+  }
+})

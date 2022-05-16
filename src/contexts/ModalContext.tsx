@@ -3,13 +3,9 @@ import { ImageSourcePropType } from 'react-native'
 
 interface ModalContextData {
   modalImageIsOpen: boolean
-  openModalImage: (
-    data: ImageSourcePropType[],
-    quantity: number,
-    openItem: number
-  ) => void
+  openModalImage: (data: string[], quantity: number, openItem: number) => void
   closeModalImage: () => void
-  modalImageData: ImageSourcePropType[] | undefined
+  modalImageData: string[] | undefined
   modalImageQuantity: number
   modalImageOpenItem: number
   postDropdownIsOpen: boolean
@@ -26,18 +22,14 @@ export const ModalContext = createContext({} as ModalContextData)
 
 export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [modalImageIsOpen, setModalImageIsOpen] = useState(false)
-  const [modalImageData, setModalImageData] = useState<ImageSourcePropType[]>()
+  const [modalImageData, setModalImageData] = useState<string[]>()
   const [modalImageQuantity, setModalImageQuantity] = useState(0)
   const [modalImageOpenItem, setModalImageOpenItem] = useState(0)
 
   const [postDropdownIsOpen, setPostDropdownIsOpen] = useState(false)
   const [postDropdownUserName, setPostDropdownUserName] = useState('')
 
-  const openModalImage = (
-    data: ImageSourcePropType[],
-    quantity: number,
-    openItem: number
-  ) => {
+  const openModalImage = (data: string[], quantity: number, openItem: number) => {
     setModalImageIsOpen(true)
     setModalImageData(data)
     setModalImageQuantity(quantity)
