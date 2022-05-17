@@ -14,6 +14,11 @@ interface ModalContextData {
   modalChoosePlanIsOpen: boolean
   openModalChoosePlan: () => void
   closeModalChoosePlan: () => void
+  modalMedicineIsOpen: boolean
+  openModalMedicine: () => void
+  closeModalMedicine: () => void
+  selectedMedicines: string[]
+  setSelectedMedicines: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 interface ModalProviderProps {
@@ -27,6 +32,9 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [modalImageData, setModalImageData] = useState<string[]>()
   const [modalImageQuantity, setModalImageQuantity] = useState(0)
   const [modalImageOpenItem, setModalImageOpenItem] = useState(0)
+
+  const [modalMedicineIsOpen, setModalMedicineIsOpen] = useState(false)
+  const [selectedMedicines, setSelectedMedicines] = useState([''])
 
   const [modalChoosePlanIsOpen, setModalChoosePlanIsOpen] = useState(false)
 
@@ -63,6 +71,13 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   const closeModalChoosePlan = () => {
     setModalChoosePlanIsOpen(false)
   }
+  const openModalMedicine = () => {
+    setModalMedicineIsOpen(true)
+  }
+
+  const closeModalMedicine = () => {
+    setModalMedicineIsOpen(false)
+  }
 
   return (
     <ModalContext.Provider
@@ -79,7 +94,12 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
         closePostDropdown,
         modalChoosePlanIsOpen,
         openModalChoosePlan,
-        closeModalChoosePlan
+        closeModalChoosePlan,
+        modalMedicineIsOpen,
+        openModalMedicine,
+        closeModalMedicine,
+        selectedMedicines,
+        setSelectedMedicines
       }}
     >
       {children}

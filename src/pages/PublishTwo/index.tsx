@@ -42,7 +42,7 @@ import firebase from 'firebase'
 import { useNavigate } from '../../contexts/NavigateContext'
 
 import * as ImagePicker from 'expo-image-picker'
-import { primary, secondary } from '../../styles/globalCssVar'
+import { secondary } from '../../styles/globalCssVar'
 
 export const PublishTwo: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
@@ -86,7 +86,6 @@ export const PublishTwo: React.FC = () => {
     if (!result.cancelled) {
       if (images.length <= 7) {
         const uploadUri = result.uri
-        // const imageExtension = uploadUri.substring(uploadUri.lastIndexOf('.') + 1)
         const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
 
         const storageRef = app.storage().ref()

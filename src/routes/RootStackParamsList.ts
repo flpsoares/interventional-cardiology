@@ -14,6 +14,6 @@ export type RootStackParamsList = {
     idade: string
     sintoma: string
     comorbidades: string
-    medicamentos: string
+    medicamentos: string[]
   }
 }

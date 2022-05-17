@@ -9,7 +9,7 @@ declare namespace App {
     genero: string
     sintoma: string
     comorbidades: string
-    medicamentos: string
+    medicamentos: string[]
     descricao: string
     medias: string[]
     dataCriacao: firebase.firestore.FieldValue

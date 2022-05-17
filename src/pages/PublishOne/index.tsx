@@ -8,6 +8,8 @@ import {
   Input,
   InputItem,
   InputTitle,
+  ModalButton,
+  ModalButtonText,
   PickerButton,
   SubmitButton,
   SubmitButtonText,
@@ -16,7 +18,6 @@ import {
   Wrapper
 } from './style'
 
-import { Fontisto } from '@expo/vector-icons'
 import { Picker } from '@react-native-picker/picker'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { Alert } from 'react-native'
@@ -24,11 +25,20 @@ import { useUser } from '../../contexts/UserContext'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
 import { useModal } from '../../contexts/ModalContext'
 import { useFocusEffect, useIsFocused } from '@react-navigation/core'
+import Modal from 'react-native-modal'
+import MultiSelect from 'react-native-multiple-select'
+import { secondary } from '../../styles/globalCssVar'
 
 export const PublishOne: React.FC = () => {
   const { user } = useUser()
   const { navigateToPublish } = useNavigate()
-  const { modalChoosePlanIsOpen, openModalChoosePlan } = useModal()
+  const {
+    modalChoosePlanIsOpen,
+    openModalChoosePlan,
+    openModalMedicine,
+    modalMedicineIsOpen,
+    closeModalMedicine
+  } = useModal()
 
   const isFocused = useIsFocused()
 
@@ -37,26 +47,52 @@ export const PublishOne: React.FC = () => {
   const [genero, setGenero] = useState('Masculino')
   const [sintoma, setSintoma] = useState('Dor precordial')
   const [comorbidades, setComorbidades] = useState('Hipertensão arterial sistêmica')
-  const [medicamentos, setMedicamentos] = useState('')
+  const [medicamentos, setMedicamentos] = useState<string[]>([])
+
+  const items = [
+    {
+      id: '1',
+      name: 'Medicamento 1'
+    },
+    {
+      id: '2',
+      name: 'Medicamento 2'
+    },
+    {
+      id: '3',
+      name: 'Medicamento 3'
+    },
+    {
+      id: '4',
+      name: 'Medicamento 4'
+    },
+    {
+      id: '5',
+      name: 'Medicamento 5'
+    },
+    {
+      id: '6',
+      name: 'Medicamento 6'
+    }
+  ]
 
   const clear = () => {
     setArea('Doença coronariana')
     setIdade('')
     setGenero('Masculino')
     setComorbidades('Hipertensão arterial sistêmica')
-    setMedicamentos('')
+    setMedicamentos([])
     setSintoma('')
   }
 
   const handleSubmit = () => {
-    if (idade !== '' && medicamentos !== '') {
+    if (idade !== '') {
       clear()
       navigateToPublish(area, genero, idade, sintoma, comorbidades, medicamentos)
     } else {
       Alert.alert('Aviso', 'Preencha todos os campos')
     }
   }
-
   useFocusEffect(
     useCallback(() => {
       if (user?.isSubscriber === false) {
@@ -64,10 +100,6 @@ export const PublishOne: React.FC = () => {
       }
     }, [isFocused])
   )
-
-  if (modalChoosePlanIsOpen) {
-    return <ModalChoosePlan />
-  }
 
   return (
     <Container contentContainerStyle={{ flexGrow: 1 }}>
@@ -180,13 +212,39 @@ export const PublishOne: React.FC = () => {
         </InputItem>
         <InputItem>
           <InputTitle>Medicamentos em Uso</InputTitle>
-          <Input
-            style={{ elevation: 10 }}
-            placeholder="Digite aqui..."
-            value={medicamentos}
-            onChangeText={(value) => setMedicamentos(value)}
-          />
+          <ModalButton onPress={openModalMedicine}>
+            <ModalButtonText>Selecionar medicamentos</ModalButtonText>
+          </ModalButton>
         </InputItem>
+        {modalMedicineIsOpen && (
+          <Modal
+            isVisible={modalMedicineIsOpen}
+            onBackdropPress={closeModalMedicine}
+            onBackButtonPress={closeModalMedicine}
+          >
+            <Wrapper>
+              <MultiSelect
+                hideTags
+                items={items}
+                uniqueKey="name"
+                onSelectedItemsChange={setMedicamentos}
+                selectedItems={medicamentos}
+                selectText="Selecione os medicamentos"
+                searchInputPlaceholderText="Pesquise os medicamentos..."
+                hideSubmitButton
+                hideDropdown
+                selectedItemTextColor={secondary}
+                selectedItemIconColor={secondary}
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: '#CCC', height: 50, fontSize: 16 }}
+              />
+            </Wrapper>
+          </Modal>
+        )}
+        <ModalButton onPress={() => console.log(medicamentos)}>
+          <ModalButtonText>ver medicamentos</ModalButtonText>
+        </ModalButton>
         <SubmitButton onPress={handleSubmit}>
           <SubmitButtonText>Prosseguir</SubmitButtonText>
         </SubmitButton>

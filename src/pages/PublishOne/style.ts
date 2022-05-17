@@ -101,3 +101,20 @@ export const SubmitButtonText = styled.Text`
   color: #fff;
   font-weight: bold;
 `
+
+export const ModalButton = styled.TouchableOpacity`
+  background: #c3c3c3;
+  padding: 22px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  border-radius: 6px;
+`
+
+export const ModalButtonText = styled.Text`
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
+`
+
+export const SelectView = styled.View``

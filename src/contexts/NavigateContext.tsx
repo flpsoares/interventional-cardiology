@@ -43,7 +43,7 @@ interface NavigateContextData {
     idade: string,
     sintoma: string,
     comorbidades: string,
-    medicamentos: string
+    medicamentos: string[]
   ) => void
   publishGoBack: () => void
   navigateToPlans: () => void
@@ -104,7 +104,7 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
     idade: string,
     sintoma: string,
     comorbidades: string,
-    medicamentos: string
+    medicamentos: string[]
   ) => {
     navigationPublish.navigate('PublishTwo', {
       area,
