@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Text } from 'react-native'
 import {
   BackButton,
@@ -23,8 +23,16 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import MercadoPagoApi from '../../services/MercadoPagoApi'
 import { WebView } from 'react-native-webview'
+import { useFocusEffect, useIsFocused } from '@react-navigation/core'
+import { useUser } from '../../contexts/UserContext'
+import { useModal } from '../../contexts/ModalContext'
 
 export const Plans: React.FC = () => {
+  const { user } = useUser()
+  const { closeModalChoosePlan } = useModal()
+
+  const isFocused = useIsFocused()
+
   const [threeMonthIsActive, setThreeMonthIsActive] = useState(false)
   const [sixMonthIsActive, setSixMonthIsActive] = useState(true)
   const [twelveMonthIsActive, setTwelveMonthIsActive] = useState(false)
@@ -66,6 +74,12 @@ export const Plans: React.FC = () => {
       setIsOpen(true)
     })
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      closeModalChoosePlan()
+    }, [isFocused])
+  )
 
   if (isOpen && url) {
     return (
@@ -121,4 +135,7 @@ export const Plans: React.FC = () => {
       </Wrapper>
     </Container>
   )
+}
+function openModalChoosePlan() {
+  throw new Error('Function not implemented.')
 }

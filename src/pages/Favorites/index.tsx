@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList, Text } from 'react-native'
 import {
   ChooseArea,
@@ -19,14 +19,20 @@ import { postData } from '../../postData'
 import { useModal } from '../../contexts/ModalContext'
 import app, { database } from '../../../firebase'
 import { useUser } from '../../contexts/UserContext'
+import { ModalChoosePlan } from '../../components/ModalChoosePlan'
+import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 
 export const Favorites: React.FC = () => {
   const {
     modalImageIsOpen,
     modalImageData,
     modalImageQuantity,
-    modalImageOpenItem
+    modalImageOpenItem,
+    modalChoosePlanIsOpen,
+    openModalChoosePlan
   } = useModal()
+
+  const isFocused = useIsFocused()
 
   const { user, userId } = useUser()
 
@@ -74,8 +80,17 @@ export const Favorites: React.FC = () => {
     }
   }, [favoriteIsActive])
 
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.isSubscriber === false) {
+        openModalChoosePlan()
+      }
+    }, [isFocused])
+  )
+
   return (
     <Container>
+      {modalChoosePlanIsOpen && <ModalChoosePlan />}
       <Top>
         {user?.userPhoto ? (
           <UserPhoto source={{ uri: user.userPhoto }} />

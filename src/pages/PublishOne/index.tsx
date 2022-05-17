@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   Button,
   Container,
@@ -21,10 +21,16 @@ import { Picker } from '@react-native-picker/picker'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { Alert } from 'react-native'
 import { useUser } from '../../contexts/UserContext'
+import { ModalChoosePlan } from '../../components/ModalChoosePlan'
+import { useModal } from '../../contexts/ModalContext'
+import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 
 export const PublishOne: React.FC = () => {
   const { user } = useUser()
   const { navigateToPublish } = useNavigate()
+  const { modalChoosePlanIsOpen, openModalChoosePlan } = useModal()
+
+  const isFocused = useIsFocused()
 
   const [area, setArea] = useState('Doença coronariana')
   const [idade, setIdade] = useState('')
@@ -51,8 +57,21 @@ export const PublishOne: React.FC = () => {
     }
   }
 
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.isSubscriber === false) {
+        openModalChoosePlan()
+      }
+    }, [isFocused])
+  )
+
+  if (modalChoosePlanIsOpen) {
+    return <ModalChoosePlan />
+  }
+
   return (
     <Container contentContainerStyle={{ flexGrow: 1 }}>
+      {modalChoosePlanIsOpen && <ModalChoosePlan />}
       <Header>
         {user?.userPhoto ? (
           <UserPhoto source={{ uri: user.userPhoto }} />

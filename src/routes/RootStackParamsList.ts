@@ -7,6 +7,7 @@ export type RootStackParamsList = {
   PostDetails: { postId: string }
   Account: undefined
   EditAccount: undefined
+  Plans: undefined
   PublishTwo: {
     area: string
     genero: string

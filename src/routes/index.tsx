@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Plans } from '../pages/Plans'
 import { Favorites } from '../pages/Favorites'
-import { secondary } from '../styles/globalCssVar'
+import { primary, secondary } from '../styles/globalCssVar'
 
 import { Foundation, FontAwesome, Entypo } from '@expo/vector-icons'
 import { PublishButton } from '../components/PublishButton'
@@ -12,13 +12,14 @@ import { PublishStackRoutes } from './publishStackRoutes'
 import app, { database } from '../../firebase'
 import { useUser } from '../contexts/UserContext'
 import * as Notifications from 'expo-notifications'
-import { Alert, Platform } from 'react-native'
+import { ActivityIndicator, Alert, Platform, View } from 'react-native'
 import Constants from 'expo-constants'
 
 const Tab = createBottomTabNavigator()
 
 export const Routes: React.FC = () => {
   const { setUser, user, setUserId } = useUser()
+  const [isLoading, setIsLoading] = useState(true)
 
   // const [notification, setNotification] = useState<Notifications.Notification>()
   // const notificationListener = useRef<any>()
@@ -117,11 +118,24 @@ export const Routes: React.FC = () => {
           userPhoto: data?.userPhoto
         })
       })
-
     return () => {
       subscribe()
     }
   }, [])
+
+  useEffect(() => {
+    if (user !== undefined) {
+      setIsLoading(false)
+    }
+  }, [user])
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={primary} />
+      </View>
+    )
+  }
 
   return (
     <Tab.Navigator

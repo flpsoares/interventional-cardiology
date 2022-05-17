@@ -140,6 +140,7 @@ export const Register: React.FC = () => {
                 name,
                 email,
                 isDoctor,
+                isSubscriber: false,
                 telephone
               })
             })

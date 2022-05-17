@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
 
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { Post } from '../../components/Post'
 import { FlatList } from 'react-native'
-import { postData } from '../../postData'
 import { ModalImage } from '../../components/ModalImage'
 import { useModal } from '../../contexts/ModalContext'
-import { database } from '../../../firebase'
-import moment from 'moment'
-import { useNavigate } from '../../contexts/NavigateContext'
+import app, { database } from '../../../firebase'
 import { useUser } from '../../contexts/UserContext'
+import { ModalChoosePlan } from '../../components/ModalChoosePlan'
+import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 
 export const Home: React.FC = () => {
   const { user } = useUser()
+  const { modalChoosePlanIsOpen, openModalChoosePlan, closeModalChoosePlan } =
+    useModal()
+  const isFocused = useIsFocused()
 
   const {
     modalImageIsOpen,
@@ -40,8 +42,30 @@ export const Home: React.FC = () => {
     return subscriber
   }, [])
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log(user?.isSubscriber)
+      if (user?.isSubscriber === false) {
+        openModalChoosePlan()
+      }
+    }, [isFocused])
+  )
+
+  const deleteStorage = async () => {
+    const storageRef = app.storage().ref()
+
+    const PostImageRef = storageRef.child('posts')
+    PostImageRef.listAll().then((list) => {
+      const promises = list.items.map((item) => {
+        return item.delete()
+      })
+      Promise.all(promises)
+    })
+  }
+
   return (
     <Container>
+      {modalChoosePlanIsOpen && <ModalChoosePlan />}
       <Top>
         {user?.userPhoto ? (
           <UserPhoto source={{ uri: user.userPhoto }} />
@@ -52,7 +76,12 @@ export const Home: React.FC = () => {
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
           <TopInput placeholder="Pesquisar..." />
         </TopInputArea>
-        <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+        <Ionicons
+          onPress={deleteStorage}
+          name="notifications-outline"
+          size={22}
+          color="#777d8c"
+        />
       </Top>
       <Wrapper>
         {modalImageIsOpen && (

@@ -25,6 +25,8 @@ type PublishScreenProps = NativeStackNavigationProp<
   'PublishTwo'
 >
 
+type PlansScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Plans'>
+
 interface NavigateContextData {
   navigateToInitial: () => void
   navigateToLogin: () => void
@@ -44,6 +46,7 @@ interface NavigateContextData {
     medicamentos: string
   ) => void
   publishGoBack: () => void
+  navigateToPlans: () => void
 }
 
 interface NavigateProviderProps {
@@ -61,6 +64,7 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigationPostDetails = useNavigation<PostDetailsScreenProps>()
   const navigationEditAccount = useNavigation<EditAccountScreenProps>()
   const navigationPublish = useNavigation<PublishScreenProps>()
+  const navigationPlans = useNavigation<PlansScreenProps>()
 
   const navigateToInitial = () => {
     navigationInitial.navigate('Initial')
@@ -76,6 +80,9 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   }
   const navigateToHome = () => {
     navigationHome.navigate('Home')
+  }
+  const navigateToPlans = () => {
+    navigationPlans.navigate('Plans')
   }
 
   const navigateToHomeWithReset = () => {
@@ -129,7 +136,8 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
         publishGoBack,
         navigateToChooseAuth,
         navigateToInitial,
-        navigateToHomeWithReset
+        navigateToHomeWithReset,
+        navigateToPlans
       }}
     >
       {children}

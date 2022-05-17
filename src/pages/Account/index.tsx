@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import app, { database } from '../../../firebase'
 import {
   Banner,
@@ -17,12 +17,18 @@ import { Post } from '../../components/Post'
 import { Ionicons } from '@expo/vector-icons'
 import { useUser } from '../../contexts/UserContext'
 import { SettingsDropdown } from '../../components/SettingsDropdown'
+import { ModalChoosePlan } from '../../components/ModalChoosePlan'
+import { useModal } from '../../contexts/ModalContext'
+import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 
 export const Account: React.FC = () => {
   const { user, userId } = useUser()
+  const { modalChoosePlanIsOpen, openModalChoosePlan } = useModal()
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
+
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     database
@@ -40,8 +46,17 @@ export const Account: React.FC = () => {
       })
   }, [])
 
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (user?.isSubscriber === false) {
+  //       openModalChoosePlan()
+  //     }
+  //   }, [isFocused])
+  // )
+
   return (
     <Container>
+      {/* {modalChoosePlanIsOpen && <ModalChoosePlan />} */}
       <Profile onPress={() => setDropdownIsOpen(false)}>
         <Banner>
           <Header>
@@ -65,12 +80,6 @@ export const Account: React.FC = () => {
           <Name>{user?.name}</Name>
           <Email>{user?.email}</Email>
         </Info>
-        {/* <EditButton onPress={navigateToEditAccount}>
-          <EditButtonText>EDITAR PERFIL</EditButtonText>
-        </EditButton>
-        <EditButton onPress={logOut}>
-          <EditButtonText>LogOut</EditButtonText>
-        </EditButton> */}
       </Profile>
       <PostArea>
         {posts?.map((post) => {

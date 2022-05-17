@@ -1,5 +1,4 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react'
-import { ImageSourcePropType } from 'react-native'
 
 interface ModalContextData {
   modalImageIsOpen: boolean
@@ -12,6 +11,9 @@ interface ModalContextData {
   postDropdownUserName: string
   openPostDropdown: (name: string) => void
   closePostDropdown: () => void
+  modalChoosePlanIsOpen: boolean
+  openModalChoosePlan: () => void
+  closeModalChoosePlan: () => void
 }
 
 interface ModalProviderProps {
@@ -25,6 +27,8 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [modalImageData, setModalImageData] = useState<string[]>()
   const [modalImageQuantity, setModalImageQuantity] = useState(0)
   const [modalImageOpenItem, setModalImageOpenItem] = useState(0)
+
+  const [modalChoosePlanIsOpen, setModalChoosePlanIsOpen] = useState(false)
 
   const [postDropdownIsOpen, setPostDropdownIsOpen] = useState(false)
   const [postDropdownUserName, setPostDropdownUserName] = useState('')
@@ -52,6 +56,14 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
     setPostDropdownUserName('')
   }
 
+  const openModalChoosePlan = () => {
+    setModalChoosePlanIsOpen(true)
+  }
+
+  const closeModalChoosePlan = () => {
+    setModalChoosePlanIsOpen(false)
+  }
+
   return (
     <ModalContext.Provider
       value={{
@@ -64,7 +76,10 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
         postDropdownIsOpen,
         postDropdownUserName,
         openPostDropdown,
-        closePostDropdown
+        closePostDropdown,
+        modalChoosePlanIsOpen,
+        openModalChoosePlan,
+        closeModalChoosePlan
       }}
     >
       {children}
