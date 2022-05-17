@@ -7,7 +7,6 @@ import {
   Info,
   Name,
   Options,
-  Photo,
   PostInfo,
   Top,
   TopLeftContent,
@@ -26,16 +25,7 @@ import {
 } from './style'
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
-import {
-  Alert,
-  Dimensions,
-  ImageSourcePropType,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  StyleSheet,
-  FlatList
-} from 'react-native'
+import { Dimensions, View, StyleSheet } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
 import { useModal } from '../../contexts/ModalContext'
 import { useNavigate } from '../../contexts/NavigateContext'
@@ -173,7 +163,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           />
         )}
       </Top>
-      <Wrapper>
+      <Wrapper isDetail={isDetail}>
         <ContentArea>
           <Content numberOfLines={10} ellipsizeMode="tail">
             {data.descricao}
@@ -194,25 +184,6 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             </SeeMoreButton>
           )}
         </ContentArea>
-        {/* <FlatList
-          horizontal
-          data={data.medias}
-          keyExtractor={(_, index) => String(index)}
-          renderItem={({ item }) => (
-            <TouchableWithoutFeedback
-              onPress={() =>
-                openModalImage(data.medias, data.medias.length, activeSlide)
-              }
-            >
-              <Image
-                resizeMode="contain"
-                source={{
-                  uri: item
-                }}
-              />
-            </TouchableWithoutFeedback>
-          )}
-        /> */}
         <Carousel
           ref={(c) => setCarousel(c)}
           data={data.medias}
@@ -220,7 +191,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           sliderWidth={SCREEN_WIDTH}
           itemWidth={SCREEN_WIDTH - 80}
           layout="default"
-          style={{ maxHeight: '300px', backgroundColor: 'blue' }}
+          style={{ maxHeight: '300px' }}
           renderItem={({ item }) => (
             <>
               {item.indexOf('.mp4') !== -1 ||

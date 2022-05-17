@@ -13,8 +13,8 @@ export const Photo = styled.Image`
   margin: auto;
   align-self: center;
   margin-top: 22px;
-  width: 200px;
-  height: 400px;
+  width: 100%;
+  height: 600px;
   align-self: center;
   margin: auto;
   padding: 12px 0;

@@ -69,7 +69,7 @@ export const ModalImage: React.FC<Props> = ({ data, quantity, openItem }) => {
                   </VideoButton>
                 ) : (
                   <Photo
-                    resizeMode="cover"
+                    resizeMode="contain"
                     source={{
                       uri: item
                     }}

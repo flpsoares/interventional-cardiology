@@ -41,10 +41,15 @@ export const Date = styled.Text`
 
 export const Options = styled.TouchableOpacity``
 
-export const Wrapper = styled.View`
+interface WrapperProps {
+  isDetail?: boolean
+}
+
+export const Wrapper = styled.View<WrapperProps>`
   margin-top: 12px;
   align-items: center;
-  max-height: 400px;
+  /* max-height: 400px; */
+  max-height: ${(props) => (props.isDetail ? '550px' : '400px')};
 `
 
 export const ContentArea = styled.View`
@@ -54,17 +59,11 @@ export const ContentArea = styled.View`
 
 export const Content = styled.Text`
   color: rgba(51, 51, 51, 0.8);
-`
-export const Photo = styled.Image`
-  align-self: center;
-  max-width: 100%;
-  border-radius: 3px;
-  max-height: 300px;
-  z-index: -1;
+  margin-bottom: 12px;
 `
 
 export const Image = styled.Image`
-  width: 200px;
+  width: 250px;
   height: 200px;
   z-index: 200;
 `
