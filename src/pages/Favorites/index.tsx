@@ -129,12 +129,10 @@ export const Favorites: React.FC = () => {
       </Top>
       <ChooseArea>
         <ChooseItem onPress={activeFavorite} isActive={favoriteIsActive}>
-          <ChooseItemText isActive={favoriteIsActive}>Seus favoritos</ChooseItemText>
+          <ChooseItemText isActive={favoriteIsActive}>SEUS FAVORITOS</ChooseItemText>
         </ChooseItem>
         <ChooseItem onPress={activePopular} isActive={popularIsActive}>
-          <ChooseItemText isActive={popularIsActive}>
-            Mais favoritados
-          </ChooseItemText>
+          <ChooseItemText isActive={popularIsActive}>MAIS POPULARES</ChooseItemText>
         </ChooseItem>
       </ChooseArea>
       <Wrapper>

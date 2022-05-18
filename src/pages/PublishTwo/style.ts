@@ -44,7 +44,7 @@ export const Wrapper = styled.View`
 `
 
 export const Input = styled.TextInput`
-  height: 300px;
+  height: 100px;
   justify-content: flex-start;
   background: #fff;
   margin-top: 12px;

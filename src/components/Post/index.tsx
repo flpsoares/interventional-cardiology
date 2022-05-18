@@ -197,7 +197,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             </>
           )}
           {!isDetail && (
-            <SeeMoreButton onPress={() => navigateToPostDetails(data.id)}>
+            <SeeMoreButton onPress={() => navigateToPostDetails(data.id!)}>
               <SeeMoreButtonText>Ver detalhes</SeeMoreButtonText>
             </SeeMoreButton>
           )}

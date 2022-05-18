@@ -11,21 +11,21 @@ export const ChooseArea = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 22px;
+  padding: 0 22px;
+  background: #fff;
 `
 
 export const ChooseItem = styled.TouchableOpacity<ChooseProps>`
-  width: 48%;
+  width: 50%;
   padding: 14px 12px;
-  background: ${(props) => (props.isActive ? primary : 'transparent')};
-  border: 1px solid ${primary};
-  border-radius: 50px;
+  border-bottom-width: ${(props) => (props.isActive ? '1px' : '0')};
+  border-color: ${primary};
 `
 
 export const ChooseItemText = styled.Text<ChooseProps>`
-  color: ${(props) => (props.isActive ? '#fff' : primary)};
+  color: ${primary};
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
 `
 

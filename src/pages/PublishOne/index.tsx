@@ -217,7 +217,13 @@ export const PublishOne: React.FC = () => {
   }
 
   const handleSubmit = () => {
-    if (idade !== '') {
+    if (
+      idade !== '' &&
+      area[0] !== '' &&
+      sintoma[0] !== '' &&
+      comorbidades[0] !== '' &&
+      medicamentos[0] !== ''
+    ) {
       clear()
       navigateToPublish(area, genero, idade, sintoma, comorbidades, medicamentos)
     } else {

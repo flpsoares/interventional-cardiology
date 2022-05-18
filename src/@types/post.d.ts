@@ -3,7 +3,7 @@ declare namespace App {
     autorId: string
     autorNome: string
     autorFoto?: string
-    id: string
+    id?: string
     area: string[]
     idade: string
     genero: string
@@ -11,6 +11,7 @@ declare namespace App {
     comorbidades: string[]
     medicamentos: string[]
     descricao: string
+    desfecho: string
     arquivos?: string[]
     dataCriacao: firebase.firestore.FieldValue
   }

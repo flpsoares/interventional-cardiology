@@ -1,16 +1,27 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState
-} from 'react'
+import { AntDesign, Ionicons } from '@expo/vector-icons'
+import {
+  RouteProp,
+  useFocusEffect,
+  useIsFocused,
+  useRoute
+} from '@react-navigation/core'
+import * as ImagePicker from 'expo-image-picker'
+import firebase from 'firebase'
+import React, { useCallback, useEffect, useState } from 'react'
+import { ActivityIndicator, Alert, Platform, View } from 'react-native'
+import app, { database } from '../../../firebase'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { useUser } from '../../contexts/UserContext'
+import { RootStackParamsList } from '../../routes/RootStackParamsList'
+import { primary, secondary } from '../../styles/globalCssVar'
 import {
   Button,
   ButtonImage,
   ButtonImageText,
+  CloseButton,
   Container,
   Header,
+  Image,
   Input,
   InputTitle,
   PreviewImage,
@@ -19,38 +30,18 @@ import {
   SubmitButtonText,
   Title,
   UserPhoto,
-  Wrapper,
-  Image,
-  CloseButton
+  Wrapper
 } from './style'
-
-import { Ionicons, AntDesign } from '@expo/vector-icons'
-import Constants from 'expo-constants'
-import { v4 as uuid } from 'uuid'
-
-import { Alert, Platform } from 'react-native'
-import {
-  RouteProp,
-  useFocusEffect,
-  useIsFocused,
-  useRoute
-} from '@react-navigation/core'
-import { RootStackParamsList } from '../../routes/RootStackParamsList'
-import app, { database } from '../../../firebase'
-import { useUser } from '../../contexts/UserContext'
-import firebase from 'firebase'
-import { useNavigate } from '../../contexts/NavigateContext'
-
-import * as ImagePicker from 'expo-image-picker'
-import { secondary } from '../../styles/globalCssVar'
 
 export const PublishTwo: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
   const { navigateToHome } = useNavigate()
   const { user, userId } = useUser()
   const isFocused = useIsFocused()
+  const [isLoading, setIsLoading] = useState(false)
 
   const [text, setText] = useState('')
+  const [outcome, setOutcome] = useState('')
   const [images, setImages] = useState([''])
   const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
@@ -133,7 +124,8 @@ export const PublishTwo: React.FC = () => {
   }
 
   const handleSubmit = () => {
-    if (text !== '') {
+    if (text !== '' && outcome !== '') {
+      setIsLoading(true)
       const data: App.Post = {
         autorId: userId,
         autorNome: user?.name,
@@ -145,6 +137,7 @@ export const PublishTwo: React.FC = () => {
         comorbidades: route.params.comorbidades,
         medicamentos: route.params.medicamentos,
         descricao: text,
+        desfecho: outcome,
         arquivos: storageFilesUrl,
         dataCriacao: timestamp
       }
@@ -160,6 +153,9 @@ export const PublishTwo: React.FC = () => {
           Alert.alert('Erro', 'Algo deu errado')
           console.log(e)
         })
+        .finally(() => setIsLoading(false))
+    } else {
+      Alert.alert('Erro', 'Preencha todos os campos')
     }
   }
 
@@ -204,9 +200,31 @@ export const PublishTwo: React.FC = () => {
             })}
           </PreviewImageArea>
         )}
-        <SubmitButton onPress={handleSubmit}>
-          <SubmitButtonText>Publicar</SubmitButtonText>
-        </SubmitButton>
+        <InputTitle style={{ marginTop: 42 }}>Desfecho do Caso</InputTitle>
+        <Input
+          onChangeText={setOutcome}
+          value={outcome}
+          multiline={true}
+          numberOfLines={4}
+          placeholder="Digite aqui o desfecho do caso..."
+          style={{ textAlignVertical: 'top' }}
+        />
+        {isLoading ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 22
+            }}
+          >
+            <ActivityIndicator size="large" color={primary} />
+          </View>
+        ) : (
+          <SubmitButton onPress={handleSubmit}>
+            <SubmitButtonText>Publicar</SubmitButtonText>
+          </SubmitButton>
+        )}
       </Wrapper>
     </Container>
   )
