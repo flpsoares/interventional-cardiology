@@ -9,11 +9,11 @@ export type RootStackParamsList = {
   EditAccount: undefined
   Plans: undefined
   PublishTwo: {
-    area: string
+    area: string[]
     genero: string
     idade: string
-    sintoma: string
-    comorbidades: string
+    sintoma: string[]
+    comorbidades: string[]
     medicamentos: string[]
   }
 }

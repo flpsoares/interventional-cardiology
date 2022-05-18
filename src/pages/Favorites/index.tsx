@@ -1,5 +1,13 @@
+import { EvilIcons, Ionicons } from '@expo/vector-icons'
+import { useFocusEffect, useIsFocused } from '@react-navigation/core'
+import firebase from 'firebase'
 import React, { useCallback, useEffect, useState } from 'react'
-import { FlatList, Text } from 'react-native'
+import { database } from '../../../firebase'
+import { ModalChoosePlan } from '../../components/ModalChoosePlan'
+import { ModalImage } from '../../components/ModalImage'
+import { Post } from '../../components/Post'
+import { useModal } from '../../contexts/ModalContext'
+import { useUser } from '../../contexts/UserContext'
 import {
   ChooseArea,
   ChooseItem,
@@ -11,16 +19,6 @@ import {
   UserPhoto,
   Wrapper
 } from './style'
-
-import { EvilIcons, Ionicons } from '@expo/vector-icons'
-import { ModalImage } from '../../components/ModalImage'
-import { Post } from '../../components/Post'
-import { postData } from '../../postData'
-import { useModal } from '../../contexts/ModalContext'
-import app, { database } from '../../../firebase'
-import { useUser } from '../../contexts/UserContext'
-import { ModalChoosePlan } from '../../components/ModalChoosePlan'
-import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 
 export const Favorites: React.FC = () => {
   const {
@@ -49,33 +47,59 @@ export const Favorites: React.FC = () => {
     setFavoriteIsActive(false)
     setPopularIsActive(true)
   }
+
   useEffect(() => {
     if (favoriteIsActive) {
       database
         .collection('/posts_favorites')
-        .where('autorId', '==', userId)
+        .where('userId', '==', userId)
         .onSnapshot((querySnapshot) => {
-          const data = querySnapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            }
-          }) as App.Post[]
-          setPosts(data)
+          const postsIds = querySnapshot.docs
+            .map((doc: any) => doc.data())
+            .map((f) => f.postId)
+
+          if (postsIds.length > 0) {
+            database
+              .collection('/posts')
+              .where(firebase.firestore.FieldPath.documentId(), 'in', postsIds)
+              .onSnapshot((querySnapshot) => {
+                const data: any = querySnapshot.docs.map((doc) => {
+                  return {
+                    id: doc.id,
+                    ...doc.data()
+                  }
+                })
+                setPosts(data)
+              })
+          } else {
+            setPosts([])
+          }
         })
     } else {
       database
-        .collection('/posts')
-        .orderBy('favoritos', 'desc')
-        .limit(50)
+        .collection('/posts_favorites')
+        .limit(10)
         .onSnapshot((querySnapshot) => {
-          const data = querySnapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            }
-          }) as App.Post[]
-          setPosts(data)
+          const postsIds = querySnapshot.docs
+            .map((doc: any) => doc.data())
+            .map((f) => f.postId)
+
+          if (postsIds.length > 0) {
+            database
+              .collection('/posts')
+              .where(firebase.firestore.FieldPath.documentId(), 'in', postsIds)
+              .onSnapshot((querySnapshot) => {
+                const data: any = querySnapshot.docs.map((doc) => {
+                  return {
+                    id: doc.id,
+                    ...doc.data()
+                  }
+                })
+                setPosts(data)
+              })
+          } else {
+            setPosts([])
+          }
         })
     }
   }, [favoriteIsActive])
@@ -124,12 +148,6 @@ export const Favorites: React.FC = () => {
         {posts?.map((post) => {
           return <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
         })}
-        {/* <FlatList
-          data={postData}
-          keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => <Post data={data} />}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        /> */}
       </Wrapper>
     </Container>
   )

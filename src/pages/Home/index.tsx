@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
-
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
-import { Post } from '../../components/Post'
-import { FlatList } from 'react-native'
-import { ModalImage } from '../../components/ModalImage'
-import { useModal } from '../../contexts/ModalContext'
-import app, { database } from '../../../firebase'
-import { useUser } from '../../contexts/UserContext'
-import { ModalChoosePlan } from '../../components/ModalChoosePlan'
 import { useFocusEffect, useIsFocused } from '@react-navigation/core'
-
+import React, { useCallback, useEffect, useState } from 'react'
+import { FlatList } from 'react-native'
+import { database } from '../../../firebase'
+import { ModalChoosePlan } from '../../components/ModalChoosePlan'
+import { ModalImage } from '../../components/ModalImage'
+import { Post } from '../../components/Post'
+import { useModal } from '../../contexts/ModalContext'
+import { useUser } from '../../contexts/UserContext'
+import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
 export const Home: React.FC = () => {
   const { user } = useUser()
   const { modalChoosePlanIsOpen, openModalChoosePlan, closeModalChoosePlan } =
@@ -50,17 +48,17 @@ export const Home: React.FC = () => {
     }, [isFocused])
   )
 
-  const deleteStorage = async () => {
-    const storageRef = app.storage().ref()
+  // const deleteStorage = async () => {
+  //   const storageRef = app.storage().ref()
 
-    const PostImageRef = storageRef.child('posts')
-    PostImageRef.listAll().then((list) => {
-      const promises = list.items.map((item) => {
-        return item.delete()
-      })
-      Promise.all(promises)
-    })
-  }
+  //   const PostImageRef = storageRef.child('posts')
+  //   PostImageRef.listAll().then((list) => {
+  //     const promises = list.items.map((item) => {
+  //       return item.delete()
+  //     })
+  //     Promise.all(promises)
+  //   })
+  // }
 
   return (
     <Container>
@@ -75,12 +73,7 @@ export const Home: React.FC = () => {
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
           <TopInput placeholder="Pesquisar..." />
         </TopInputArea>
-        <Ionicons
-          onPress={deleteStorage}
-          name="notifications-outline"
-          size={22}
-          color="#777d8c"
-        />
+        <Ionicons name="notifications-outline" size={22} color="#777d8c" />
       </Top>
       <Wrapper>
         {modalImageIsOpen && (

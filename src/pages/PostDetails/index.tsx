@@ -1,4 +1,14 @@
+import { EvilIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
+import { RouteProp, useRoute } from '@react-navigation/core'
+import firebase from 'firebase'
 import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, Alert, View } from 'react-native'
+import { database } from '../../../firebase'
+import { Comment } from '../../components/Comment'
+import { Post } from '../../components/Post'
+import { useUser } from '../../contexts/UserContext'
+import { RootStackParamsList } from '../../routes/RootStackParamsList'
+import { primary } from '../../styles/globalCssVar'
 import {
   CommentInput,
   CommentInputArea,
@@ -12,16 +22,6 @@ import {
   UserPhoto,
   Wrapper
 } from './style'
-import { EvilIcons, Ionicons, FontAwesome } from '@expo/vector-icons'
-import { Post } from '../../components/Post'
-import { Comment } from '../../components/Comment'
-import { ActivityIndicator, Alert, FlatList, TextInput, View } from 'react-native'
-import app, { database } from '../../../firebase'
-import { RouteProp, useRoute } from '@react-navigation/core'
-import { RootStackParamsList } from '../../routes/RootStackParamsList'
-import { primary } from '../../styles/globalCssVar'
-import { useUser } from '../../contexts/UserContext'
-import firebase from 'firebase'
 
 export const PostDetails: React.FC = () => {
   const { user, userId } = useUser()
@@ -62,23 +62,17 @@ export const PostDetails: React.FC = () => {
       })
   }
 
-  const getPost = async (postId: string) => {
-    await database
-      .collection('posts')
-      .doc(postId)
-      .get()
-      .then((res) => setPost(res.data()))
-    // .onSnapshot((querySnapshot) => {
-    //   const data = { id: querySnapshot.id, ...querySnapshot.data() }
-    //   setPost(data)
-    // })
-  }
-
   useEffect(() => {
-    getPost(route.params.postId).finally(() => {
-      getComments()
-      setIsLoading(false)
-    })
+    database
+      .collection('posts')
+      .doc(route.params.postId)
+      .onSnapshot((querySnapshot) => {
+        const data = { id: querySnapshot.id, ...querySnapshot.data() }
+
+        setPost(data)
+        getComments()
+        setIsLoading(false)
+      })
   }, [])
 
   if (isLoading) {

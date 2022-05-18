@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import React, { createContext, useContext, ReactNode } from 'react'
+import React, { createContext, ReactNode, useContext } from 'react'
 import { RootStackParamsList } from '../routes/RootStackParamsList'
 
 type InitialScreenProps = NativeStackNavigationProp<RootStackParamsList, 'Initial'>
@@ -38,11 +38,11 @@ interface NavigateContextData {
   navigateToEditAccount: () => void
   editAccountGoBack: () => void
   navigateToPublish: (
-    area: string,
+    area: string[],
     genero: string,
     idade: string,
-    sintoma: string,
-    comorbidades: string,
+    sintoma: string[],
+    comorbidades: string[],
     medicamentos: string[]
   ) => void
   publishGoBack: () => void
@@ -99,11 +99,11 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
     navigationEditAccount.navigate('EditAccount')
   }
   const navigateToPublish = (
-    area: string,
+    area: string[],
     genero: string,
     idade: string,
-    sintoma: string,
-    comorbidades: string,
+    sintoma: string[],
+    comorbidades: string[],
     medicamentos: string[]
   ) => {
     navigationPublish.navigate('PublishTwo', {

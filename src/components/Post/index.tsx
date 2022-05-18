@@ -1,40 +1,38 @@
 /* eslint-disable indent */
+import { AntDesign, Entypo, Fontisto } from '@expo/vector-icons'
+import { Video } from 'expo-av'
 import React, { useEffect, useRef, useState } from 'react'
+import { Dimensions, StyleSheet, View } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
+import { database } from '../../../firebase'
+import { useModal } from '../../contexts/ModalContext'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { useUser } from '../../contexts/UserContext'
+import { PostDropdown } from '../PostDropdown'
 import {
+  Button,
+  ButtonArea,
+  ButtonTitle,
+  CarouselButton,
   Container,
   Content,
+  ContentArea,
   Date,
+  HighlightedContent,
+  Image,
   Info,
   Name,
   Options,
   PostInfo,
+  PostInfoArea,
+  SeeMoreButton,
+  SeeMoreButtonText,
   Top,
   TopLeftContent,
   UserPhoto,
-  Wrapper,
-  ButtonArea,
-  ButtonTitle,
-  PostInfoArea,
-  Button,
-  ContentArea,
-  SeeMoreButton,
-  SeeMoreButtonText,
-  Image,
-  CarouselButton,
   VideoButton,
-  HighlightedContent
+  Wrapper
 } from './style'
-
-import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
-import { Dimensions, View, StyleSheet } from 'react-native'
-import Carousel from 'react-native-snap-carousel'
-import { useModal } from '../../contexts/ModalContext'
-import { useNavigate } from '../../contexts/NavigateContext'
-import { PostDropdown } from '../PostDropdown'
-import { useUser } from '../../contexts/UserContext'
-import app, { database } from '../../../firebase'
-import { Video } from 'expo-av'
-
 type Props = {
   data: App.Post
   isDetail?: boolean
@@ -86,25 +84,18 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
         }
       })
       .finally(() => setIsLoading(false))
-    // isFavorited
-    database
-      .collection(`/posts/${data.id}/favorites`)
-      .where('autorId', '==', userId)
-      .get()
-      .then((favorite) => {
-        if (favorite.docs[0] !== undefined) {
-          setIsFavorited(true)
-        } else {
-          setIsFavorited(false)
-        }
-      })
-      .finally(() => setIsLoading(false))
+  }, [])
 
-    database
-      .collection(`/posts/${data.id}/favorites`)
-      .onSnapshot((querySnapshot) => {
-        setFavoriteCount(querySnapshot.docs.length)
-      })
+  useEffect(() => {
+    if (isFavoriteList) {
+      database
+        .collection('/posts_favorites')
+        .where('postId', '==', data.id)
+        .onSnapshot((querySnapshot) => {
+          const data = querySnapshot.docs.length
+          setFavoriteCount(data)
+        })
+    }
   }, [])
 
   const handleLike = async (likeId: string) => {
@@ -173,7 +164,9 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             <>
               <Content style={{ marginTop: 18 }}>
                 <HighlightedContent>Área: </HighlightedContent>
-                {data.area}
+                {data.area.map((area) => {
+                  return `${area} `
+                })}
               </Content>
               <Content>
                 <HighlightedContent>Idade: </HighlightedContent>
@@ -185,11 +178,15 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
               </Content>
               <Content>
                 <HighlightedContent>Sintoma: </HighlightedContent>
-                {data.sintoma}
+                {data.sintoma.map((sintoma) => {
+                  return `${sintoma} `
+                })}
               </Content>
               <Content>
                 <HighlightedContent>Comorbidade: </HighlightedContent>
-                {data.comorbidades}
+                {data.comorbidades.map((comorbidade) => {
+                  return `${comorbidade} `
+                })}
               </Content>
               <Content>
                 <HighlightedContent>Medicamentos: </HighlightedContent>
@@ -200,12 +197,12 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             </>
           )}
           {!isDetail && (
-            <SeeMoreButton onPress={() => navigateToPostDetails(data.id!)}>
+            <SeeMoreButton onPress={() => navigateToPostDetails(data.id)}>
               <SeeMoreButtonText>Ver detalhes</SeeMoreButtonText>
             </SeeMoreButton>
           )}
         </ContentArea>
-        {data.arquivos[0] !== '' && (
+        {data.arquivos && data.arquivos[0] !== '' && (
           <Carousel
             ref={(c) => setCarousel(c)}
             data={data.arquivos}
@@ -235,7 +232,11 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
                 ) : (
                   <CarouselButton
                     onPress={() =>
-                      openModalImage(data.arquivos, data.arquivos.length, activeSlide)
+                      openModalImage(
+                        data.arquivos!,
+                        data.arquivos!.length,
+                        activeSlide
+                      )
                     }
                   >
                     <Image

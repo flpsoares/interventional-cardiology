@@ -117,7 +117,7 @@ export const ModalButtonText = styled.Text`
   font-weight: 500;
 `
 
-export const MedicinePreview = styled.View`
+export const ItemPreview = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
@@ -125,7 +125,7 @@ export const MedicinePreview = styled.View`
   justify-content: space-between;
 `
 
-export const MedicineText = styled.Text`
+export const ItemText = styled.Text`
   text-align: center;
   font-size: 16px;
   color: ${secondary};

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { ActivityIndicator, StatusBar, View } from 'react-native'
 import * as Updates from 'expo-updates'
-import { AuthRoutes } from './src/routes/AuthRoutes'
-import { Routes } from './src/routes'
-import { NavigateProvider } from './src/contexts/NavigateContext'
-import { LanguageProvider } from './src/contexts/LanguageContext'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, StatusBar, View } from 'react-native'
 import firebase from './firebase'
-import { primary } from './src/styles/globalCssVar'
+import { LanguageProvider } from './src/contexts/LanguageContext'
 import { ModalProvider } from './src/contexts/ModalContext'
-import { UserProvider } from './src/contexts/UserContext'
+import { NavigateProvider } from './src/contexts/NavigateContext'
 import { NotificationProvider } from './src/contexts/NotificationContext'
+import { UserProvider } from './src/contexts/UserContext'
+import { Routes } from './src/routes'
+import { AuthRoutes } from './src/routes/AuthRoutes'
+import { primary } from './src/styles/globalCssVar'
 
 export default function App() {
   const [user, setUser] = useState<boolean>()
@@ -41,7 +41,7 @@ export default function App() {
       }
     }
 
-    updateApp()
+    // updateApp()
   }, [])
 
   if (isLoading) {
