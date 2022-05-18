@@ -88,11 +88,16 @@ export const EditAccount: React.FC = () => {
               .collection('/users')
               .doc(userId)
               .set({ userPhoto: url }, { merge: true })
-              .then(() => console.log('foto de perfil alterada'))
-              .catch(() => console.log('deu merda ai doidão'))
+              .catch((e) => {
+                Alert.alert('Erro', 'Ocorreu algum erro')
+                console.log(e)
+              })
           })
         })
-        .catch(() => console.log('kkkkkkkk vamo chorar carai'))
+        .catch((e) => {
+          Alert.alert('Erro', 'Ocorreu algum erro')
+          console.log(e)
+        })
     }
   }
 

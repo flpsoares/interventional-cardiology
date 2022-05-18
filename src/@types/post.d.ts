@@ -11,7 +11,7 @@ declare namespace App {
     comorbidades: string
     medicamentos: string[]
     descricao: string
-    medias: string[]
+    arquivos: string[]
     dataCriacao: firebase.firestore.FieldValue
   }
 }

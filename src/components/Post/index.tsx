@@ -21,7 +21,8 @@ import {
   SeeMoreButtonText,
   Image,
   CarouselButton,
-  VideoButton
+  VideoButton,
+  HighlightedContent
 } from './style'
 
 import { Entypo, AntDesign, Fontisto } from '@expo/vector-icons'
@@ -170,12 +171,32 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           </Content>
           {isDetail && (
             <>
-              <Content style={{ marginTop: 18 }}>Área: {data.area}</Content>
-              <Content>Idade: {data.idade}</Content>
-              <Content>Gênero: {data.genero}</Content>
-              <Content>Sintoma: {data.sintoma}</Content>
-              <Content>Comorbidade: {data.comorbidades}</Content>
-              <Content>Medicamentos: {data.medicamentos}</Content>
+              <Content style={{ marginTop: 18 }}>
+                <HighlightedContent>Área: </HighlightedContent>
+                {data.area}
+              </Content>
+              <Content>
+                <HighlightedContent>Idade: </HighlightedContent>
+                {data.idade}
+              </Content>
+              <Content>
+                <HighlightedContent>Gênero: </HighlightedContent>
+                {data.genero}
+              </Content>
+              <Content>
+                <HighlightedContent>Sintoma: </HighlightedContent>
+                {data.sintoma}
+              </Content>
+              <Content>
+                <HighlightedContent>Comorbidade: </HighlightedContent>
+                {data.comorbidades}
+              </Content>
+              <Content>
+                <HighlightedContent>Medicamentos: </HighlightedContent>
+                {data.medicamentos.map((med) => {
+                  return `${med} `
+                })}
+              </Content>
             </>
           )}
           {!isDetail && (
@@ -184,49 +205,51 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             </SeeMoreButton>
           )}
         </ContentArea>
-        <Carousel
-          ref={(c) => setCarousel(c)}
-          data={data.medias}
-          onSnapToItem={(index) => setActiveSlide(index)}
-          sliderWidth={SCREEN_WIDTH}
-          itemWidth={SCREEN_WIDTH - 80}
-          layout="default"
-          style={{ maxHeight: '300px' }}
-          renderItem={({ item }) => (
-            <>
-              {item.indexOf('.mp4') !== -1 ||
-              item.indexOf('.wmv') !== -1 ||
-              item.indexOf('.avi') !== -1 ? (
-                <VideoButton>
-                  <Video
-                    ref={video}
-                    style={styles.video}
-                    source={{
-                      uri: item
-                    }}
-                    useNativeControls
-                    resizeMode="cover"
-                    isLooping
-                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-                  />
-                </VideoButton>
-              ) : (
-                <CarouselButton
-                  onPress={() =>
-                    openModalImage(data.medias, data.medias.length, activeSlide)
-                  }
-                >
-                  <Image
-                    resizeMode="cover"
-                    source={{
-                      uri: item
-                    }}
-                  />
-                </CarouselButton>
-              )}
-            </>
-          )}
-        />
+        {data.arquivos[0] !== '' && (
+          <Carousel
+            ref={(c) => setCarousel(c)}
+            data={data.arquivos}
+            onSnapToItem={(index) => setActiveSlide(index)}
+            sliderWidth={SCREEN_WIDTH}
+            itemWidth={SCREEN_WIDTH - 80}
+            layout="default"
+            style={{ maxHeight: '300px' }}
+            renderItem={({ item }) => (
+              <>
+                {item.indexOf('.mp4') !== -1 ||
+                item.indexOf('.wmv') !== -1 ||
+                item.indexOf('.avi') !== -1 ? (
+                  <VideoButton>
+                    <Video
+                      ref={video}
+                      style={styles.video}
+                      source={{
+                        uri: item
+                      }}
+                      useNativeControls
+                      resizeMode="cover"
+                      isLooping
+                      onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+                    />
+                  </VideoButton>
+                ) : (
+                  <CarouselButton
+                    onPress={() =>
+                      openModalImage(data.arquivos, data.arquivos.length, activeSlide)
+                    }
+                  >
+                    <Image
+                      resizeMode="cover"
+                      source={{
+                        uri: item
+                      }}
+                    />
+                  </CarouselButton>
+                )}
+              </>
+            )}
+          />
+        )}
         <PostInfoArea>
           <PostInfo>{likeCount} curtidas</PostInfo>
           <PostInfo>{commentCount} comentários</PostInfo>

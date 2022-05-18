@@ -8,6 +8,8 @@ import {
   Input,
   InputItem,
   InputTitle,
+  MedicinePreview,
+  MedicineText,
   ModalButton,
   ModalButtonText,
   PickerButton,
@@ -242,9 +244,11 @@ export const PublishOne: React.FC = () => {
             </Wrapper>
           </Modal>
         )}
-        <ModalButton onPress={() => console.log(medicamentos)}>
-          <ModalButtonText>ver medicamentos</ModalButtonText>
-        </ModalButton>
+        <MedicinePreview>
+          {medicamentos?.map((med, index) => {
+            return <MedicineText key={index}>{med}</MedicineText>
+          })}
+        </MedicinePreview>
         <SubmitButton onPress={handleSubmit}>
           <SubmitButtonText>Prosseguir</SubmitButtonText>
         </SubmitButton>

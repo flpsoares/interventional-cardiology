@@ -145,7 +145,7 @@ export const PublishTwo: React.FC = () => {
         comorbidades: route.params.comorbidades,
         medicamentos: route.params.medicamentos,
         descricao: text,
-        medias: storageFilesUrl,
+        arquivos: storageFilesUrl,
         dataCriacao: timestamp
       }
       database
@@ -204,7 +204,6 @@ export const PublishTwo: React.FC = () => {
             })}
           </PreviewImageArea>
         )}
-
         <SubmitButton onPress={handleSubmit}>
           <SubmitButtonText>Publicar</SubmitButtonText>
         </SubmitButton>

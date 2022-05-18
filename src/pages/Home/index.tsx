@@ -44,7 +44,6 @@ export const Home: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log(user?.isSubscriber)
       if (user?.isSubscriber === false) {
         openModalChoosePlan()
       }

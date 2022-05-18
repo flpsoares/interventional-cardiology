@@ -48,7 +48,6 @@ interface WrapperProps {
 export const Wrapper = styled.View<WrapperProps>`
   margin-top: 12px;
   align-items: center;
-  /* max-height: 400px; */
   max-height: ${(props) => (props.isDetail ? '550px' : '400px')};
 `
 
@@ -60,6 +59,12 @@ export const ContentArea = styled.View`
 export const Content = styled.Text`
   color: rgba(51, 51, 51, 0.8);
   margin-bottom: 12px;
+`
+
+export const HighlightedContent = styled.Text`
+  color: rgba(51, 51, 51, 0.8);
+  margin-bottom: 12px;
+  font-weight: bold;
 `
 
 export const Image = styled.Image`
