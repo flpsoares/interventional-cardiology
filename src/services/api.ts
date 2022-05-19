@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'http://10.0.2.2:3333'
+  baseURL: 'https://interventional-cardiology-back.herokuapp.com'
+  // baseURL: 'http://10.0.2.2:3333'
 })
 
 axios.defaults.headers.post['Content-Type'] = 'application/json'

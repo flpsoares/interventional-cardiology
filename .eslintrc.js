@@ -27,4 +27,4 @@ module.exports = {
     'space-before-function-paren': 'off',
     'multiline-ternary': 'off'
   }
-};
+}

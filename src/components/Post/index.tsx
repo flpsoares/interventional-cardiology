@@ -140,6 +140,8 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
 
           <Info>
             <Name>{data.autorNome}</Name>
+            {/* <Date>{moment().format(data.dataExibicao)}</Date> */}
+            <Date>{data.dataExibicao}</Date>
             {isFavoriteList && <Date>Favoritos: {favoriteCount}</Date>}
           </Info>
         </TopLeftContent>

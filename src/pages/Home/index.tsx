@@ -1,5 +1,6 @@
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { useFocusEffect, useIsFocused } from '@react-navigation/core'
+import moment from 'moment'
 import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { database } from '../../../firebase'
@@ -9,6 +10,7 @@ import { Post } from '../../components/Post'
 import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
 import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
+
 export const Home: React.FC = () => {
   const { user } = useUser()
   const { modalChoosePlanIsOpen, openModalChoosePlan, closeModalChoosePlan } =
@@ -24,6 +26,7 @@ export const Home: React.FC = () => {
   const [posts, setPosts] = useState<App.Post[]>()
 
   useEffect(() => {
+    console.log(moment().subtract(3, 'hours').format('DD/MM/YYYY H:mm:ss'))
     const subscriber = database
       .collection('posts')
       .orderBy('dataCriacao', 'desc')

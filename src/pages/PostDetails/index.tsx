@@ -1,6 +1,7 @@
 import { EvilIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
 import { RouteProp, useRoute } from '@react-navigation/core'
 import firebase from 'firebase'
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, View } from 'react-native'
 import { database } from '../../../firebase'
@@ -32,25 +33,30 @@ export const PostDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [commentText, setCommentText] = useState('')
 
+  const dateNow = moment().subtract(3, 'hours').format('DD/MM/YYYY H:mm:ss')
+
   const createComment = () => {
     database
       .collection(`/posts/${route.params.postId}/comments`)
       .add({
         autorId: userId,
         autorNome: user?.name,
+        autorFoto: user?.userPhoto || '',
         texto: commentText,
-        dataCriacao: firebase.firestore.FieldValue.serverTimestamp()
+        dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
+        dataExibicao: dateNow
       })
       .then(() => setCommentText(''))
       .catch((e) => {
         Alert.alert('Erro', 'Ocorreu algum erro')
         console.log(e)
-      });
+      })
   }
 
   const getComments = () => {
     database
       .collection(`/posts/${route.params.postId}/comments`)
+      .orderBy('dataCriacao', 'desc')
       .onSnapshot((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => {
           return {
@@ -59,7 +65,7 @@ export const PostDetails: React.FC = () => {
           }
         }) as App.Comment[]
         setComments(data)
-      });
+      })
   }
 
   useEffect(() => {
@@ -72,7 +78,7 @@ export const PostDetails: React.FC = () => {
         setPost(data)
         getComments()
         setIsLoading(false)
-      });
+      })
   }, [])
 
   if (isLoading) {
@@ -86,7 +92,11 @@ export const PostDetails: React.FC = () => {
   return (
     <Container>
       <Top>
-        <UserPhoto source={require('../../../assets/default-user.png')} />
+        {user?.userPhoto ? (
+          <UserPhoto source={{ uri: user.userPhoto }} />
+        ) : (
+          <UserPhoto source={require('../../../assets/default-user.png')} />
+        )}
         <TopInputArea>
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
           <TopInput placeholder="Pesquisar..." />
@@ -97,7 +107,11 @@ export const PostDetails: React.FC = () => {
         <Post isDetail data={post} />
         <Title>Comentários</Title>
         <CommentInputArea>
-          <UserPhoto source={require('../../../assets/default-user.png')} />
+          {user?.userPhoto ? (
+            <UserPhoto source={{ uri: user.userPhoto }} />
+          ) : (
+            <UserPhoto source={require('../../../assets/default-user.png')} />
+          )}
           <CommentInputBox>
             <CommentInput
               onChangeText={setCommentText}

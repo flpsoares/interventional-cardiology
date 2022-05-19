@@ -41,8 +41,7 @@ export const PublishTwo: React.FC = () => {
   const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
-  moment.locale('pt-br')
-  const date = moment().format('DD/MM/YYYY H:mm:ss')
+  const dateNow = moment().subtract(3, 'hours').format('DD/MM/YYYY H:mm:ss')
 
   useEffect(() => {
     const verifyPermission = async () => {
@@ -129,7 +128,7 @@ export const PublishTwo: React.FC = () => {
         desfecho: outcome,
         arquivos: storageFilesUrl,
         dataCriacao: timestamp,
-        dataExibicao: date
+        dataExibicao: dateNow
       }
       database
         .collection('posts')
