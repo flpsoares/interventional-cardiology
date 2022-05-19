@@ -84,6 +84,18 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
         }
       })
       .finally(() => setIsLoading(false))
+
+    // isFavorited
+    database
+      .collection('/posts_favorites')
+      .where('userId', '==', userId)
+      .onSnapshot((querySnapshot) => {
+        if (querySnapshot.docs[0] === undefined) {
+          setIsFavorited(false)
+        } else {
+          setIsFavorited(true)
+        }
+      })
   }, [])
 
   useEffect(() => {
