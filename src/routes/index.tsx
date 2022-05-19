@@ -1,20 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { Entypo, FontAwesome, Foundation } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Plans } from '../pages/Plans'
-import { Favorites } from '../pages/Favorites'
-import { primary, secondary } from '../styles/globalCssVar'
-
-import { Foundation, FontAwesome, Entypo } from '@expo/vector-icons'
-import { PublishButton } from '../components/PublishButton'
-import { HomeStackRoutes } from './homeStackRoutes'
-import { AccountStackRoutes } from './accountStackRoutes'
-import { PublishStackRoutes } from './publishStackRoutes'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, View } from 'react-native'
 import app, { database } from '../../firebase'
+import { PublishButton } from '../components/PublishButton'
 import { useUser } from '../contexts/UserContext'
-import * as Notifications from 'expo-notifications'
-import { ActivityIndicator, Alert, Platform, View } from 'react-native'
-import Constants from 'expo-constants'
-
+import { Favorites } from '../pages/Favorites'
+import { Plans } from '../pages/Plans'
+import { primary, secondary } from '../styles/globalCssVar'
+import { AccountStackRoutes } from './accountStackRoutes'
+import { HomeStackRoutes } from './homeStackRoutes'
+import { PublishStackRoutes } from './publishStackRoutes'
 const Tab = createBottomTabNavigator()
 
 export const Routes: React.FC = () => {
@@ -100,6 +96,10 @@ export const Routes: React.FC = () => {
   //   return token
   // }
 
+  const tabBarListeners = ({ navigation, route }: any) => ({
+    tabPress: () => navigation.navigate(route.name)
+  })
+
   useEffect(() => {
     setUserId(app.auth().currentUser!.uid)
     const subscribe = database
@@ -176,6 +176,7 @@ export const Routes: React.FC = () => {
         <Tab.Screen
           name="PublishStackRoutes"
           component={PublishStackRoutes}
+          listeners={tabBarListeners}
           options={{
             tabBarLabel: '',
             headerShown: false,

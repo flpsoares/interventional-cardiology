@@ -39,7 +39,6 @@ export function usePopularPost() {
           })
       })
   }, [])
-  console.log(posts)
   return Object.values(posts)
     .sort((b, a) => a.favoriteCounts - b.favoriteCounts)
     .slice(0, 9)

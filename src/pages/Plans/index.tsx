@@ -67,7 +67,6 @@ export const Plans: React.FC = () => {
   const handleSale = (month: number) => {
     MercadoPagoApi.createPreference(month).then((res) => {
       setUrl(res.data.body.sandbox_init_point)
-      console.log(res.data.body.external_reference)
       setIsOpen(true)
     })
   }
