@@ -14,5 +14,6 @@ declare namespace App {
     desfecho: string
     arquivos?: string[]
     dataCriacao: firebase.firestore.FieldValue
+    dataExibicao: string
   }
 }

@@ -48,18 +48,6 @@ export const Home: React.FC = () => {
     }, [isFocused])
   )
 
-  // const deleteStorage = async () => {
-  //   const storageRef = app.storage().ref()
-
-  //   const PostImageRef = storageRef.child('posts')
-  //   PostImageRef.listAll().then((list) => {
-  //     const promises = list.items.map((item) => {
-  //       return item.delete()
-  //     })
-  //     Promise.all(promises)
-  //   })
-  // }
-
   return (
     <Container>
       {modalChoosePlanIsOpen && <ModalChoosePlan />}

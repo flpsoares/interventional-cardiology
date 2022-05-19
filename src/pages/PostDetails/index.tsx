@@ -45,7 +45,7 @@ export const PostDetails: React.FC = () => {
       .catch((e) => {
         Alert.alert('Erro', 'Ocorreu algum erro')
         console.log(e)
-      })
+      });
   }
 
   const getComments = () => {
@@ -59,7 +59,7 @@ export const PostDetails: React.FC = () => {
           }
         }) as App.Comment[]
         setComments(data)
-      })
+      });
   }
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export const PostDetails: React.FC = () => {
         setPost(data)
         getComments()
         setIsLoading(false)
-      })
+      });
   }, [])
 
   if (isLoading) {

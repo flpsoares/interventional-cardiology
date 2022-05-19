@@ -1,39 +1,27 @@
+import { FontAwesome } from '@expo/vector-icons'
 import React, { useState } from 'react'
+import { ActivityIndicator, Alert, Keyboard } from 'react-native'
+import firebase, { database } from '../../../firebase'
+import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { useUser } from '../../contexts/UserContext'
+import { primary } from '../../styles/globalCssVar'
 import {
-  Container,
   Banner,
-  Wrapper,
-  Title,
-  InputItem,
-  InputIcon,
-  Input,
-  InputIconPassword,
+  Container,
   ForgotPassword,
   ForgotPasswordText,
-  SubmitButton,
-  SubmitButtonText,
+  Input,
+  InputIcon,
+  InputIconPassword,
+  InputItem,
   RegisterButton,
   RegisterButtonText,
-  BannerArea,
-  FirstSupportImage,
-  SecondSupportImage
+  SubmitButton,
+  SubmitButtonText,
+  Title,
+  Wrapper
 } from './style'
-
-import { FontAwesome } from '@expo/vector-icons'
-import {
-  ActivityIndicator,
-  Alert,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform
-} from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigate } from '../../contexts/NavigateContext'
-
-import firebase, { database } from '../../../firebase'
-import { primary } from '../../styles/globalCssVar'
-import { LanguageDropdown } from '../../components/LanguageDropdown'
-import { useUser } from '../../contexts/UserContext'
 
 export const Login: React.FC = () => {
   const { navigateToRegister } = useNavigate()

@@ -1,20 +1,5 @@
 import React from 'react'
-import { CommentProp } from '../../commentData'
-
-import {
-  Button,
-  ButtonArea,
-  ButtonText,
-  Container,
-  Content,
-  Date,
-  Info,
-  Name,
-  Text,
-  UserPhoto,
-  Wrapper
-} from './style'
-
+import { Container, Content, Info, Name, Text, UserPhoto, Wrapper } from './style'
 type Props = {
   data: App.Comment
 }
@@ -31,14 +16,14 @@ export const Comment: React.FC<Props> = ({ data }) => {
           </Info>
           <Text>{data.texto}</Text>
         </Content>
-        <ButtonArea>
+        {/* <ButtonArea>
           <Button>
             <ButtonText>Curtir</ButtonText>
           </Button>
-          {/* <Button>
+          <Button>
             <ButtonText>Responder</ButtonText>
-          </Button> */}
-        </ButtonArea>
+          </Button>
+        </ButtonArea> */}
       </Wrapper>
     </Container>
   )

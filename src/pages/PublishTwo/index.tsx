@@ -1,13 +1,9 @@
 import { AntDesign, Ionicons } from '@expo/vector-icons'
-import {
-  RouteProp,
-  useFocusEffect,
-  useIsFocused,
-  useRoute
-} from '@react-navigation/core'
+import { RouteProp, useRoute } from '@react-navigation/core'
 import * as ImagePicker from 'expo-image-picker'
 import firebase from 'firebase'
-import React, { useCallback, useEffect, useState } from 'react'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, Platform, View } from 'react-native'
 import app, { database } from '../../../firebase'
 import { useNavigate } from '../../contexts/NavigateContext'
@@ -37,7 +33,6 @@ export const PublishTwo: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamsList, 'PublishTwo'>>()
   const { navigateToHome } = useNavigate()
   const { user, userId } = useUser()
-  const isFocused = useIsFocused()
   const [isLoading, setIsLoading] = useState(false)
 
   const [text, setText] = useState('')
@@ -46,14 +41,8 @@ export const PublishTwo: React.FC = () => {
   const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
-
-  useFocusEffect(
-    useCallback(() => {
-      if (route.params.area !== undefined) {
-        // navigateToPublish()
-      }
-    }, [isFocused])
-  )
+  moment.locale('pt-br')
+  const date = moment().format('DD/MM/YYYY H:mm:ss')
 
   useEffect(() => {
     const verifyPermission = async () => {
@@ -139,7 +128,8 @@ export const PublishTwo: React.FC = () => {
         descricao: text,
         desfecho: outcome,
         arquivos: storageFilesUrl,
-        dataCriacao: timestamp
+        dataCriacao: timestamp,
+        dataExibicao: date
       }
       database
         .collection('posts')

@@ -8,6 +8,7 @@ import { ModalImage } from '../../components/ModalImage'
 import { Post } from '../../components/Post'
 import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
+import { usePopularPost } from '../../hooks/usePopularPosts'
 import {
   ChooseArea,
   ChooseItem,
@@ -30,6 +31,8 @@ export const Favorites: React.FC = () => {
     openModalChoosePlan
   } = useModal()
 
+  const popularPosts = usePopularPost()
+
   const isFocused = useIsFocused()
 
   const { user, userId } = useUser()
@@ -49,59 +52,31 @@ export const Favorites: React.FC = () => {
   }
 
   useEffect(() => {
-    if (favoriteIsActive) {
-      database
-        .collection('/posts_favorites')
-        .where('userId', '==', userId)
-        .onSnapshot((querySnapshot) => {
-          const postsIds = querySnapshot.docs
-            .map((doc: any) => doc.data())
-            .map((f) => f.postId)
+    database
+      .collection('/posts_favorites')
+      .where('userId', '==', userId)
+      .onSnapshot((querySnapshot) => {
+        const postsIds = querySnapshot.docs
+          .map((doc: any) => doc.data())
+          .map((f) => f.postId)
 
-          if (postsIds.length > 0) {
-            database
-              .collection('/posts')
-              .where(firebase.firestore.FieldPath.documentId(), 'in', postsIds)
-              .onSnapshot((querySnapshot) => {
-                const data: any = querySnapshot.docs.map((doc) => {
-                  return {
-                    id: doc.id,
-                    ...doc.data()
-                  }
-                })
-                setPosts(data)
+        if (postsIds.length > 0) {
+          database
+            .collection('/posts')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', postsIds)
+            .onSnapshot((querySnapshot) => {
+              const data: any = querySnapshot.docs.map((doc) => {
+                return {
+                  id: doc.id,
+                  ...doc.data()
+                }
               })
-          } else {
-            setPosts([])
-          }
-        })
-    } else {
-      database
-        .collection('/posts_favorites')
-        .limit(10)
-        .onSnapshot((querySnapshot) => {
-          const postsIds = querySnapshot.docs
-            .map((doc: any) => doc.data())
-            .map((f) => f.postId)
-
-          if (postsIds.length > 0) {
-            database
-              .collection('/posts')
-              .where(firebase.firestore.FieldPath.documentId(), 'in', postsIds)
-              .onSnapshot((querySnapshot) => {
-                const data: any = querySnapshot.docs.map((doc) => {
-                  return {
-                    id: doc.id,
-                    ...doc.data()
-                  }
-                })
-                setPosts(data)
-              })
-          } else {
-            setPosts([])
-          }
-        })
-    }
+              setPosts(data)
+            })
+        } else {
+          setPosts([])
+        }
+      })
   }, [favoriteIsActive])
 
   useFocusEffect(
@@ -143,9 +118,24 @@ export const Favorites: React.FC = () => {
             openItem={modalImageOpenItem}
           />
         )}
-        {posts?.map((post) => {
-          return <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
-        })}
+        {favoriteIsActive && (
+          <>
+            {posts?.map((post) => {
+              return (
+                <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
+              )
+            })}
+          </>
+        )}
+        {!favoriteIsActive && (
+          <>
+            {popularPosts?.map(({ post }) => {
+              return (
+                <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
+              )
+            })}
+          </>
+        )}
       </Wrapper>
     </Container>
   )

@@ -1,7 +1,11 @@
+import { Ionicons } from '@expo/vector-icons'
+import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 import React, { useCallback, useState } from 'react'
-import { Text } from 'react-native'
+import { WebView } from 'react-native-webview'
+import { useModal } from '../../contexts/ModalContext'
+import { useUser } from '../../contexts/UserContext'
+import MercadoPagoApi from '../../services/MercadoPagoApi'
 import {
-  BackButton,
   Banner,
   Button,
   ButtonText,
@@ -19,14 +23,6 @@ import {
   WebViewHeader,
   Wrapper
 } from './style'
-
-import { Ionicons } from '@expo/vector-icons'
-import MercadoPagoApi from '../../services/MercadoPagoApi'
-import { WebView } from 'react-native-webview'
-import { useFocusEffect, useIsFocused } from '@react-navigation/core'
-import { useUser } from '../../contexts/UserContext'
-import { useModal } from '../../contexts/ModalContext'
-
 export const Plans: React.FC = () => {
   const { user } = useUser()
   const { closeModalChoosePlan } = useModal()

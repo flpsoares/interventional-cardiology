@@ -194,6 +194,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
                   return `${med} `
                 })}
               </Content>
+              <Content>{data.desfecho}</Content>
             </>
           )}
           {!isDetail && (

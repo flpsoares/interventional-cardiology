@@ -7,4 +7,4 @@ module.exports = {
   endOfLine: 'auto',
   trailingComma: 'none',
   'space-before-function-paren': 'never'
-}
+};
