@@ -118,7 +118,7 @@ export const PublishTwo: React.FC = () => {
       const data: App.Post = {
         autorId: userId,
         autorNome: user?.name,
-        autorFoto: user?.userPhoto,
+        autorFoto: user?.userPhoto || '',
         area: route.params.area,
         idade: route.params.idade,
         genero: route.params.genero,
