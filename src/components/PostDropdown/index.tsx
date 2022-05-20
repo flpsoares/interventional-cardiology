@@ -2,6 +2,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Alert } from 'react-native'
 import { database } from '../../../firebase'
+import { useNotification } from '../../contexts/NotificationContext'
 import { useUser } from '../../contexts/UserContext'
 import { Container, Icon, Item, Text } from './style'
 
@@ -21,6 +22,8 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
   autorId
 }) => {
   const { userId, user } = useUser()
+
+  const { sendRemoteNotification } = useNotification()
 
   const [favorited, setFavorited] = useState(isFavorited)
   const [follower, setFollower] = useState(isFollower)
@@ -65,7 +68,21 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
               userEmail: user?.email,
               userId: userId
             })
-            .then(() => setFollower(true))
+            .then(() => {
+              database
+                .collection('/users')
+                .doc(autorId)
+                .get()
+                .then((res) => {
+                  const token = res.data()!.notificationToken
+                  sendRemoteNotification(
+                    'Você tem um novo seguidor!',
+                    `${user?.name} acabou de te seguir`,
+                    token
+                  )
+                })
+              setFollower(true)
+            })
             .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
         } else {
           database

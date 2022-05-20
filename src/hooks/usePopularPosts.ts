@@ -18,25 +18,28 @@ export function usePopularPost() {
           return { id: f.id, ...f.data() }
         }) as any
 
-        database
-          .collection('/posts_favorites')
-          .where('postId', 'in', postsIds)
-          .onSnapshot((querySnapshot) => {
-            const data: DataProps = {}
-            const postsFavorites = querySnapshot.docs
+        console.log(postsIds)
+        if (postsIds[0]) {
+          database
+            .collection('/posts_favorites')
+            .where('postId', 'in', postsIds)
+            .onSnapshot((querySnapshot) => {
+              const data: DataProps = {}
+              const postsFavorites = querySnapshot.docs
 
-            for (const postFavorite of postsFavorites) {
-              if (!data[postFavorite.data().postId]) {
-                data[postFavorite.data().postId] = {
-                  favoriteCounts: 1,
-                  post: posts.find((p) => p.id === postFavorite.data().postId)!
+              for (const postFavorite of postsFavorites) {
+                if (!data[postFavorite.data().postId]) {
+                  data[postFavorite.data().postId] = {
+                    favoriteCounts: 1,
+                    post: posts.find((p) => p.id === postFavorite.data().postId)!
+                  }
+                } else {
+                  data[postFavorite.data().postId].favoriteCounts++
                 }
-              } else {
-                data[postFavorite.data().postId].favoriteCounts++
               }
-            }
-            setPosts(data)
-          })
+              setPosts(data)
+            })
+        }
       })
   }, [])
   return Object.values(posts)

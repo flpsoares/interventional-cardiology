@@ -37,7 +37,7 @@ export const PublishTwo: React.FC = () => {
 
   const [text, setText] = useState('')
   const [outcome, setOutcome] = useState('')
-  const [images, setImages] = useState([''])
+  const [files, setFiles] = useState([''])
   const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
@@ -63,8 +63,19 @@ export const PublishTwo: React.FC = () => {
       quality: 1
     })
     if (!result.cancelled) {
-      if (images.length <= 7) {
-        const uploadUri = result.uri
+      if (files.length <= 7) {
+        !files[0] ? setFiles([result.uri]) : setFiles([...files, result.uri])
+      } else {
+        Alert.alert('Erro', 'Você já selecionou 8 arquivos')
+      }
+    }
+  }
+
+  const uploadFiles = async (uriList: string[]) => {
+    // eslint-disable-next-line array-callback-return
+    const execute = async () =>
+      uriList.map(async (uri) => {
+        const uploadUri = uri
         const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
 
         const storageRef = app.storage().ref()
@@ -74,44 +85,33 @@ export const PublishTwo: React.FC = () => {
         const img = fetch(uploadUri)
         const bytes = await (await img).blob()
 
-        if (images[0] === '') {
-          await PostImageRef.put(bytes)
-            .then((res) => {
-              res.ref.getDownloadURL().then((url) => {
-                if (storageFilesUrl[0] === '') {
-                  setStorageFilesUrl([url])
-                } else {
-                  setStorageFilesUrl([...storageFilesUrl, url])
-                }
-              })
+        await PostImageRef.put(bytes).then((res) => {
+          res.ref
+            .getDownloadURL()
+            .then((url) => {
+              if (!storageFilesUrl[0]) {
+                setStorageFilesUrl([url])
+              } else {
+                setStorageFilesUrl([...storageFilesUrl, url])
+              }
             })
-            .then(() => setImages([result.uri]))
-            .catch((e) => console.log(e))
-        } else {
-          await PostImageRef.put(bytes)
-            .then((res) => {
-              res.ref.getDownloadURL().then((url) => {
-                if (storageFilesUrl[0] === '') {
-                  setStorageFilesUrl([url])
-                } else {
-                  setStorageFilesUrl([...storageFilesUrl, url])
-                }
-              })
-            })
-            .then(() => setImages([...images, result.uri]))
-            .catch((e) => console.log(e))
-        }
-      } else {
-        Alert.alert('Erro', 'Você já selecionou 8 arquivos')
-      }
-    }
+            .catch(() =>
+              Alert.alert(
+                'Erro',
+                'Houve um problema ao fazer o upload de algum arquivo'
+              )
+            )
+        })
+      })
+
+    execute().finally(() => handleSubmit())
   }
 
   const deleteFile = (index: number) => {
-    setImages([...images.slice(0, index), ...images.slice(index + 1)])
+    setFiles([...files.slice(0, index), ...files.slice(index + 1)])
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (text !== '' && outcome !== '') {
       setIsLoading(true)
       const data: App.Post = {
@@ -135,14 +135,13 @@ export const PublishTwo: React.FC = () => {
         .add(data)
         .then(() => {
           navigateToHome()
-          setImages([''])
+          setFiles([''])
           setStorageFilesUrl([''])
         })
         .catch((e) => {
           Alert.alert('Erro', 'Algo deu errado')
           console.log(e)
         })
-        .finally(() => setIsLoading(false))
     } else {
       Alert.alert('Erro', 'Preencha todos os campos')
     }
@@ -175,9 +174,9 @@ export const PublishTwo: React.FC = () => {
             Insira até 8 imagens ou vídeos sobre o caso
           </ButtonImageText>
         </ButtonImage>
-        {images[0] !== '' && (
+        {files[0] !== '' && (
           <PreviewImageArea>
-            {images.map((url, index) => {
+            {files.map((url, index) => {
               return (
                 <PreviewImage key={url}>
                   <CloseButton onPress={() => deleteFile(index)}>
