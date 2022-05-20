@@ -16,4 +16,5 @@ export type RootStackParamsList = {
     comorbidades: string[]
     medicamentos: string[]
   }
+  UserProfile: { id: string }
 }

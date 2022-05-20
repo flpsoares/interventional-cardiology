@@ -32,6 +32,7 @@ import {
   Top,
   TopLeftContent,
   UserPhoto,
+  UserPhotoButton,
   VideoButton,
   Wrapper
 } from './style'
@@ -43,7 +44,7 @@ type Props = {
 
 export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const { openModalImage } = useModal()
-  const { navigateToPostDetails } = useNavigate()
+  const { navigateToPostDetails, navigateToUserProfile } = useNavigate()
   const { userId, user } = useUser()
   const { sendRemoteNotification, expoPushToken } = useNotification()
 
@@ -174,9 +175,13 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
       <Top>
         <TopLeftContent>
           {data.autorFoto ? (
-            <UserPhoto source={{ uri: data.autorFoto }} />
+            <UserPhotoButton onPress={() => navigateToUserProfile(data.autorId)}>
+              <UserPhoto source={{ uri: data.autorFoto }} />
+            </UserPhotoButton>
           ) : (
-            <UserPhoto source={require('../../../assets/default-user.png')} />
+            <UserPhotoButton onPress={() => navigateToUserProfile(data.autorId)}>
+              <UserPhoto source={require('../../../assets/default-user.png')} />
+            </UserPhotoButton>
           )}
 
           <Info>

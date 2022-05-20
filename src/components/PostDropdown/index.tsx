@@ -136,19 +136,13 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             </Icon>
             <Text>{favorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
           </Item>
-          <Item onPress={handleFollow} style={{ marginVertical: 20 }}>
+          <Item onPress={handleFollow} style={{ marginTop: 20 }}>
             <Icon>
               <FontAwesome name="plus" size={20} color="#fff" />
             </Icon>
             <Text>
               {follower ? 'Deixar de seguir' : 'Seguir'} {firstName}
             </Text>
-          </Item>
-          <Item onPress={() => Alert.alert('Aviso', `Você bloqueou ${name}`)}>
-            <Icon>
-              <FontAwesome name="minus-circle" size={20} color="#fff" />
-            </Icon>
-            <Text>Bloquear {firstName}</Text>
           </Item>
         </>
       )}

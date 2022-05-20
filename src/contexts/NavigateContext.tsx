@@ -19,6 +19,10 @@ type EditAccountScreenProps = NativeStackNavigationProp<
   RootStackParamsList,
   'EditAccount'
 >
+type UserProfileScreenProps = NativeStackNavigationProp<
+  RootStackParamsList,
+  'UserProfile'
+>
 
 type PublishScreenProps = NativeStackNavigationProp<
   RootStackParamsList,
@@ -36,6 +40,7 @@ interface NavigateContextData {
   navigateToHomeWithReset: () => void
   navigateToPostDetails: (postId: string) => void
   navigateToEditAccount: () => void
+  navigateToUserProfile: (id: string) => void
   editAccountGoBack: () => void
   navigateToPublish: (
     area: string[],
@@ -65,6 +70,7 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   const navigationEditAccount = useNavigation<EditAccountScreenProps>()
   const navigationPublish = useNavigation<PublishScreenProps>()
   const navigationPlans = useNavigation<PlansScreenProps>()
+  const navigationUserProfile = useNavigation<UserProfileScreenProps>()
 
   const navigateToInitial = () => {
     navigationInitial.navigate('Initial')
@@ -83,6 +89,9 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
   }
   const navigateToPlans = () => {
     navigationPlans.navigate('Plans')
+  }
+  const navigateToUserProfile = (id: string) => {
+    navigationUserProfile.navigate('UserProfile', { id })
   }
 
   const navigateToHomeWithReset = () => {
@@ -137,7 +146,8 @@ export const NavigateProvider = ({ children }: NavigateProviderProps) => {
         navigateToChooseAuth,
         navigateToInitial,
         navigateToHomeWithReset,
-        navigateToPlans
+        navigateToPlans,
+        navigateToUserProfile
       }}
     >
       {children}

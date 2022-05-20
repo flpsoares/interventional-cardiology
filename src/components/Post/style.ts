@@ -20,6 +20,8 @@ export const TopLeftContent = styled.View`
   align-items: center;
 `
 
+export const UserPhotoButton = styled.TouchableOpacity``
+
 export const UserPhoto = styled.Image`
   width: 74px;
   height: 74px;
