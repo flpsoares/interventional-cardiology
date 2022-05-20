@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { AntDesign, Entypo, Fontisto } from '@expo/vector-icons'
 import { Video } from 'expo-av'
+import moment from 'moment'
 import React, { useEffect, useRef, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
@@ -167,8 +168,12 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
 
           <Info>
             <Name>{data.autorNome}</Name>
-            {/* <Date>{moment().format(data.dataExibicao)}</Date> */}
-            <Date>{data.dataExibicao}</Date>
+            <Date>
+              {moment(data.dataExibicao, 'DD/MM/YYYY H:mm:ss')
+                .add(3, 'hours')
+                .fromNow()}
+            </Date>
+            {/* <Date>{data.dataExibicao}</Date> */}
             {isFavoriteList && <Date>Favoritos: {favoriteCount}</Date>}
           </Info>
         </TopLeftContent>

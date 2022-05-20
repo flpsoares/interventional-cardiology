@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React from 'react'
 import {
   Container,
@@ -25,7 +26,12 @@ export const Comment: React.FC<Props> = ({ data }) => {
         <Content>
           <Info>
             <Name>{data.autorNome}</Name>
-            <Date>{data.dataExibicao}</Date>
+            <Date>
+              {moment(data.dataExibicao, 'DD/MM/YYYY H:mm:ss')
+                .add(3, 'hours')
+                .fromNow()}
+            </Date>
+            {/* <Date>{data.dataExibicao}</Date> */}
           </Info>
           <Text>{data.texto}</Text>
         </Content>
