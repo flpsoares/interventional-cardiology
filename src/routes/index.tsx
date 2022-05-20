@@ -110,14 +110,15 @@ export const Routes: React.FC = () => {
       .onSnapshot((querySnapshot) => {
         const data = querySnapshot.data()
         setUser({
-          name: data!.name,
-          email: data!.email,
-          telephone: data!.telephone,
-          isDoctor: data!.isDoctor,
+          name: data?.name,
+          email: data?.email,
+          telephone: data?.telephone,
+          isDoctor: data?.isDoctor,
           crm: data?.crm,
           institution: data?.institution,
           isSubscriber: data?.isSubscriber,
-          userPhoto: data?.userPhoto
+          userPhoto: data?.userPhoto,
+          dataCriacao: data?.dataCriacao
         })
       })
     return () => {

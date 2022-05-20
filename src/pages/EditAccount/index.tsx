@@ -1,4 +1,17 @@
+import {
+  AntDesign,
+  FontAwesome,
+  Foundation,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons
+} from '@expo/vector-icons'
+import * as ImagePicker from 'expo-image-picker'
 import React, { useEffect, useState } from 'react'
+import { Alert, Platform } from 'react-native'
+import app, { database } from '../../../firebase'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { useUser } from '../../contexts/UserContext'
 import {
   BackButton,
   Button,
@@ -13,29 +26,11 @@ import {
   InputItem,
   Name,
   Notification,
-  PasswordIcon,
   Title,
   UserPhoto,
   UserPhotoArea,
   Wrapper
 } from './style'
-
-import { useNavigate } from '../../contexts/NavigateContext'
-
-import Constants from 'expo-constants'
-import * as ImagePicker from 'expo-image-picker'
-
-import {
-  FontAwesome,
-  Ionicons,
-  MaterialIcons,
-  AntDesign,
-  MaterialCommunityIcons,
-  Foundation
-} from '@expo/vector-icons'
-import { useUser } from '../../contexts/UserContext'
-import app, { database, storage } from '../../../firebase'
-import { Alert, Platform } from 'react-native'
 
 export const EditAccount: React.FC = () => {
   const { user, userId } = useUser()
@@ -147,7 +142,7 @@ export const EditAccount: React.FC = () => {
       </UserPhotoArea>
       <Info>
         <Name>{user!.name}</Name>
-        <Date>Cadastrado em 22/03/2021</Date>
+        <Date>Cadastrado em {user!.dataCriacao}</Date>
       </Info>
       <Wrapper>
         <Title>Edite seus dados</Title>

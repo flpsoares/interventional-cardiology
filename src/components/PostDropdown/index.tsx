@@ -9,6 +9,7 @@ interface PostDropdownProps {
   name: string
   postId: string
   isFavorited: boolean
+  isFollower: boolean
   autorId: string
 }
 
@@ -16,11 +17,13 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
   name,
   postId,
   isFavorited,
+  isFollower,
   autorId
 }) => {
-  const { userId } = useUser()
+  const { userId, user } = useUser()
 
   const [favorited, setFavorited] = useState(isFavorited)
+  const [follower, setFollower] = useState(isFollower)
 
   const firstName = name.split(' ')[0]
 
@@ -43,6 +46,33 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             .doc(res.docs[0].id)
             .delete()
             .then(() => setFavorited(false))
+            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+        }
+      })
+  }
+
+  const handleFollow = () => {
+    database
+      .collection(`/users/${autorId}/followers`)
+      .where('userId', '==', userId)
+      .get()
+      .then((res) => {
+        if (res.docs[0] === undefined) {
+          database
+            .collection(`/users/${autorId}/followers`)
+            .add({
+              userName: user?.name,
+              userEmail: user?.email,
+              userId: userId
+            })
+            .then(() => setFollower(true))
+            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+        } else {
+          database
+            .collection(`/users/${autorId}/followers`)
+            .doc(res.docs[0].id)
+            .delete()
+            .then(() => setFollower(false))
             .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
         }
       })
@@ -89,14 +119,13 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             </Icon>
             <Text>{favorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
           </Item>
-          <Item
-            onPress={() => Alert.alert('Aviso', `Você seguiu ${name}`)}
-            style={{ marginVertical: 20 }}
-          >
+          <Item onPress={handleFollow} style={{ marginVertical: 20 }}>
             <Icon>
               <FontAwesome name="plus" size={20} color="#fff" />
             </Icon>
-            <Text>Seguir {firstName}</Text>
+            <Text>
+              {follower ? 'Deixar de seguir' : 'Seguir'} {firstName}
+            </Text>
           </Item>
           <Item onPress={() => Alert.alert('Aviso', `Você bloqueou ${name}`)}>
             <Icon>

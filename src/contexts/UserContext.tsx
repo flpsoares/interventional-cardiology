@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useState } from 'react'
 
 interface UserContextData {
   setUser: React.Dispatch<React.SetStateAction<UserProps | undefined>>
@@ -20,6 +20,7 @@ interface UserProps {
   institution?: any
   isSubscriber?: any
   userPhoto?: any
+  dataCriacao: any
 }
 
 export const UserContext = createContext({} as UserContextData)

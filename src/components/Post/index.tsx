@@ -60,6 +60,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [isFavorited, setIsFavorited] = useState(false)
   const [favoriteCount, setFavoriteCount] = useState(0)
+  const [isFollower, setIsFollower] = useState(false)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
 
@@ -98,6 +99,18 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           setIsFavorited(false)
         } else {
           setIsFavorited(true)
+        }
+      })
+
+    // isFollower
+    database
+      .collection(`users/${data.autorId}/followers`)
+      .where('userId', '==', userId)
+      .onSnapshot((querySnapshot) => {
+        if (querySnapshot.docs[0] === undefined) {
+          setIsFollower(false)
+        } else {
+          setIsFollower(true)
         }
       })
   }, [])
@@ -184,6 +197,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           <PostDropdown
             autorId={data.autorId}
             isFavorited={isFavorited}
+            isFollower={isFollower}
             postId={data.id!}
             name={data.autorNome}
           />

@@ -1,3 +1,11 @@
+import {
+  FontAwesome,
+  Foundation,
+  Ionicons,
+  MaterialCommunityIcons
+} from '@expo/vector-icons'
+import { Picker } from '@react-native-picker/picker'
+import moment from 'moment'
 import React, { useState } from 'react'
 import {
   ActivityIndicator,
@@ -7,39 +15,27 @@ import {
   Platform,
   SafeAreaView
 } from 'react-native'
+import firebase, { database } from '../../../firebase'
+import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { primary } from '../../styles/globalCssVar'
 import {
-  Container,
   Banner,
-  Wrapper,
-  Title,
-  InputItem,
-  InputIcon,
+  BannerArea,
+  Container,
   Input,
+  InputIcon,
   InputIconPassword,
-  SubmitButton,
-  SubmitButtonText,
+  InputItem,
   LoginButton,
   LoginButtonText,
-  ScrollableContainer,
   PickerButton,
-  BannerArea,
-  FirstSupportImage,
-  SecondSupportImage
+  ScrollableContainer,
+  SubmitButton,
+  SubmitButtonText,
+  Title,
+  Wrapper
 } from './style'
-
-import { Picker } from '@react-native-picker/picker'
-
-import {
-  FontAwesome,
-  MaterialCommunityIcons,
-  Foundation,
-  Ionicons
-} from '@expo/vector-icons'
-import { useNavigate } from '../../contexts/NavigateContext'
-
-import { primary } from '../../styles/globalCssVar'
-import { LanguageDropdown } from '../../components/LanguageDropdown'
-import firebase, { database } from '../../../firebase'
 
 export const Register: React.FC = () => {
   const { navigateToLogin } = useNavigate()
@@ -109,7 +105,8 @@ export const Register: React.FC = () => {
                 crm,
                 institution,
                 email,
-                telephone
+                telephone,
+                dataCriacao: moment().subtract(3, 'hours').format('DD/MM/YYYY')
               })
             })
             .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
@@ -141,7 +138,8 @@ export const Register: React.FC = () => {
                 email,
                 isDoctor,
                 isSubscriber: false,
-                telephone
+                telephone,
+                dataCriacao: moment().subtract(3, 'hours').format('DD/MM/YYYY')
               })
             })
             .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
