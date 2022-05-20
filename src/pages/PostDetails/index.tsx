@@ -7,6 +7,7 @@ import { ActivityIndicator, Alert, View } from 'react-native'
 import { database } from '../../../firebase'
 import { Comment } from '../../components/Comment'
 import { Post } from '../../components/Post'
+import { useNotification } from '../../contexts/NotificationContext'
 import { useUser } from '../../contexts/UserContext'
 import { RootStackParamsList } from '../../routes/RootStackParamsList'
 import { primary } from '../../styles/globalCssVar'
@@ -27,6 +28,7 @@ import {
 export const PostDetails: React.FC = () => {
   const { user, userId } = useUser()
   const route = useRoute<RouteProp<RootStackParamsList, 'PostDetails'>>()
+  const { sendRemoteNotification } = useNotification()
 
   const [post, setPost] = useState<any>()
   const [comments, setComments] = useState<any>()
@@ -46,7 +48,21 @@ export const PostDetails: React.FC = () => {
         dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
         dataExibicao: dateNow
       })
-      .then(() => setCommentText(''))
+      .then(() => {
+        database
+          .collection('users')
+          .doc(post.autorId)
+          .get()
+          .then((res) => {
+            const token = res.data()!.notificationToken
+            sendRemoteNotification(
+              'Você tem um novo comentário!',
+              `${user?.name} comentou na sua postagem`,
+              token
+            )
+          })
+        setCommentText('')
+      })
       .catch((e) => {
         Alert.alert('Erro', 'Ocorreu algum erro')
         console.log(e)

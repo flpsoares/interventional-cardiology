@@ -7,6 +7,7 @@ import Carousel from 'react-native-snap-carousel'
 import { database } from '../../../firebase'
 import { useModal } from '../../contexts/ModalContext'
 import { useNavigate } from '../../contexts/NavigateContext'
+import { useNotification } from '../../contexts/NotificationContext'
 import { useUser } from '../../contexts/UserContext'
 import { PostDropdown } from '../PostDropdown'
 import {
@@ -42,7 +43,8 @@ type Props = {
 export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const { openModalImage } = useModal()
   const { navigateToPostDetails } = useNavigate()
-  const { userId } = useUser()
+  const { userId, user } = useUser()
+  const { sendRemoteNotification, expoPushToken } = useNotification()
 
   const video = useRef(null)
   const [status, setStatus] = useState({})
@@ -122,6 +124,18 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             .collection(`/posts/${data.id}/likes`)
             .add({ autorId: likeId })
             .then(() => {
+              database
+                .collection('users')
+                .doc(data.autorId)
+                .get()
+                .then((res) => {
+                  const token = res.data()!.notificationToken
+                  sendRemoteNotification(
+                    'Você tem uma nova curtida!',
+                    `${user?.name} curtiu sua postagem`,
+                    token
+                  )
+                })
               setIsLiked(true)
             })
             .catch((e) => console.log(e))

@@ -18,12 +18,13 @@
       "**/*"
     ],
     "android": {
+      "googleServicesFile": "./google-services.json",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#fff"
       },
-      "package": "com.digitalott.interventionalcardiology"
+      "package": "com.interventionalcardiology"
     }
   }
 }

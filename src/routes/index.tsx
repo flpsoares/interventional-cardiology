@@ -1,7 +1,9 @@
 import { Entypo, FontAwesome, Foundation } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, View } from 'react-native'
+import Constants from 'expo-constants'
+import * as Notifications from 'expo-notifications'
+import React, { useEffect, useRef, useState } from 'react'
+import { ActivityIndicator, Alert, Platform, View } from 'react-native'
 import app, { database } from '../../firebase'
 import { PublishButton } from '../components/PublishButton'
 import { useUser } from '../contexts/UserContext'
@@ -17,84 +19,84 @@ export const Routes: React.FC = () => {
   const { setUser, user, setUserId } = useUser()
   const [isLoading, setIsLoading] = useState(true)
 
-  // const [notification, setNotification] = useState<Notifications.Notification>()
-  // const notificationListener = useRef<any>()
-  // const responseListener = useRef<any>()
+  const [notification, setNotification] = useState<Notifications.Notification>()
+  const notificationListener = useRef<any>()
+  const responseListener = useRef<any>()
 
-  // Notifications.setNotificationHandler({
-  //   handleNotification: async () => ({
-  //     shouldShowAlert: true,
-  //     shouldPlaySound: false,
-  //     shouldSetBadge: false
-  //   })
-  // })
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false
+    })
+  })
 
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync()
-  //     .then(async (token) => {
-  //       if (token) {
-  //         database.collection('users').doc(app.auth().currentUser!.uid).set(
-  //           {
-  //             notificationToken: token
-  //           },
-  //           { merge: true }
-  //         )
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //       Alert.alert('Aviso', error)
-  //     })
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then(async (token) => {
+        if (token) {
+          database.collection('users').doc(app.auth().currentUser!.uid).set(
+            {
+              notificationToken: token
+            },
+            { merge: true }
+          )
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        Alert.alert('Aviso', error)
+      })
 
-  //   if (notificationListener) {
-  //     notificationListener.current = Notifications.addNotificationReceivedListener(
-  //       (notification) => {
-  //         setNotification(notification)
-  //       }
-  //     )
-  //   }
+    if (notificationListener) {
+      notificationListener.current = Notifications.addNotificationReceivedListener(
+        (notification) => {
+          setNotification(notification)
+        }
+      )
+    }
 
-  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(
-  //     (response) => {
-  //       // console.log(response)
-  //     }
-  //   )
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        // console.log(response)
+      }
+    )
 
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(notificationListener.current)
-  //     Notifications.removeNotificationSubscription(responseListener.current)
-  //   }
-  // }, [])
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current)
+      Notifications.removeNotificationSubscription(responseListener.current)
+    }
+  }, [])
 
-  // async function registerForPushNotificationsAsync() {
-  //   let token
-  //   if (Constants.isDevice) {
-  //     const { status: existingStatus } = await Notifications.getPermissionsAsync()
-  //     let finalStatus = existingStatus
-  //     if (existingStatus !== 'granted') {
-  //       const { status } = await Notifications.requestPermissionsAsync()
-  //       finalStatus = status
-  //     }
-  //     if (finalStatus !== 'granted') {
-  //       alert('Failed to get push token for push notification!')
-  //       return
-  //     }
-  //     token = (await Notifications.getExpoPushTokenAsync()).data
-  //   } else {
-  //     alert('Must use physical device for Push Notifications')
-  //   }
+  async function registerForPushNotificationsAsync() {
+    let token
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync()
+      let finalStatus = existingStatus
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync()
+        finalStatus = status
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!')
+        return
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data
+    } else {
+      // alert('Must use physical device for Push Notifications')
+    }
 
-  //   if (Platform.OS === 'android') {
-  //     Notifications.setNotificationChannelAsync('default', {
-  //       name: 'default',
-  //       importance: Notifications.AndroidImportance.MAX,
-  //       vibrationPattern: [0, 250, 250, 250],
-  //       lightColor: '#FF231F7C'
-  //     })
-  //   }
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C'
+      })
+    }
 
-  //   return token
-  // }
+    return token
+  }
 
   const tabBarListeners = ({ navigation, route }: any) => ({
     tabPress: () => navigation.navigate(route.name)

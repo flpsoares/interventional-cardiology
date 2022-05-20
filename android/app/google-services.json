@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1060177607346",
+    "project_id": "interventional-cardiology",
+    "storage_bucket": "interventional-cardiology.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060177607346:android:2eab0bab19879792e867ab",
+        "android_client_info": {
+          "package_name": "com.interventionalcardiology"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060177607346-d9qiqordgdrkurg961h69qu4pbc5r5ln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKoqs1CFq5Wlb6jC-2CNklWOFFSwu_rKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060177607346-d9qiqordgdrkurg961h69qu4pbc5r5ln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
