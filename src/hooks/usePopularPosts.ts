@@ -18,7 +18,6 @@ export function usePopularPost() {
           return { id: f.id, ...f.data() }
         }) as any
 
-        console.log(postsIds)
         if (postsIds[0]) {
           database
             .collection('/posts_favorites')

@@ -25,24 +25,20 @@ export const Home: React.FC = () => {
   const [posts, setPosts] = useState<App.Post[]>()
 
   useEffect(() => {
-    if (user?.isDoctor === true) {
-      const subscriber = database
-        .collection('posts')
-        .orderBy('dataCriacao', 'desc')
-        .onSnapshot((querySnapshot) => {
-          const data = querySnapshot.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            }
-          }) as App.Post[]
-          setPosts(data)
-        })
+    const subscriber = database
+      .collection('posts')
+      .orderBy('dataCriacao', 'desc')
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        }) as App.Post[]
+        setPosts(data)
+      })
 
-      return subscriber
-    } else {
-      // listar posts de seguidores
-    }
+    return subscriber
   }, [])
 
   useFocusEffect(

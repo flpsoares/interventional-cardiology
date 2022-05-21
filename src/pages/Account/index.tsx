@@ -23,23 +23,48 @@ export const Account: React.FC = () => {
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [countFollowers, setCountFollowers] = useState(0)
+  const [countFollowings, setCountFollowings] = useState(0)
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
 
   useEffect(() => {
     // posts
-    database
-      .collection('/posts')
-      .where('autorId', '==', userId)
-      .orderBy('dataCriacao', 'desc')
-      .onSnapshot((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data()
+    if (user?.isDoctor) {
+      database
+        .collection('/posts')
+        .where('autorId', '==', userId)
+        .orderBy('dataCriacao', 'desc')
+        .onSnapshot((querySnapshot) => {
+          const data = querySnapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data()
+            }
+          }) as App.Post[]
+          setPosts(data)
+        })
+    } else {
+      database
+        .collection(`/users/${userId}/following`)
+        .onSnapshot((querySnapshot) => {
+          const followingsIds = querySnapshot.docs.map((doc) => {
+            return doc.data().userId
+          })
+          if (followingsIds[0]) {
+            database
+              .collection('posts')
+              .where('autorId', 'in', followingsIds)
+              .onSnapshot((querySnapshot) => {
+                const data = querySnapshot.docs.map((doc) => {
+                  return {
+                    id: doc.id,
+                    ...doc.data()
+                  }
+                }) as App.Post[]
+                setPosts(data)
+              })
           }
-        }) as App.Post[]
-        setPosts(data)
-      })
+        })
+    }
 
     // followers
     database.collection(`/users/${userId}/followers`).onSnapshot((querySnapshot) => {
@@ -47,6 +72,14 @@ export const Account: React.FC = () => {
         setCountFollowers(0)
       } else {
         setCountFollowers(querySnapshot.docs.length)
+      }
+    })
+    // followings
+    database.collection(`/users/${userId}/following`).onSnapshot((querySnapshot) => {
+      if (querySnapshot.docs[0] === undefined) {
+        setCountFollowings(0)
+      } else {
+        setCountFollowings(querySnapshot.docs.length)
       }
     })
   }, [])
@@ -79,6 +112,11 @@ export const Account: React.FC = () => {
             <Email>{countFollowers} Seguidor</Email>
           ) : (
             <Email>{countFollowers} Seguidores</Email>
+          )}
+          {countFollowings === 1 ? (
+            <Email>{countFollowings} Seguindo</Email>
+          ) : (
+            <Email>{countFollowings} Seguindo</Email>
           )}
         </Info>
       </Profile>

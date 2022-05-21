@@ -319,8 +319,8 @@ export const PublishOne: React.FC = () => {
                 selectedValue={genero}
                 onValueChange={(value) => setGenero(value)}
               >
-                <Picker.Item label="Masculino" value={true} />
-                <Picker.Item label="Feminino" value={false} />
+                <Picker.Item label="Masculino" value="Masculino" />
+                <Picker.Item label="Feminino" value="Feminino" />
               </Picker>
             </PickerButton>
           </HalfItem>

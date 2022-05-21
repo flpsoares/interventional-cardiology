@@ -61,13 +61,17 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
       .get()
       .then((res) => {
         if (res.docs[0] === undefined) {
+          database.collection(`/users/${autorId}/followers`).add({
+            userName: user?.name,
+            userId: userId
+          })
           database
-            .collection(`/users/${autorId}/followers`)
+            .collection(`/users/${userId}/following`)
             .add({
-              userName: user?.name,
-              userEmail: user?.email,
-              userId: userId
+              userName: name,
+              userId: autorId
             })
+
             .then(() => {
               database
                 .collection('/users')
@@ -91,6 +95,19 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             .delete()
             .then(() => setFollower(false))
             .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+          // procurar e excluir following
+          database
+            .collection(`/users/${userId}/following`)
+            .where('userId', '==', autorId)
+            .get()
+            .then((res) => {
+              console.log(res.docs[0].id)
+              database
+                .collection(`/users/${userId}/following`)
+                .doc(res.docs[0].id)
+                .delete()
+                .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+            })
         }
       })
   }
