@@ -1,4 +1,5 @@
 import moment from 'moment'
+import 'moment/locale/pt-br'
 import React from 'react'
 import {
   Container,
@@ -29,6 +30,7 @@ export const Comment: React.FC<Props> = ({ data }) => {
             <Date>
               {moment(data.dataExibicao, 'DD/MM/YYYY H:mm:ss')
                 .add(3, 'hours')
+                .locale('pt-br')
                 .fromNow()}
             </Date>
             {/* <Date>{data.dataExibicao}</Date> */}

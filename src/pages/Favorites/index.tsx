@@ -41,6 +41,8 @@ export const Favorites: React.FC = () => {
   const [favoriteIsActive, setFavoriteIsActive] = useState(true)
   const [popularIsActive, setPopularIsActive] = useState(false)
 
+  const [search, setSearch] = useState('')
+
   const activeFavorite = () => {
     setFavoriteIsActive(true)
     setPopularIsActive(false)
@@ -98,7 +100,11 @@ export const Favorites: React.FC = () => {
         )}
         <TopInputArea>
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
-          <TopInput placeholder="Pesquisar..." />
+          <TopInput
+            value={search}
+            onChangeText={setSearch}
+            placeholder="Pesquisar..."
+          />
         </TopInputArea>
         <Ionicons name="notifications-outline" size={22} color="#777d8c" />
       </Top>
@@ -120,20 +126,46 @@ export const Favorites: React.FC = () => {
         )}
         {favoriteIsActive && (
           <>
-            {posts?.map((post) => {
-              return (
-                <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
-              )
-            })}
+            {posts
+              // eslint-disable-next-line array-callback-return
+              ?.filter((values) => {
+                if (search === '') {
+                  return values
+                } else if (
+                  values.autorNome.toLowerCase().includes(search.toLowerCase())
+                ) {
+                  return values
+                }
+              })
+              .map((post) => {
+                return (
+                  <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
+                )
+              })}
           </>
         )}
         {!favoriteIsActive && (
           <>
-            {popularPosts?.map(({ post }) => {
-              return (
-                <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
-              )
-            })}
+            {popularPosts
+              // eslint-disable-next-line array-callback-return
+              ?.filter((values) => {
+                if (search === '') {
+                  return values
+                } else if (
+                  values.post.autorNome.toLowerCase().includes(search.toLowerCase())
+                ) {
+                  return values
+                }
+              })
+              .map((post) => {
+                return (
+                  <Post
+                    isFavoriteList={popularIsActive}
+                    key={post.post.id}
+                    data={post.post}
+                  />
+                )
+              })}
           </>
         )}
       </Wrapper>

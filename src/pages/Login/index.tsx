@@ -52,7 +52,8 @@ export const Login: React.FC = () => {
               telephone: userInfo.data()?.telephone,
               crm: userInfo.data()?.crm,
               institution: userInfo.data()?.institution,
-              isSubscriber: userInfo.data()?.isSubscriber
+              isSubscriber: userInfo.data()?.isSubscriber,
+              dataCriacao: userInfo.data()?.dataCriacao
             }
             setUser(data)
           } else {
@@ -60,7 +61,8 @@ export const Login: React.FC = () => {
               email: userInfo.data()?.email,
               isDoctor: userInfo.data()?.isDoctor,
               name: userInfo.data()?.name,
-              telephone: userInfo.data()?.telephone
+              telephone: userInfo.data()?.telephone,
+              dataCriacao: userInfo.data()?.dataCriacao
             }
             setUser(data)
           }
@@ -97,10 +99,6 @@ export const Login: React.FC = () => {
   }
 
   return (
-    // <KeyboardAvoidingView
-    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    //   keyboardVerticalOffset={30}
-    // >
     <Container onPress={Keyboard.dismiss}>
       <LanguageDropdown isOpen={false} />
       <Banner source={require('../../../assets/login/banner.png')} />
@@ -177,7 +175,11 @@ export const Login: React.FC = () => {
         )}
 
         {isClicked ? (
-          <ActivityIndicator size="large" color={primary} />
+          <ActivityIndicator
+            style={{ marginTop: 12 }}
+            size="large"
+            color={primary}
+          />
         ) : (
           <>
             {!forgotPasswordIsActive ? (
@@ -196,6 +198,5 @@ export const Login: React.FC = () => {
         </RegisterButton>
       </Wrapper>
     </Container>
-    // </KeyboardAvoidingView>
   )
 }

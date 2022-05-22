@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -12,8 +13,10 @@ import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './st
 
 export const Home: React.FC = () => {
   const { user } = useUser()
+
   const { modalChoosePlanIsOpen, openModalChoosePlan, closeModalChoosePlan } =
     useModal()
+
   const isFocused = useIsFocused()
 
   const {
@@ -22,7 +25,10 @@ export const Home: React.FC = () => {
     modalImageQuantity,
     modalImageOpenItem
   } = useModal()
+
   const [posts, setPosts] = useState<App.Post[]>()
+  const [search, setSearch] = useState('')
+  const [list, setList] = useState(posts)
 
   useEffect(() => {
     const subscriber = database
@@ -49,6 +55,22 @@ export const Home: React.FC = () => {
     }, [isFocused])
   )
 
+  useEffect(() => {
+    if (search === '') {
+      setList(posts)
+    } else {
+      setList(
+        posts?.filter((item) => {
+          if (item.autorNome.toLowerCase().indexOf(search.toLowerCase()) > -1) {
+            return true
+          } else {
+            return false
+          }
+        })
+      )
+    }
+  }, [search, posts])
+
   return (
     <Container>
       {modalChoosePlanIsOpen && <ModalChoosePlan />}
@@ -60,7 +82,11 @@ export const Home: React.FC = () => {
         )}
         <TopInputArea>
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
-          <TopInput placeholder="Pesquisar..." />
+          <TopInput
+            value={search}
+            onChangeText={setSearch}
+            placeholder="Pesquisar..."
+          />
         </TopInputArea>
         <Ionicons name="notifications-outline" size={22} color="#777d8c" />
       </Top>
@@ -73,7 +99,7 @@ export const Home: React.FC = () => {
           />
         )}
         <FlatList
-          data={posts}
+          data={list}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => <Post data={item} />}
           contentContainerStyle={{ paddingBottom: 100 }}
