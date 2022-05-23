@@ -2,6 +2,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { Alert } from 'react-native'
 import { database } from '../../../firebase'
+import { useNavigate } from '../../contexts/NavigateContext'
 import { useNotification } from '../../contexts/NotificationContext'
 import { useUser } from '../../contexts/UserContext'
 import { Container, Icon, Item, Text } from './style'
@@ -22,6 +23,8 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
   autorId
 }) => {
   const { userId, user } = useUser()
+
+  const { navigateToHome } = useNavigate()
 
   const { sendRemoteNotification } = useNotification()
 
@@ -112,6 +115,7 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
   }
 
   const deletePost = () => {
+    navigateToHome()
     database
       .collection('/posts')
       .doc(postId)

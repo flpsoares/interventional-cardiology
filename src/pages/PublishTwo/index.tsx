@@ -39,6 +39,7 @@ export const PublishTwo: React.FC = () => {
   const [text, setText] = useState('')
   const [outcome, setOutcome] = useState('')
   const [files, setFiles] = useState([''])
+  const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
   const dateNow = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY H:mm:ss')
@@ -85,19 +86,10 @@ export const PublishTwo: React.FC = () => {
       const img = await fetch(uploadUri)
       const bytes = await img.blob()
 
-      await PostImageRef.put(bytes).then((res) => {
-        res.ref
-          .getDownloadURL()
-          .then((url) => {
-            nextUrls.push(url)
-          })
-          .catch(() =>
-            Alert.alert(
-              'Erro',
-              'Houve um problema ao fazer o upload de algum arquivo'
-            )
-          )
-      })
+      const uploadedfile = await PostImageRef.put(bytes)
+
+      const resolvedUrl = await uploadedfile.ref.getDownloadURL()
+      nextUrls.push(resolvedUrl)
     }
     return nextUrls
   }
@@ -132,6 +124,7 @@ export const PublishTwo: React.FC = () => {
         .then(() => {
           navigateToHome()
           setFiles([''])
+          setStorageFilesUrl([''])
         })
         .catch((e) => {
           Alert.alert('Erro', 'Algo deu errado')
