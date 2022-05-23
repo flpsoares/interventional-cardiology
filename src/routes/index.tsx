@@ -2,6 +2,8 @@ import { Entypo, FontAwesome, Foundation } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications'
+import moment from 'moment'
+import 'moment-timezone'
 import React, { useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Alert, Platform, View } from 'react-native'
 import app, { database } from '../../firebase'
@@ -16,7 +18,7 @@ import { PublishStackRoutes } from './publishStackRoutes'
 const Tab = createBottomTabNavigator()
 
 export const Routes: React.FC = () => {
-  const { setUser, user, setUserId } = useUser()
+  const { setUser, user, setUserId, setIsSubscriber } = useUser()
   const [isLoading, setIsLoading] = useState(true)
 
   const [notification, setNotification] = useState<Notifications.Notification>()
@@ -128,6 +130,21 @@ export const Routes: React.FC = () => {
 
   useEffect(() => {
     if (user !== undefined) {
+      setIsSubscriber(user.isSubscriber)
+      database
+        .collection('/users')
+        .doc(app.auth().currentUser!.uid)
+        .onSnapshot((querySnapshot) => {
+          const expiration_date = querySnapshot.data()!.expiration_date
+          const dateNow = moment().tz('America/Sao_Paulo')
+          const isExpirated = moment(expiration_date).diff(dateNow, 'days') < 0
+          if (isExpirated) {
+            database
+              .collection('/users')
+              .doc(app.auth().currentUser!.uid)
+              .set({ isSubscriber: false }, { merge: true })
+          }
+        })
       setIsLoading(false)
     }
   }, [user])

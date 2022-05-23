@@ -101,7 +101,6 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             .where('userId', '==', autorId)
             .get()
             .then((res) => {
-              console.log(res.docs[0].id)
               database
                 .collection(`/users/${userId}/following`)
                 .doc(res.docs[0].id)

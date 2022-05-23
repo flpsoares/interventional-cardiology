@@ -2,8 +2,8 @@ import axios from 'axios'
 import { api } from './api'
 
 class MercadoPagoApi {
-  public async createPreference(month: number) {
-    return api.post('/preferences', { month: month }).then((res) => res)
+  public async createPreference(month: number, userId: string) {
+    return api.post('/preferences', { month: month, userId }).then((res) => res)
   }
 
   public async saleInfo(id: string) {

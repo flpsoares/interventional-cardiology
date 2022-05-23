@@ -1,4 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
+import moment from 'moment'
+import 'moment-timezone'
 import React, { useEffect, useState } from 'react'
 import { database } from '../../../firebase'
 import { Post } from '../../components/Post'
@@ -24,6 +26,8 @@ export const Account: React.FC = () => {
   const [posts, setPosts] = useState<App.Post[]>()
   const [countFollowers, setCountFollowers] = useState(0)
   const [countFollowings, setCountFollowings] = useState(0)
+  const [remainingDays, setRemainingDays] = useState(0)
+
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
 
   useEffect(() => {
@@ -82,6 +86,15 @@ export const Account: React.FC = () => {
         setCountFollowings(querySnapshot.docs.length)
       }
     })
+    // plans days
+    database
+      .collection('/users')
+      .doc(userId)
+      .onSnapshot((querySnapshot) => {
+        const dateNow = moment().tz('America/Sao_Paulo')
+        const remainingDays = querySnapshot.data()!.expiration_date
+        setRemainingDays(moment(remainingDays).diff(dateNow, 'days'))
+      })
   }, [])
 
   return (
@@ -118,6 +131,7 @@ export const Account: React.FC = () => {
           ) : (
             <Email>{countFollowings} Seguindo</Email>
           )}
+          <Email>{remainingDays} dias de assinatura restantes</Email>
         </Info>
       </Profile>
       <PostArea>

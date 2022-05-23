@@ -2,6 +2,7 @@ import { EvilIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
 import { RouteProp, useRoute } from '@react-navigation/core'
 import firebase from 'firebase'
 import moment from 'moment'
+import 'moment-timezone'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, View } from 'react-native'
 import { database } from '../../../firebase'
@@ -35,7 +36,7 @@ export const PostDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [commentText, setCommentText] = useState('')
 
-  const dateNow = moment().subtract(3, 'hours').format('DD/MM/YYYY H:mm:ss')
+  const dateNow = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY H:mm:ss')
 
   const createComment = () => {
     database

@@ -36,6 +36,7 @@ export const UserProfile: React.FC = () => {
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [countFollowers, setCountFollowers] = useState(0)
+  const [countFollowings, setCountFollowings] = useState(0)
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
   const [user, setUser] = useState<UserProps | any>()
 
@@ -72,6 +73,16 @@ export const UserProfile: React.FC = () => {
           setCountFollowers(querySnapshot.docs.length)
         }
       })
+    // followings
+    database
+      .collection(`/users/${route.params.id}/following`)
+      .onSnapshot((querySnapshot) => {
+        if (querySnapshot.docs[0] === undefined) {
+          setCountFollowings(0)
+        } else {
+          setCountFollowings(querySnapshot.docs.length)
+        }
+      })
   }, [])
 
   return (
@@ -98,6 +109,11 @@ export const UserProfile: React.FC = () => {
             <Email>{countFollowers} Seguidor</Email>
           ) : (
             <Email>{countFollowers} Seguidores</Email>
+          )}
+          {countFollowings === 1 ? (
+            <Email>{countFollowings} Seguindo</Email>
+          ) : (
+            <Email>{countFollowings} Seguindo</Email>
           )}
         </Info>
       </Profile>

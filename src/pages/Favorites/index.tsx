@@ -1,7 +1,7 @@
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
-import { useFocusEffect, useIsFocused } from '@react-navigation/core'
+import { useIsFocused } from '@react-navigation/core'
 import firebase from 'firebase'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { database } from '../../../firebase'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
 import { ModalImage } from '../../components/ModalImage'
@@ -28,18 +28,19 @@ export const Favorites: React.FC = () => {
     modalImageQuantity,
     modalImageOpenItem,
     modalChoosePlanIsOpen,
-    openModalChoosePlan
+    openModalChoosePlan,
+    closeModalChoosePlan
   } = useModal()
 
   const popularPosts = usePopularPost()
-
-  const isFocused = useIsFocused()
 
   const { user, userId } = useUser()
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [favoriteIsActive, setFavoriteIsActive] = useState(true)
   const [popularIsActive, setPopularIsActive] = useState(false)
+
+  const isFocused = useIsFocused()
 
   const [search, setSearch] = useState('')
 
@@ -81,12 +82,13 @@ export const Favorites: React.FC = () => {
       })
   }, [favoriteIsActive])
 
-  useFocusEffect(
+  useLayoutEffect(
     useCallback(() => {
       if (user?.isSubscriber === false) {
         openModalChoosePlan()
       }
-    }, [isFocused])
+      return () => closeModalChoosePlan()
+    }, [user, isFocused])
   )
 
   return (
@@ -171,4 +173,7 @@ export const Favorites: React.FC = () => {
       </Wrapper>
     </Container>
   )
+}
+function openModalChoosePlan() {
+  throw new Error('Function not implemented.')
 }

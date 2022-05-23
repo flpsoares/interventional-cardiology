@@ -5,6 +5,7 @@ import {
   MaterialCommunityIcons
 } from '@expo/vector-icons'
 import { Picker } from '@react-native-picker/picker'
+import axios from 'axios'
 import moment from 'moment'
 import React, { useState } from 'react'
 import {
@@ -85,6 +86,20 @@ export const Register: React.FC = () => {
       setIsClicked(false)
       return Alert.alert('Erro', 'Preencha todos os campos')
     }
+  }
+
+  const verifyCrm = () => {
+    axios
+      .post(
+        `https://www.consultacrm.com.br/api/index.php?tipo=crm&q=${crm}&chave=8209154390&destino=json`
+      )
+      .then((res) => {
+        if (res.data.total !== 0) {
+          handleNewAccount()
+        } else {
+          Alert.alert('Erro', 'Por favor, inferme um CRM válido!')
+        }
+      })
   }
 
   const handleNewAccount = async () => {
@@ -306,7 +321,7 @@ export const Register: React.FC = () => {
               {isClicked ? (
                 <ActivityIndicator size="large" color={primary} />
               ) : (
-                <SubmitButton onPress={handleNewAccount}>
+                <SubmitButton onPress={verifyCrm}>
                   <SubmitButtonText>Cadastrar</SubmitButtonText>
                 </SubmitButton>
               )}

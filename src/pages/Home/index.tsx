@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
-import { useFocusEffect, useIsFocused } from '@react-navigation/core'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useIsFocused } from '@react-navigation/core'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { database } from '../../../firebase'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
@@ -14,21 +14,21 @@ import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './st
 export const Home: React.FC = () => {
   const { user } = useUser()
 
-  const { modalChoosePlanIsOpen, openModalChoosePlan, closeModalChoosePlan } =
-    useModal()
-
-  const isFocused = useIsFocused()
-
   const {
     modalImageIsOpen,
     modalImageData,
     modalImageQuantity,
-    modalImageOpenItem
+    modalImageOpenItem,
+    modalChoosePlanIsOpen,
+    openModalChoosePlan,
+    closeModalChoosePlan
   } = useModal()
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [search, setSearch] = useState('')
   const [list, setList] = useState(posts)
+
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     const subscriber = database
@@ -47,14 +47,6 @@ export const Home: React.FC = () => {
     return subscriber
   }, [])
 
-  useFocusEffect(
-    useCallback(() => {
-      if (user?.isSubscriber === false) {
-        openModalChoosePlan()
-      }
-    }, [isFocused])
-  )
-
   useEffect(() => {
     if (search === '') {
       setList(posts)
@@ -71,9 +63,19 @@ export const Home: React.FC = () => {
     }
   }, [search, posts])
 
+  useLayoutEffect(
+    useCallback(() => {
+      if (user?.isSubscriber === false) {
+        openModalChoosePlan()
+      }
+      return () => closeModalChoosePlan()
+    }, [user, isFocused])
+  )
+
   return (
     <Container>
       {modalChoosePlanIsOpen && <ModalChoosePlan />}
+      <ModalChoosePlan />
       <Top>
         {user?.userPhoto ? (
           <UserPhoto source={{ uri: user.userPhoto }} />

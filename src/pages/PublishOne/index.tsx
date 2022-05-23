@@ -1,6 +1,6 @@
 import { Picker } from '@react-native-picker/picker'
-import { useFocusEffect, useIsFocused } from '@react-navigation/core'
-import React, { useCallback, useState } from 'react'
+import { useIsFocused } from '@react-navigation/core'
+import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import Modal from 'react-native-modal'
 import MultiSelect from 'react-native-multiple-select'
@@ -32,7 +32,8 @@ import {
 export const PublishOne: React.FC = () => {
   const { user } = useUser()
   const { navigateToPublish } = useNavigate()
-  const { modalChoosePlanIsOpen, openModalChoosePlan } = useModal()
+  const { modalChoosePlanIsOpen, openModalChoosePlan, closeModalChoosePlan } =
+    useModal()
 
   const [modalMedicineIsOpen, setModalMedicineIsOpen] = useState(false)
   const closeModalMedicine = () => setModalMedicineIsOpen(false)
@@ -50,14 +51,14 @@ export const PublishOne: React.FC = () => {
   const closeModalSymptom = () => setModalSymptomIsOpen(false)
   const openModalSymptom = () => setModalSymptomIsOpen(true)
 
-  const isFocused = useIsFocused()
-
   const [area, setArea] = useState<string[]>([])
   const [idade, setIdade] = useState('')
   const [genero, setGenero] = useState('Masculino')
   const [sintoma, setSintoma] = useState<string[]>([])
   const [comorbidades, setComorbidades] = useState<string[]>([])
   const [medicamentos, setMedicamentos] = useState<string[]>([])
+
+  const isFocused = useIsFocused()
 
   const areaItems = [
     {
@@ -231,12 +232,13 @@ export const PublishOne: React.FC = () => {
     }
   }
 
-  useFocusEffect(
+  useLayoutEffect(
     useCallback(() => {
       if (user?.isSubscriber === false) {
         openModalChoosePlan()
       }
-    }, [isFocused])
+      return () => closeModalChoosePlan()
+    }, [user, isFocused])
   )
 
   return (

@@ -3,6 +3,7 @@ import { RouteProp, useRoute } from '@react-navigation/core'
 import * as ImagePicker from 'expo-image-picker'
 import firebase from 'firebase'
 import moment from 'moment'
+import 'moment-timezone'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, Platform, View } from 'react-native'
 import app, { database } from '../../../firebase'
@@ -38,10 +39,9 @@ export const PublishTwo: React.FC = () => {
   const [text, setText] = useState('')
   const [outcome, setOutcome] = useState('')
   const [files, setFiles] = useState([''])
-  const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
-  const dateNow = moment().subtract(3, 'hours').format('DD/MM/YYYY H:mm:ss')
+  const dateNow = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY H:mm:ss')
 
   useEffect(() => {
     const verifyPermission = async () => {
@@ -72,39 +72,34 @@ export const PublishTwo: React.FC = () => {
   }
 
   const uploadFiles = async (uriList: string[]) => {
-    // eslint-disable-next-line array-callback-return
-    const execute = async () =>
-      uriList.map(async (uri) => {
-        const uploadUri = uri
-        const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+    const nextUrls: string[] = []
 
-        const storageRef = app.storage().ref()
+    for (const uri of uriList) {
+      const uploadUri = uri
+      const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
 
-        const PostImageRef = storageRef.child(`posts/${filename}`)
+      const storageRef = app.storage().ref()
 
-        const img = fetch(uploadUri)
-        const bytes = await (await img).blob()
+      const PostImageRef = storageRef.child(`posts/${filename}`)
 
-        await PostImageRef.put(bytes).then((res) => {
-          res.ref
-            .getDownloadURL()
-            .then((url) => {
-              if (!storageFilesUrl[0]) {
-                setStorageFilesUrl([url])
-              } else {
-                setStorageFilesUrl([...storageFilesUrl, url])
-              }
-            })
-            .catch(() =>
-              Alert.alert(
-                'Erro',
-                'Houve um problema ao fazer o upload de algum arquivo'
-              )
+      const img = await fetch(uploadUri)
+      const bytes = await img.blob()
+
+      await PostImageRef.put(bytes).then((res) => {
+        res.ref
+          .getDownloadURL()
+          .then((url) => {
+            nextUrls.push(url)
+          })
+          .catch(() =>
+            Alert.alert(
+              'Erro',
+              'Houve um problema ao fazer o upload de algum arquivo'
             )
-        })
+          )
       })
-
-    execute().finally(() => handleSubmit())
+    }
+    return nextUrls
   }
 
   const deleteFile = (index: number) => {
@@ -114,6 +109,7 @@ export const PublishTwo: React.FC = () => {
   const handleSubmit = async () => {
     if (text !== '' && outcome !== '') {
       setIsLoading(true)
+      const storageFiles = await uploadFiles(files)
       const data: App.Post = {
         autorId: userId,
         autorNome: user?.name,
@@ -126,7 +122,7 @@ export const PublishTwo: React.FC = () => {
         medicamentos: route.params.medicamentos,
         descricao: text,
         desfecho: outcome,
-        arquivos: storageFilesUrl,
+        arquivos: storageFiles,
         dataCriacao: timestamp,
         dataExibicao: dateNow
       }
@@ -136,7 +132,6 @@ export const PublishTwo: React.FC = () => {
         .then(() => {
           navigateToHome()
           setFiles([''])
-          setStorageFilesUrl([''])
         })
         .catch((e) => {
           Alert.alert('Erro', 'Algo deu errado')

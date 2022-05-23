@@ -1,14 +1,16 @@
 import React from 'react'
-import { Banner, Button, ButtonText, Container, Title, Wrapper } from './style'
-
 import Modal from 'react-native-modal'
-import { Text } from 'react-native'
 import { useModal } from '../../contexts/ModalContext'
 import { useNavigate } from '../../contexts/NavigateContext'
-
+import { Banner, Button, ButtonText, Container, Title, Wrapper } from './style'
 export const ModalChoosePlan: React.FC = () => {
   const { modalChoosePlanIsOpen, closeModalChoosePlan } = useModal()
   const { navigateToPlans } = useNavigate()
+
+  const navigate = () => {
+    closeModalChoosePlan()
+    navigateToPlans()
+  }
 
   return (
     <Container>
@@ -22,7 +24,7 @@ export const ModalChoosePlan: React.FC = () => {
           <Title>
             Escolha um plano para que você possa ter acesso as funcionalidades
           </Title>
-          <Button onPress={navigateToPlans}>
+          <Button onPress={navigate}>
             <ButtonText>Escolher um plano</ButtonText>
           </Button>
         </Wrapper>

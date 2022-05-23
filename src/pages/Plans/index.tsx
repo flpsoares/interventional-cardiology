@@ -24,7 +24,7 @@ import {
   Wrapper
 } from './style'
 export const Plans: React.FC = () => {
-  const { user } = useUser()
+  const { userId } = useUser()
   const { closeModalChoosePlan } = useModal()
 
   const isFocused = useIsFocused()
@@ -65,7 +65,7 @@ export const Plans: React.FC = () => {
   }
 
   const handleSale = (month: number) => {
-    MercadoPagoApi.createPreference(month).then((res) => {
+    MercadoPagoApi.createPreference(month, userId).then((res) => {
       setUrl(res.data.body.sandbox_init_point)
       setIsOpen(true)
     })
@@ -74,6 +74,7 @@ export const Plans: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       closeModalChoosePlan()
+      return () => closeModalChoosePlan()
     }, [isFocused])
   )
 
@@ -131,7 +132,4 @@ export const Plans: React.FC = () => {
       </Wrapper>
     </Container>
   )
-}
-function openModalChoosePlan() {
-  throw new Error('Function not implemented.')
 }

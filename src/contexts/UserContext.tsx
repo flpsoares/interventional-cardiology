@@ -5,6 +5,8 @@ interface UserContextData {
   user: UserProps | undefined
   userId: string
   setUserId: React.Dispatch<React.SetStateAction<string>>
+  isSubscriber: boolean
+  setIsSubscriber: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface UserProviderProps {
@@ -28,6 +30,7 @@ export const UserContext = createContext({} as UserContextData)
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<UserProps>()
   const [userId, setUserId] = useState('')
+  const [isSubscriber, setIsSubscriber] = useState(false)
 
   return (
     <UserContext.Provider
@@ -35,7 +38,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         user,
         setUser,
         userId,
-        setUserId
+        setUserId,
+        isSubscriber,
+        setIsSubscriber
       }}
     >
       {children}
