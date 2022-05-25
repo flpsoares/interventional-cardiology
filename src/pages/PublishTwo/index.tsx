@@ -39,7 +39,6 @@ export const PublishTwo: React.FC = () => {
   const [text, setText] = useState('')
   const [outcome, setOutcome] = useState('')
   const [files, setFiles] = useState([''])
-  const [storageFilesUrl, setStorageFilesUrl] = useState([''])
 
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
   const dateNow = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY H:mm:ss')
@@ -73,23 +72,32 @@ export const PublishTwo: React.FC = () => {
   }
 
   const uploadFiles = async (uriList: string[]) => {
-    const nextUrls: string[] = []
+    let nextUrls: string[] = []
 
-    for (const uri of uriList) {
-      const uploadUri = uri
-      const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
+    if (uriList[0] !== '') {
+      for (const uri of uriList) {
+        const uploadUri = uri
+        const filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1)
 
-      const storageRef = app.storage().ref()
+        const storageRef = app.storage().ref()
 
-      const PostImageRef = storageRef.child(`posts/${filename}`)
+        const PostImageRef = storageRef.child(`posts/${filename}`)
 
-      const img = await fetch(uploadUri)
-      const bytes = await img.blob()
+        const img = await fetch(uploadUri)
+        const bytes = await img.blob()
 
-      const uploadedfile = await PostImageRef.put(bytes)
+        try {
+          const uploadedfile = await PostImageRef.put(bytes)
 
-      const resolvedUrl = await uploadedfile.ref.getDownloadURL()
-      nextUrls.push(resolvedUrl)
+          const resolvedUrl = await uploadedfile.ref.getDownloadURL()
+          nextUrls.push(resolvedUrl)
+        } catch (e) {
+          Alert.alert('Erro', 'Erro ao fazer o upload dos arquivos')
+          setIsLoading(false)
+          setFiles([''])
+          nextUrls = []
+        }
+      }
     }
     return nextUrls
   }
@@ -124,7 +132,6 @@ export const PublishTwo: React.FC = () => {
         .then(() => {
           navigateToHome()
           setFiles([''])
-          setStorageFilesUrl([''])
         })
         .catch((e) => {
           Alert.alert('Erro', 'Algo deu errado')

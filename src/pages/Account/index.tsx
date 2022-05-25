@@ -6,6 +6,7 @@ import { database } from '../../../firebase'
 import { Post } from '../../components/Post'
 import { SettingsDropdown } from '../../components/SettingsDropdown'
 import { useUser } from '../../contexts/UserContext'
+import { useFollowingPosts } from '../../hooks/useFollowingPosts'
 import {
   Banner,
   Container,
@@ -22,6 +23,8 @@ import {
 
 export const Account: React.FC = () => {
   const { user, userId } = useUser()
+
+  const followingPosts = useFollowingPosts()
 
   const [posts, setPosts] = useState<App.Post[]>()
   const [countFollowers, setCountFollowers] = useState(0)
@@ -45,28 +48,6 @@ export const Account: React.FC = () => {
             }
           }) as App.Post[]
           setPosts(data)
-        })
-    } else {
-      database
-        .collection(`/users/${userId}/following`)
-        .onSnapshot((querySnapshot) => {
-          const followingsIds = querySnapshot.docs.map((doc) => {
-            return doc.data().userId
-          })
-          if (followingsIds[0]) {
-            database
-              .collection('posts')
-              .where('autorId', 'in', followingsIds)
-              .onSnapshot((querySnapshot) => {
-                const data = querySnapshot.docs.map((doc) => {
-                  return {
-                    id: doc.id,
-                    ...doc.data()
-                  }
-                }) as App.Post[]
-                setPosts(data)
-              })
-          }
         })
     }
 
@@ -135,9 +116,19 @@ export const Account: React.FC = () => {
         </Info>
       </Profile>
       <PostArea>
-        {posts?.map((post) => {
-          return <Post key={post.id} data={post} />
-        })}
+        {user?.isDoctor ? (
+          <>
+            {posts?.map((post) => {
+              return <Post key={post.id} data={post} />
+            })}
+          </>
+        ) : (
+          <>
+            {followingPosts?.map((post) => {
+              return <Post key={post.id} data={post} />
+            })}
+          </>
+        )}
       </PostArea>
     </Container>
   )

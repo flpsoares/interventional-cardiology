@@ -4,44 +4,67 @@ import { database } from '../../firebase';
 type DataProps = Record<string, { favoriteCounts: number; post: App.Post }>
 
 export function usePopularPost() {
-  const [posts, setPosts] = useState<DataProps>({})
+  const [popularPosts, setPopularPosts] = useState<DataProps>({})
 
   useEffect(() => {
-    database
-      .collection('/posts')
-      .limit(100)
-      .onSnapshot((querySnapshot) => {
-        const postsIds = querySnapshot.docs.map((doc) => {
-          return doc.id
-        })
-        const posts: App.Post[] = querySnapshot.docs.map((f) => {
-          return { id: f.id, ...f.data() }
-        }) as any
+    const _postsRef = database.collection('/posts').limit(100)
 
-        if (postsIds[0]) {
+    _postsRef.onSnapshot((querySnapshot) => {
+      _popularPostCallback(querySnapshot)
+    })
+
+    const _popularPostCallback = (_snapshot: any) => {
+      const _postsIds: string[] = _snapshot.docs.map((post: any) => post.id)
+
+      const _posts: App.Post[] = _snapshot.docs.map((post: any) => {
+        return { id: post.id, ...post.data() }
+      })
+
+      if (_postsIds[0]) {
+        _postsIds.forEach((id) => {
           database
             .collection('/posts_favorites')
-            .where('postId', 'in', postsIds)
+            .where('postId', '==', id)
             .onSnapshot((querySnapshot) => {
-              const data: DataProps = {}
-              const postsFavorites = querySnapshot.docs
-
-              for (const postFavorite of postsFavorites) {
-                if (!data[postFavorite.data().postId]) {
-                  data[postFavorite.data().postId] = {
-                    favoriteCounts: 1,
-                    post: posts.find((p) => p.id === postFavorite.data().postId)!
+              if (querySnapshot.docs[0] !== undefined) {
+                const data: DataProps = {}
+                const postsFavorites = querySnapshot.docs
+                for (const postFavorite of postsFavorites) {
+                  if (postFavorite.data().postId === id) {
+                    if (!data[postFavorite.data().postId]) {
+                      data[postFavorite.data().postId] = {
+                        favoriteCounts: 1,
+                        post: _posts.find(
+                          (p) => p.id === postFavorite.data().postId
+                        )!
+                      }
+                    } else {
+                      data[postFavorite.data().postId].favoriteCounts++
+                    }
                   }
-                } else {
-                  data[postFavorite.data().postId].favoriteCounts++
+                  setPopularPosts(data)
                 }
               }
-              setPosts(data)
             })
-        }
-      })
+        })
+      }
+    }
+
+    // const _postCallback = (post: DataProps) => {
+    //   setPopularPosts((oldPosts) => {
+    //     const _oldPosts = [...oldPosts]
+    //     _oldPosts.push(post)
+    //     if (!_oldPosts.map((p: any) => p.id).includes(_p.)) {
+    //       _oldPosts.push({
+    //         favoriteCount: _p.index.favoriteCount,
+    //         post: _p.index.post
+    //       })
+    //     }
+    //     return _oldPosts
+    //   })
+    // }
   }, [])
-  return Object.values(posts)
+  return Object.values(popularPosts)
     .sort((b, a) => a.favoriteCounts - b.favoriteCounts)
     .slice(0, 9)
 }

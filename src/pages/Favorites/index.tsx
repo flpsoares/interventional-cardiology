@@ -1,13 +1,12 @@
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/core'
-import firebase from 'firebase'
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { database } from '../../../firebase'
+import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
 import { ModalImage } from '../../components/ModalImage'
 import { Post } from '../../components/Post'
 import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
+import { useFavoritePost } from '../../hooks/useFavoritePosts'
 import { usePopularPost } from '../../hooks/usePopularPosts'
 import {
   ChooseArea,
@@ -33,10 +32,10 @@ export const Favorites: React.FC = () => {
   } = useModal()
 
   const popularPosts = usePopularPost()
+  const favoritePosts = useFavoritePost()
 
   const { user, userId } = useUser()
 
-  const [posts, setPosts] = useState<App.Post[]>()
   const [favoriteIsActive, setFavoriteIsActive] = useState(true)
   const [popularIsActive, setPopularIsActive] = useState(false)
 
@@ -53,34 +52,6 @@ export const Favorites: React.FC = () => {
     setFavoriteIsActive(false)
     setPopularIsActive(true)
   }
-
-  useEffect(() => {
-    database
-      .collection('/posts_favorites')
-      .where('userId', '==', userId)
-      .onSnapshot((querySnapshot) => {
-        const postsIds = querySnapshot.docs
-          .map((doc: any) => doc.data())
-          .map((f) => f.postId)
-
-        if (postsIds.length > 0) {
-          database
-            .collection('/posts')
-            .where(firebase.firestore.FieldPath.documentId(), 'in', postsIds)
-            .onSnapshot((querySnapshot) => {
-              const data: any = querySnapshot.docs.map((doc) => {
-                return {
-                  id: doc.id,
-                  ...doc.data()
-                }
-              })
-              setPosts(data)
-            })
-        } else {
-          setPosts([])
-        }
-      })
-  }, [favoriteIsActive])
 
   useLayoutEffect(
     useCallback(() => {
@@ -128,9 +99,9 @@ export const Favorites: React.FC = () => {
         )}
         {favoriteIsActive && (
           <>
-            {posts
+            {favoritePosts
               // eslint-disable-next-line array-callback-return
-              ?.filter((values) => {
+              .filter((values: any) => {
                 if (search === '') {
                   return values
                 } else if (
@@ -139,9 +110,9 @@ export const Favorites: React.FC = () => {
                   return values
                 }
               })
-              .map((post) => {
+              .map((post: any, index) => {
                 return (
-                  <Post isFavoriteList={popularIsActive} key={post.id} data={post} />
+                  <Post isFavoriteList={popularIsActive} key={index} data={post} />
                 )
               })}
           </>
@@ -159,11 +130,11 @@ export const Favorites: React.FC = () => {
                   return values
                 }
               })
-              .map((post) => {
+              .map((post, index) => {
                 return (
                   <Post
                     isFavoriteList={popularIsActive}
-                    key={post.post.id}
+                    key={index}
                     data={post.post}
                   />
                 )
@@ -173,7 +144,4 @@ export const Favorites: React.FC = () => {
       </Wrapper>
     </Container>
   )
-}
-function openModalChoosePlan() {
-  throw new Error('Function not implemented.')
 }
