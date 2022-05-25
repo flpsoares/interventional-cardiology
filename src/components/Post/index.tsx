@@ -2,6 +2,7 @@
 import { AntDesign, Entypo, Fontisto } from '@expo/vector-icons'
 import { Video } from 'expo-av'
 import moment from 'moment'
+import 'moment-timezone'
 import 'moment/locale/pt-br'
 import React, { useEffect, useRef, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
@@ -189,8 +190,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             <Name>{data.autorNome}</Name>
             <Date>
               {moment(data.dataExibicao, 'DD/MM/YYYY H:mm:ss')
-                .add(3, 'hours')
-                .locale('pt-br')
+                .tz('America/Sao_Paulo')
                 .fromNow()}
             </Date>
             {/* <Date>{data.dataExibicao}</Date> */}
