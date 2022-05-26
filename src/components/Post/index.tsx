@@ -62,7 +62,6 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const [commentCount, setCommentCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isFavorited, setIsFavorited] = useState(false)
-  const [favoriteCount, setFavoriteCount] = useState(0)
   const [isFollower, setIsFollower] = useState(false)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
@@ -116,18 +115,6 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           setIsFollower(true)
         }
       })
-  }, [])
-
-  useEffect(() => {
-    if (isFavoriteList) {
-      database
-        .collection('/posts_favorites')
-        .where('postId', '==', data.id)
-        .onSnapshot((querySnapshot) => {
-          const data = querySnapshot.docs.length
-          setFavoriteCount(data)
-        })
-    }
   }, [])
 
   const handleLike = async (likeId: string) => {
@@ -194,7 +181,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
                 .fromNow()}
             </Date>
             {/* <Date>{data.dataExibicao}</Date> */}
-            {isFavoriteList && <Date>Favoritos: {favoriteCount}</Date>}
+            {isFavoriteList && <Date>Favoritos: {data.favorites}</Date>}
           </Info>
         </TopLeftContent>
         <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
@@ -207,6 +194,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
             isFollower={isFollower}
             postId={data.id!}
             name={data.autorNome}
+            favorites={data.favorites}
           />
         )}
       </Top>

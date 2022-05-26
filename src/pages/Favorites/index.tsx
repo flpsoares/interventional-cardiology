@@ -30,14 +30,13 @@ export const Favorites: React.FC = () => {
     openModalChoosePlan,
     closeModalChoosePlan
   } = useModal()
-
-  const popularPosts = usePopularPost()
-  const favoritePosts = useFavoritePost()
-
-  const { user, userId } = useUser()
+  const { user } = useUser()
 
   const [favoriteIsActive, setFavoriteIsActive] = useState(true)
   const [popularIsActive, setPopularIsActive] = useState(false)
+
+  const favoritePosts = useFavoritePost()
+  const popularPosts = usePopularPost()
 
   const isFocused = useIsFocused()
 
@@ -85,8 +84,10 @@ export const Favorites: React.FC = () => {
         <ChooseItem onPress={activeFavorite} isActive={favoriteIsActive}>
           <ChooseItemText isActive={favoriteIsActive}>SEUS FAVORITOS</ChooseItemText>
         </ChooseItem>
-        <ChooseItem onPress={activePopular} isActive={popularIsActive}>
-          <ChooseItemText isActive={popularIsActive}>MAIS POPULARES</ChooseItemText>
+        <ChooseItem onPress={activePopular} isActive={!favoriteIsActive}>
+          <ChooseItemText isActive={!favoriteIsActive}>
+            MAIS POPULARES
+          </ChooseItemText>
         </ChooseItem>
       </ChooseArea>
       <Wrapper>
@@ -110,35 +111,24 @@ export const Favorites: React.FC = () => {
                   return values
                 }
               })
-              .map((post: any, index) => {
+              .map((post, index) => {
                 return (
-                  <Post isFavoriteList={popularIsActive} key={index} data={post} />
+                  <Post isFavoriteList={!favoriteIsActive} key={index} data={post} />
                 )
               })}
           </>
         )}
-        {!favoriteIsActive && (
+        {popularIsActive && (
           <>
-            {popularPosts
-              // eslint-disable-next-line array-callback-return
-              ?.filter((values) => {
-                if (search === '') {
-                  return values
-                } else if (
-                  values.post.autorNome.toLowerCase().includes(search.toLowerCase())
-                ) {
-                  return values
-                }
-              })
-              .map((post, index) => {
-                return (
-                  <Post
-                    isFavoriteList={popularIsActive}
-                    key={index}
-                    data={post.post}
-                  />
-                )
-              })}
+            {popularPosts.map((post, index) => {
+              return (
+                <Post
+                  isFavoriteList={popularIsActive}
+                  key={index}
+                  data={post.post!}
+                />
+              )
+            })}
           </>
         )}
       </Wrapper>

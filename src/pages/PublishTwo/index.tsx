@@ -123,6 +123,7 @@ export const PublishTwo: React.FC = () => {
         descricao: text,
         desfecho: outcome,
         arquivos: storageFiles,
+        favorites: 0,
         dataCriacao: timestamp,
         dataExibicao: dateNow
       }

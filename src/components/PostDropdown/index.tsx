@@ -13,6 +13,7 @@ interface PostDropdownProps {
   isFavorited: boolean
   isFollower: boolean
   autorId: string
+  favorites: number
 }
 
 export const PostDropdown: React.FC<PostDropdownProps> = ({
@@ -20,7 +21,8 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
   postId,
   isFavorited,
   isFollower,
-  autorId
+  autorId,
+  favorites
 }) => {
   const { userId, user } = useUser()
 
@@ -44,14 +46,26 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
           database
             .collection('/posts_favorites')
             .add({ postId, userId })
-            .then(() => setFavorited(true))
+            .then(() => {
+              database
+                .collection('/posts')
+                .doc(postId)
+                .update({ favorites: favorites + 1 })
+              setFavorited(true)
+            })
             .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
         } else {
           database
             .collection('/posts_favorites')
             .doc(res.docs[0].id)
             .delete()
-            .then(() => setFavorited(false))
+            .then(() => {
+              database
+                .collection('/posts')
+                .doc(postId)
+                .update({ favorites: favorites - 1 })
+              setFavorited(false)
+            })
             .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
         }
       })
