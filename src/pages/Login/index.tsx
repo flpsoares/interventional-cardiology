@@ -1,8 +1,10 @@
 import { FontAwesome } from '@expo/vector-icons'
+import i18n from 'i18n-js'
 import React, { useState } from 'react'
 import { ActivityIndicator, Alert, Keyboard } from 'react-native'
 import firebase, { database } from '../../../firebase'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { useUser } from '../../contexts/UserContext'
 import { primary } from '../../styles/globalCssVar'
@@ -26,6 +28,8 @@ import {
 export const Login: React.FC = () => {
   const { navigateToRegister } = useNavigate()
   const { setUser } = useUser()
+  const { language } = useLanguage()
+
   const [passwordIsHide, setPasswordIsHide] = useState(true)
   const [forgotPasswordIsActive, setForgotPasswordIsActive] = useState(false)
 
@@ -98,6 +102,41 @@ export const Login: React.FC = () => {
     }
   }
 
+  i18n.locale = language
+
+  i18n.translations = {
+    pt: {
+      title: 'Faça seu Login',
+      password: 'Senha',
+      forgot: 'Esqueceu sua senha?',
+      login: 'Login',
+      register: 'Cadastre-se',
+      email: 'Informe o email para recuperar sua senha',
+      back: 'Voltar ao Login',
+      send: 'Enviar'
+    },
+    en: {
+      title: 'Login',
+      password: 'Password',
+      forgot: 'Forgot your password?',
+      login: 'Login',
+      register: 'Register',
+      email: 'Enter your email to recover your password',
+      back: 'Back to Login',
+      send: 'Send'
+    },
+    es: {
+      title: 'Acceso',
+      password: 'Clave',
+      forgot: 'Olvidaste tu contraseña?',
+      login: 'Acceso',
+      register: 'Registro',
+      email: 'Introduce tu email para recuperar tu contraseña',
+      back: 'Atrás para iniciar sesión',
+      send: 'Enviar'
+    }
+  }
+
   return (
     <Container onPress={Keyboard.dismiss}>
       <LanguageDropdown isOpen={false} />
@@ -105,7 +144,7 @@ export const Login: React.FC = () => {
       <Wrapper>
         {!forgotPasswordIsActive ? (
           <>
-            <Title>Faça seu Login</Title>
+            <Title>{i18n.t('title')}</Title>
             <InputItem style={{ elevation: 10 }}>
               <InputIcon>
                 <FontAwesome name="user" size={28} color="rgba(77, 86, 109, 0.46)" />
@@ -125,7 +164,7 @@ export const Login: React.FC = () => {
                 autoCapitalize="none"
                 onChangeText={setPassword}
                 value={password}
-                placeholder="Senha"
+                placeholder={i18n.t('password')}
                 secureTextEntry={passwordIsHide}
               />
               <InputIconPassword onPress={toggleHidePassword}>
@@ -147,9 +186,7 @@ export const Login: React.FC = () => {
           </>
         ) : (
           <>
-            <Title style={{ width: '80%' }}>
-              Informe o email para recuperar sua senha
-            </Title>
+            <Title style={{ width: '80%' }}>{i18n.t('email')}</Title>
             <InputItem style={{ elevation: 10 }}>
               <InputIcon>
                 <FontAwesome name="user" size={28} color="rgba(77, 86, 109, 0.46)" />
@@ -166,11 +203,11 @@ export const Login: React.FC = () => {
               setForgotPasswordIsActive(true)
             }}
           >
-            <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
+            <ForgotPasswordText>{i18n.t('forgot')}</ForgotPasswordText>
           </ForgotPassword>
         ) : (
           <ForgotPassword onPress={() => setForgotPasswordIsActive(false)}>
-            <ForgotPasswordText>Voltar ao Login</ForgotPasswordText>
+            <ForgotPasswordText>{i18n.t('back')}</ForgotPasswordText>
           </ForgotPassword>
         )}
 
@@ -184,17 +221,17 @@ export const Login: React.FC = () => {
           <>
             {!forgotPasswordIsActive ? (
               <SubmitButton onPress={handleLogin}>
-                <SubmitButtonText>Login</SubmitButtonText>
+                <SubmitButtonText>{i18n.t('login')}</SubmitButtonText>
               </SubmitButton>
             ) : (
               <SubmitButton onPress={handleForgotPassword}>
-                <SubmitButtonText>Enviar</SubmitButtonText>
+                <SubmitButtonText>{i18n.t('send')}</SubmitButtonText>
               </SubmitButton>
             )}
           </>
         )}
         <RegisterButton onPress={navigateToRegister}>
-          <RegisterButtonText>Cadastre-se</RegisterButtonText>
+          <RegisterButtonText>{i18n.t('register')}</RegisterButtonText>
         </RegisterButton>
       </Wrapper>
     </Container>

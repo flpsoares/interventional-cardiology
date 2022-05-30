@@ -38,6 +38,7 @@ import {
   VideoButton,
   Wrapper
 } from './style'
+
 type Props = {
   data: App.Post
   isDetail?: boolean
@@ -296,6 +297,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           />
         )}
         <PostInfoArea>
+          {/* <PostInfo></PostInfo> */}
           <PostInfo>{likeCount} curtidas</PostInfo>
           <PostInfo>{commentCount} comentários</PostInfo>
         </PostInfoArea>

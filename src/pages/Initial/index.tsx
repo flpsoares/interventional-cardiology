@@ -1,31 +1,30 @@
+import i18n from 'i18n-js'
 import React, { useState } from 'react'
 import { Dimensions, SafeAreaView, ScrollView } from 'react-native'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
+import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { useLanguage } from '../../contexts/LanguageContext'
+import { useNavigate } from '../../contexts/NavigateContext'
+import { primary } from '../../styles/globalCssVar'
 import {
   Banner,
   BannerArea,
   Container,
   Description,
-  FirstSupportImage,
   NextButton,
   NextButtonText,
   PaginationArea,
-  SecondSupportImage,
   SubTitle,
   Title,
   Wrapper
 } from './style'
-import Carousel, { Pagination } from 'react-native-snap-carousel'
-import carouselData from '../../initialData'
-import { primary } from '../../styles/globalCssVar'
-import { useNavigate } from '../../contexts/NavigateContext'
-import { LanguageDropdown } from '../../components/LanguageDropdown'
-import { useLanguage } from '../../contexts/LanguageContext'
 
 const screen = Dimensions.get('screen')
 
 export const Initial: React.FC = () => {
   const { navigateToChooseAuth } = useNavigate()
   const [activeSlide, setActiveSlide] = useState(0)
+  const { language } = useLanguage()
 
   const [carousel, setCarousel] = useState<any>()
 
@@ -37,6 +36,64 @@ export const Initial: React.FC = () => {
     }
   }
 
+  i18n.locale = language
+
+  i18n.translations = {
+    pt: {
+      subTitleOne: 'Entenda como funciona',
+      titleOne: 'Cadastre-se',
+      descriptionOne:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor',
+      subTitleTwo: 'Entenda como funciona',
+      titleTwo: 'Tenha acesso a timeline',
+      descriptionTwo:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor',
+      skip: 'Pular',
+      next: 'Próximo'
+    },
+    en: {
+      subTitleOne: 'Understand how it works',
+      titleOne: 'Register',
+      descriptionOne:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor',
+      subTitleTwo: 'Understand how it works',
+      titleTwo: 'Get access to timeline',
+      descriptionTwo:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor',
+      skip: 'Skip',
+      next: 'Next'
+    },
+    es: {
+      subTitleOne: 'Entender cómo funciona',
+      titleOne: 'Registro',
+      descriptionOne:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor',
+      subTitleTwo: 'Entender cómo funciona',
+      titleTwo: 'Obtener acceso a la línea de tiempo',
+      descriptionTwo:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor',
+      skip: 'Saltar',
+      next: 'Próximo'
+    }
+  }
+
+  const carouselData = [
+    {
+      id: 1,
+      subTitle: i18n.t('subTitleOne'),
+      title: i18n.t('titleOne'),
+      description: i18n.t('descriptionOne'),
+      image: require('../../../assets/initial/banner_01.png')
+    },
+    {
+      id: 1,
+      subTitle: i18n.t('subTitleTwo'),
+      title: i18n.t('titleTwo'),
+      description: i18n.t('descriptionTwo'),
+      image: require('../../../assets/initial/banner_02.png')
+    }
+  ]
+
   const renderCarouselItem = ({ item }: any) => {
     return (
       <Container>
@@ -47,12 +104,6 @@ export const Initial: React.FC = () => {
           >
             <BannerArea>
               <Banner source={item.image} />
-              {/* <FirstSupportImage
-                source={require('../../../assets/support_02.png')}
-              />
-              <SecondSupportImage
-                source={require('../../../assets/support_01.png')}
-              /> */}
             </BannerArea>
             <Wrapper>
               <SubTitle>{item.subTitle}</SubTitle>
@@ -79,7 +130,7 @@ export const Initial: React.FC = () => {
       />
       <PaginationArea>
         <NextButton onPress={navigateToChooseAuth}>
-          <NextButtonText>Pular</NextButtonText>
+          <NextButtonText>{i18n.t('skip')}</NextButtonText>
         </NextButton>
         <Pagination
           dotsLength={carouselData.length}
@@ -96,7 +147,7 @@ export const Initial: React.FC = () => {
           inactiveDotScale={0.6}
         />
         <NextButton onPress={nextItem}>
-          <NextButtonText>Próximo</NextButtonText>
+          <NextButtonText>{i18n.t('next')}</NextButtonText>
         </NextButton>
       </PaginationArea>
     </>

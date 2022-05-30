@@ -6,6 +6,7 @@ import {
 } from '@expo/vector-icons'
 import { Picker } from '@react-native-picker/picker'
 import axios from 'axios'
+import i18n from 'i18n-js'
 import moment from 'moment'
 import React, { useState } from 'react'
 import {
@@ -18,6 +19,7 @@ import {
 } from 'react-native'
 import firebase, { database } from '../../../firebase'
 import { LanguageDropdown } from '../../components/LanguageDropdown'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { primary } from '../../styles/globalCssVar'
 import {
@@ -40,6 +42,8 @@ import {
 
 export const Register: React.FC = () => {
   const { navigateToLogin } = useNavigate()
+  const { language } = useLanguage()
+
   const [passwordIsHide, setPasswordIsHide] = useState(true)
 
   const [name, setName] = useState('')
@@ -175,6 +179,41 @@ export const Register: React.FC = () => {
     }
   }
 
+  i18n.locale = language
+
+  i18n.translations = {
+    pt: {
+      title: 'Faça seu cadastro',
+      name: 'Nome Completo',
+      doctor: 'Médico',
+      student: 'Estudante',
+      institution: 'Instituição',
+      telephone: 'Telefone',
+      password: 'Digite sua senha',
+      register: 'Cadastrar'
+    },
+    en: {
+      title: 'Register',
+      name: 'Full Name',
+      doctor: 'Doctor',
+      student: 'Student',
+      institution: 'Institution',
+      telephone: 'Telephone',
+      password: 'Type your password',
+      register: 'Register'
+    },
+    es: {
+      title: 'Haz tu registro',
+      name: 'Nombre Completo',
+      doctor: 'Médico',
+      student: 'Alumno',
+      institution: 'Institución',
+      telephone: 'Teléfono',
+      password: 'Escribe tu contraseña',
+      register: 'Registrar'
+    }
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -190,15 +229,9 @@ export const Register: React.FC = () => {
             <BannerArea>
               <LanguageDropdown isOpen={false} />
               <Banner source={require('../../../assets/register/banner.png')} />
-              {/* <FirstSupportImage
-                source={require('../../../assets/support_02.png')}
-              />
-              <SecondSupportImage
-                source={require('../../../assets/support_01.png')}
-              /> */}
             </BannerArea>
             <Wrapper>
-              <Title>Faça seu Cadastro</Title>
+              <Title>{i18n.t('title')}</Title>
               <InputItem style={{ elevation: 3 }}>
                 <InputIcon>
                   <FontAwesome
@@ -211,7 +244,7 @@ export const Register: React.FC = () => {
                 <Input
                   onChangeText={setName}
                   value={name}
-                  placeholder="Nome Completo"
+                  placeholder={i18n.t('name')}
                 />
               </InputItem>
               <InputItem style={{ elevation: 3 }}>
@@ -222,8 +255,8 @@ export const Register: React.FC = () => {
                     selectedValue={isDoctor}
                     onValueChange={(value) => setIsDoctor(value)}
                   >
-                    <Picker.Item label="Médico" value={true} />
-                    <Picker.Item label="Estudante" value={false} />
+                    <Picker.Item label={i18n.t('doctor')} value={true} />
+                    <Picker.Item label={i18n.t('student')} value={false} />
                   </Picker>
                 </PickerButton>
               </InputItem>
@@ -250,7 +283,7 @@ export const Register: React.FC = () => {
                     <Input
                       onChangeText={setInstitution}
                       value={institution}
-                      placeholder="Instituição"
+                      placeholder={i18n.t('institution')}
                     />
                   </InputItem>
                 </>
@@ -284,7 +317,7 @@ export const Register: React.FC = () => {
                   onChangeText={setTelephone}
                   value={telephone}
                   keyboardType="number-pad"
-                  placeholder="Telefone"
+                  placeholder={i18n.t('telephone')}
                 />
               </InputItem>
               <InputItem style={{ elevation: 3 }}>
@@ -299,7 +332,7 @@ export const Register: React.FC = () => {
                   autoCapitalize="none"
                   onChangeText={setPassword}
                   value={password}
-                  placeholder="Digite sua senha"
+                  placeholder={i18n.t('password')}
                   secureTextEntry={passwordIsHide}
                 />
                 <InputIconPassword onPress={toggleHidePassword}>
@@ -322,7 +355,7 @@ export const Register: React.FC = () => {
                 <ActivityIndicator size="large" color={primary} />
               ) : (
                 <SubmitButton onPress={verifyCrm}>
-                  <SubmitButtonText>Cadastrar</SubmitButtonText>
+                  <SubmitButtonText>{i18n.t('register')}</SubmitButtonText>
                 </SubmitButton>
               )}
               <LoginButton onPress={navigateToLogin}>

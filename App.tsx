@@ -11,7 +11,6 @@ import { UserProvider } from './src/contexts/UserContext'
 import { Routes } from './src/routes'
 import { AuthRoutes } from './src/routes/AuthRoutes'
 import { primary } from './src/styles/globalCssVar'
-
 export default function App() {
   const [user, setUser] = useState<boolean>()
   const [isLoading, setIsLoading] = useState(true)

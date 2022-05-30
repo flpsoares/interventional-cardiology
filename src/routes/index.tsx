@@ -174,7 +174,7 @@ export const Routes: React.FC = () => {
         name="HomeStackRoutes"
         component={HomeStackRoutes}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Início',
           headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <Foundation name="home" size={size} color={color} />

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useState } from 'react'
 
 interface LanguageContextData {
   language: string
@@ -11,7 +11,7 @@ interface LanguageProviderProps {
 export const LanguageContext = createContext({} as LanguageContextData)
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  const [language, setLanguage] = useState('pt-br')
+  const [language, setLanguage] = useState('pt')
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>

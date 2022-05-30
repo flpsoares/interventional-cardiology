@@ -14,9 +14,9 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
     <Container onPress={() => setIsActive(!isActive)} isOpen={isActive}>
       {!isActive ? (
         <>
-          {language === 'pt-br' && (
+          {language === 'pt' && (
             <Item onPress={() => setIsActive(!isActive)}>
-              <Image source={require('../../../assets/language/pt-br.png')} />
+              <Image source={require('../../../assets/language/pt.png')} />
             </Item>
           )}
           {language === 'en' && (
@@ -32,10 +32,10 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
         </>
       ) : (
         <>
-          {language === 'pt-br' && (
+          {language === 'pt' && (
             <>
               <Item onPress={() => setIsActive(!isActive)}>
-                <Image source={require('../../../assets/language/pt-br.png')} />
+                <Image source={require('../../../assets/language/pt.png')} />
               </Item>
               <Item
                 onPress={() => {
@@ -62,11 +62,11 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
-                  setLanguage('pt-br')
+                  setLanguage('pt')
                   setIsActive(false)
                 }}
               >
-                <Image source={require('../../../assets/language/pt-br.png')} />
+                <Image source={require('../../../assets/language/pt.png')} />
               </Item>
               <Item
                 onPress={() => {
@@ -93,11 +93,11 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
-                  setLanguage('pt-br')
+                  setLanguage('pt')
                   setIsActive(false)
                 }}
               >
-                <Image source={require('../../../assets/language/pt-br.png')} />
+                <Image source={require('../../../assets/language/pt.png')} />
               </Item>
             </>
           )}
