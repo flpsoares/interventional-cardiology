@@ -8,6 +8,7 @@ import { Picker } from '@react-native-picker/picker'
 import axios from 'axios'
 import i18n from 'i18n-js'
 import moment from 'moment'
+import 'moment-timezone'
 import React, { useState } from 'react'
 import {
   ActivityIndicator,
@@ -74,7 +75,7 @@ export const Register: React.FC = () => {
       return true
     } else {
       setIsClicked(false)
-      return Alert.alert('Erro', 'Preencha todos os campos')
+      return Alert.alert(i18n.t('error'), i18n.t('fill'))
     }
   }
 
@@ -88,7 +89,7 @@ export const Register: React.FC = () => {
       return true
     } else {
       setIsClicked(false)
-      return Alert.alert('Erro', 'Preencha todos os campos')
+      return Alert.alert(i18n.t('error'), i18n.t('fill'))
     }
   }
 
@@ -101,7 +102,7 @@ export const Register: React.FC = () => {
         if (res.data.total !== 0) {
           handleNewAccount()
         } else {
-          Alert.alert('Erro', 'Por favor, inferme um CRM válido!')
+          Alert.alert(i18n.t('error'), i18n.t('validCrm'))
         }
       })
   }
@@ -125,22 +126,22 @@ export const Register: React.FC = () => {
                 institution,
                 email,
                 telephone,
-                dataCriacao: moment().subtract(3, 'hours').format('DD/MM/YYYY')
+                dataCriacao: moment().tz('America/Sao_Paulo').format('DD/MM/YYYY')
               })
             })
-            .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
+            .then(() => Alert.alert(i18n.t('success'), i18n.t('created')))
             .catch((error) => {
               if (error.code === 'auth/email-already-in-use') {
-                Alert.alert('Aviso', 'Esse email já está em uso')
+                Alert.alert(i18n.t('warning'), i18n.t('inUse'))
               }
               if (error.code === 'auth/invalid-email') {
-                Alert.alert('Erro', 'E-mail inválido')
+                Alert.alert(i18n.t('error'), i18n.t('invalid'))
               }
             })
             .finally(() => setIsClicked(false))
         } else {
           setIsClicked(false)
-          Alert.alert('Erro', 'A senha deve conter pelo menos 6 dígitos')
+          Alert.alert(i18n.t('error'), i18n.t('sixDigits'))
         }
       }
     } else {
@@ -164,16 +165,16 @@ export const Register: React.FC = () => {
             .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
             .catch((error) => {
               if (error.code === 'auth/email-already-in-use') {
-                Alert.alert('Aviso', 'Esse email já está em uso')
+                Alert.alert(i18n.t('warning'), i18n.t('inUse'))
               }
               if (error.code === 'auth/invalid-email') {
-                Alert.alert('Erro', 'E-mail inválido')
+                Alert.alert(i18n.t('error'), i18n.t('invalid'))
               }
             })
             .finally(() => setIsClicked(false))
         } else {
           setIsClicked(false)
-          Alert.alert('Erro', 'A senha deve conter pelo menos 6 dígitos')
+          Alert.alert(i18n.t('error'), i18n.t('sixDigits'))
         }
       }
     }
@@ -190,7 +191,16 @@ export const Register: React.FC = () => {
       institution: 'Instituição',
       telephone: 'Telefone',
       password: 'Digite sua senha',
-      register: 'Cadastrar'
+      register: 'Cadastrar',
+      error: 'Erro',
+      fill: 'Preencha todos os campos',
+      success: 'Sucesso',
+      created: 'Conta criada com sucesso',
+      inUse: 'Email já está em uso',
+      warning: 'Aviso',
+      invalid: 'Email inválido',
+      sixDigits: 'A senha deve contem pelo menos 6 dígitos',
+      validCrm: 'Por favor, informe um CRM válido'
     },
     en: {
       title: 'Register',
@@ -200,7 +210,16 @@ export const Register: React.FC = () => {
       institution: 'Institution',
       telephone: 'Telephone',
       password: 'Type your password',
-      register: 'Register'
+      register: 'Register',
+      error: 'Erro',
+      fill: 'Fill in all fields',
+      success: 'Success',
+      created: 'Account created successfully',
+      inUse: 'Email is already in use',
+      warning: 'Warning',
+      invalid: 'Invalid email',
+      sixDigits: 'The password must contain at least 6 digits',
+      validCrm: 'Please enter a valid CRM'
     },
     es: {
       title: 'Haz tu registro',
@@ -210,7 +229,16 @@ export const Register: React.FC = () => {
       institution: 'Institución',
       telephone: 'Teléfono',
       password: 'Escribe tu contraseña',
-      register: 'Registrar'
+      register: 'Registrar',
+      error: 'Erro',
+      fill: 'Rellene todos los campos',
+      success: 'Éxito',
+      created: 'Cuenta creada con éxito',
+      inUse: 'Correo electrónico ya está en uso',
+      warning: 'Advertencia',
+      invalid: 'Email inválido',
+      sixDigits: 'La contraseña debe contener al menos 6 dígitos',
+      validCrm: 'Introduce un CRM válido'
     }
   }
 
