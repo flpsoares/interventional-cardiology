@@ -72,13 +72,13 @@ export const Login: React.FC = () => {
           }
         })
         .catch(() => {
-          Alert.alert('Erro', 'Email ou senha inválidos')
+          Alert.alert(i18n.t('error'), i18n.t('invalid'))
           setIsClicked(false)
           setPassword('')
         })
         .catch((error) => Alert.alert(error))
     } else {
-      Alert.alert('Erro', 'Preencha todos os campos')
+      Alert.alert(i18n.t('error'), i18n.t('fill'))
     }
   }
 
@@ -89,16 +89,16 @@ export const Login: React.FC = () => {
         .auth()
         .sendPasswordResetEmail(email)
         .then(() => {
-          Alert.alert('Redefinir senha', 'Enviamos um email para você')
+          Alert.alert(i18n.t('redefine'), i18n.t('emailSent'))
           setForgotPasswordIsActive(false)
           setIsClicked(false)
         })
         .catch(() => {
-          Alert.alert('Erro', 'Confira o email e mande novamente')
+          Alert.alert(i18n.t('error'), i18n.t('checkEmail'))
           setIsClicked(false)
         })
     } else {
-      Alert.alert('Erro', 'Preencha todos os campos')
+      Alert.alert(i18n.t('error'), i18n.t('fill'))
     }
   }
 
@@ -113,7 +113,13 @@ export const Login: React.FC = () => {
       register: 'Cadastre-se',
       email: 'Informe o email para recuperar sua senha',
       back: 'Voltar ao Login',
-      send: 'Enviar'
+      send: 'Enviar',
+      error: 'Erro',
+      fill: 'Preencha todos os campos',
+      invalid: 'Email ou senha inválidos',
+      checkEmail: 'Confira o email e tente novamente',
+      redefine: 'Redefinir senha',
+      emailSent: 'Enviamos um email para você'
     },
     en: {
       title: 'Login',
@@ -123,7 +129,13 @@ export const Login: React.FC = () => {
       register: 'Register',
       email: 'Enter your email to recover your password',
       back: 'Back to Login',
-      send: 'Send'
+      send: 'Send',
+      error: 'Error',
+      fill: 'Fill in all fields',
+      invalid: 'Invalid email or password',
+      checkEmail: 'Check the email and try again',
+      redefine: 'Redefine password',
+      emailSent: 'We sent you an email'
     },
     es: {
       title: 'Acceso',
@@ -133,7 +145,13 @@ export const Login: React.FC = () => {
       register: 'Registro',
       email: 'Introduce tu email para recuperar tu contraseña',
       back: 'Atrás para iniciar sesión',
-      send: 'Enviar'
+      send: 'Enviar',
+      error: 'Error',
+      fill: 'Rellene todos los campos',
+      invalid: 'Correo electrónico o contraseña no válidos',
+      checkEmail: 'Revisa el correo electrónico e inténtalo de nuevo',
+      redefine: 'Redefinir contraseña',
+      emailSent: 'Te enviamos un correo electrónico'
     }
   }
 
