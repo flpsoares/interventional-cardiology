@@ -2,12 +2,14 @@ import { Entypo, FontAwesome, Foundation } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications'
+import I18n from 'i18n-js'
 import moment from 'moment'
 import 'moment-timezone'
 import React, { useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Alert, Platform, View } from 'react-native'
 import app, { database } from '../../firebase'
 import { PublishButton } from '../components/PublishButton'
+import { useLanguage } from '../contexts/LanguageContext'
 import { useUser } from '../contexts/UserContext'
 import { Favorites } from '../pages/Favorites'
 import { Plans } from '../pages/Plans'
@@ -19,6 +21,8 @@ const Tab = createBottomTabNavigator()
 
 export const Routes: React.FC = () => {
   const { setUser, user, setUserId, setIsSubscriber } = useUser()
+  const { language } = useLanguage()
+
   const [isLoading, setIsLoading] = useState(true)
 
   const [notification, setNotification] = useState<Notifications.Notification>()
@@ -157,6 +161,29 @@ export const Routes: React.FC = () => {
     )
   }
 
+  I18n.locale = language
+
+  I18n.translations = {
+    pt: {
+      home: 'Início',
+      plans: 'Planos',
+      favorites: 'Favoritos',
+      account: 'Conta'
+    },
+    en: {
+      home: 'Home',
+      plans: 'Plans',
+      favorites: 'Favorites',
+      account: 'Account'
+    },
+    es: {
+      home: 'Comienzo',
+      plans: 'Planes',
+      favorites: 'Favoritos',
+      account: 'Cuenta'
+    }
+  }
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -174,7 +201,7 @@ export const Routes: React.FC = () => {
         name="HomeStackRoutes"
         component={HomeStackRoutes}
         options={{
-          tabBarLabel: 'Início',
+          tabBarLabel: I18n.t('home'),
           headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <Foundation name="home" size={size} color={color} />
@@ -185,7 +212,7 @@ export const Routes: React.FC = () => {
         name="Plans"
         component={Plans}
         options={{
-          tabBarLabel: 'Planos',
+          tabBarLabel: I18n.t('plans'),
           headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <FontAwesome name="cube" size={size} color={color} />
@@ -208,7 +235,7 @@ export const Routes: React.FC = () => {
         name="Favorites"
         component={Favorites}
         options={{
-          tabBarLabel: 'Favoritos',
+          tabBarLabel: I18n.t('favorites'),
           headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <Entypo name="heart" size={size} color={color} />
@@ -219,7 +246,7 @@ export const Routes: React.FC = () => {
         name="AccountStackRoutes"
         component={AccountStackRoutes}
         options={{
-          tabBarLabel: 'Conta',
+          tabBarLabel: I18n.t('account'),
           headerShown: false,
           tabBarIcon: ({ size, color }) => (
             <FontAwesome name="user" size={size} color={color} />

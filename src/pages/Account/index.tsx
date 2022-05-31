@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
+import I18n from 'i18n-js'
 import moment from 'moment'
 import 'moment-timezone'
 import React, { useEffect, useState } from 'react'
@@ -78,6 +79,30 @@ export const Account: React.FC = () => {
       })
   }, [])
 
+  I18n.translations = {
+    pt: {
+      follower: 'Seguidor',
+      followers: 'Seguidores',
+      following: 'Seguindo',
+      day: 'dia de assinatura restante',
+      days: 'dias de assinatura restantes'
+    },
+    en: {
+      follower: 'Seguidor',
+      followers: 'Seguidores',
+      following: 'Seguindo',
+      day: 'subscription day remaining',
+      days: 'days of subscription remaining'
+    },
+    es: {
+      follower: 'Seguidor',
+      followers: 'Seguidores',
+      following: 'Seguindo',
+      day: 'día de suscripción restante',
+      days: 'días de suscripción restante'
+    }
+  }
+
   return (
     <Container>
       <Profile onPress={() => setDropdownIsOpen(false)}>
@@ -103,16 +128,26 @@ export const Account: React.FC = () => {
           <Name>{user?.name}</Name>
           <Email>{user?.email}</Email>
           {countFollowers === 1 ? (
-            <Email>{countFollowers} Seguidor</Email>
+            <Email>
+              {countFollowers} {I18n.t('follower')}
+            </Email>
           ) : (
-            <Email>{countFollowers} Seguidores</Email>
+            <Email>
+              {countFollowers} {I18n.t('followers')}
+            </Email>
           )}
-          {countFollowings === 1 ? (
-            <Email>{countFollowings} Seguindo</Email>
+          <Email>
+            {countFollowings} {I18n.t('following')}
+          </Email>
+          {remainingDays === 1 ? (
+            <Email>
+              {remainingDays} {I18n.t('day')}
+            </Email>
           ) : (
-            <Email>{countFollowings} Seguindo</Email>
+            <Email>
+              {remainingDays} {I18n.t('days')}
+            </Email>
           )}
-          <Email>{remainingDays} dias de assinatura restantes</Email>
         </Info>
       </Profile>
       <PostArea>

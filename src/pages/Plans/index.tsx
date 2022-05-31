@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons'
 import { useFocusEffect, useIsFocused } from '@react-navigation/core'
+import i18n from 'i18n-js'
 import React, { useCallback, useState } from 'react'
 import { WebView } from 'react-native-webview'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
 import MercadoPagoApi from '../../services/MercadoPagoApi'
@@ -26,6 +28,7 @@ import {
 export const Plans: React.FC = () => {
   const { userId } = useUser()
   const { closeModalChoosePlan } = useModal()
+  const { language } = useLanguage()
 
   const isFocused = useIsFocused()
 
@@ -95,6 +98,27 @@ export const Plans: React.FC = () => {
     )
   }
 
+  i18n.translations = {
+    pt: {
+      title: 'Contrate um plano para poder publicar',
+      description: 'Lorem ipsum',
+      months: 'meses',
+      button: 'Contratar'
+    },
+    en: {
+      title: 'Hire a plan to be able to publish',
+      description: 'Lorem ipsum',
+      months: 'months',
+      button: 'To hire'
+    },
+    es: {
+      title: 'Contrata un plan para poder publicar',
+      description: 'Lorem ipsum',
+      months: 'meses',
+      button: 'Contratar'
+    }
+  }
+
   return (
     <Container>
       <Header>
@@ -107,27 +131,24 @@ export const Plans: React.FC = () => {
           resizeMode="contain"
           source={require('../../../assets/plans/banner.png')}
         />
-        <Title>Contrate um plano para poder publicar</Title>
-        <Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod
-          bibendum laoreet. Proin gravida dolor sit amet lacus
-        </Description>
+        <Title>{i18n.t('title')}</Title>
+        <Description>{i18n.t('description')}</Description>
         <PlanArea>
           <Plan isActive={threeMonthIsActive} onPress={activeThreeMonth}>
             <PlanNumber isActive={threeMonthIsActive}>3</PlanNumber>
-            <PlanText isActive={threeMonthIsActive}>meses</PlanText>
+            <PlanText isActive={threeMonthIsActive}>{i18n.t('months')}</PlanText>
           </Plan>
           <Plan isActive={sixMonthIsActive} onPress={activeSixMonth}>
             <PlanNumber isActive={sixMonthIsActive}>6</PlanNumber>
-            <PlanText isActive={sixMonthIsActive}>meses</PlanText>
+            <PlanText isActive={sixMonthIsActive}>{i18n.t('months')}</PlanText>
           </Plan>
           <Plan isActive={twelveMonthIsActive} onPress={activeTwelveMonth}>
             <PlanNumber isActive={twelveMonthIsActive}>12</PlanNumber>
-            <PlanText isActive={twelveMonthIsActive}>meses</PlanText>
+            <PlanText isActive={twelveMonthIsActive}>{i18n.t('months')}</PlanText>
           </Plan>
         </PlanArea>
         <Button onPress={() => handleSale(monthActive())}>
-          <ButtonText>Contratar</ButtonText>
+          <ButtonText>{i18n.t('button')}</ButtonText>
         </Button>
       </Wrapper>
     </Container>

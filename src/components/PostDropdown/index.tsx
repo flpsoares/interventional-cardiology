@@ -1,4 +1,5 @@
 import { Feather, FontAwesome } from '@expo/vector-icons'
+import I18n from 'i18n-js'
 import React, { useState } from 'react'
 import { Alert } from 'react-native'
 import { database } from '../../../firebase'
@@ -53,7 +54,7 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
                 .update({ favorites: favorites + 1 })
               setFavorited(true)
             })
-            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+            .catch(() => Alert.alert(I18n.t('error'), I18n.t('errorOccurred')))
         } else {
           database
             .collection('/posts_favorites')
@@ -66,7 +67,7 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
                 .update({ favorites: favorites - 1 })
               setFavorited(false)
             })
-            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+            .catch(() => Alert.alert(I18n.t('error'), I18n.t('errorOccurred')))
         }
       })
   }
@@ -97,21 +98,21 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
                 .then((res) => {
                   const token = res.data()!.notificationToken
                   sendRemoteNotification(
-                    'Você tem um novo seguidor!',
-                    `${user?.name} acabou de te seguir`,
+                    I18n.t('newFollower'),
+                    `${user?.name} ${I18n.t('justFollowed')}`,
                     token
                   )
                 })
               setFollower(true)
             })
-            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+            .catch(() => Alert.alert(I18n.t('error'), I18n.t('errorOccurred')))
         } else {
           database
             .collection(`/users/${autorId}/followers`)
             .doc(res.docs[0].id)
             .delete()
             .then(() => setFollower(false))
-            .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+            .catch(() => Alert.alert(I18n.t('error'), I18n.t('errorOccurred')))
           // procurar e excluir following
           database
             .collection(`/users/${userId}/following`)
@@ -122,7 +123,7 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
                 .collection(`/users/${userId}/following`)
                 .doc(res.docs[0].id)
                 .delete()
-                .catch(() => Alert.alert('Erro', 'Ocorreu um erro'))
+                .catch(() => Alert.alert(I18n.t('error'), I18n.t('errorOccurred')))
             })
         }
       })
@@ -134,7 +135,43 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
       .collection('/posts')
       .doc(postId)
       .delete()
-      .catch(() => Alert.alert('Erro', 'Ocorreu algum erro'))
+      .catch(() => Alert.alert(I18n.t('error'), I18n.t('errorOccurred')))
+  }
+
+  I18n.translations = {
+    pt: {
+      favorite: 'Favoritar',
+      disfavor: 'Desfavoritar',
+      delete: 'Excluir',
+      follow: 'Seguir',
+      unfollow: 'Deixar de seguir',
+      error: 'Erro',
+      errorOccurred: 'Ocurreu um erro',
+      newFollower: 'Você tem um novo seguidor',
+      justFollowed: 'acabou de te seguir'
+    },
+    en: {
+      favorite: 'Favorite',
+      disfavor: 'Disfavor',
+      delete: 'Delete',
+      follow: 'Follow',
+      unfollow: 'Unfollow',
+      error: 'Error',
+      errorOccurred: 'An error has occurred',
+      newFollower: 'You have a new follower',
+      justFollowed: 'just followed you'
+    },
+    es: {
+      favorite: 'Favorito',
+      disfavor: 'Desfavorecer',
+      delete: 'Borrar',
+      follow: 'Seguir',
+      unfollow: 'Dejar de seguir',
+      error: 'Error',
+      errorOccurred: 'Ocurrio un error',
+      newFollower: 'Tienes un nuevo seguidor',
+      justFollowed: 'solo te seguí'
+    }
   }
 
   return (
@@ -149,13 +186,13 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             <Icon>
               <FontAwesome name="bookmark" size={20} color="#fff" />
             </Icon>
-            <Text>{favorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
+            <Text>{favorited ? I18n.t('disfavor') : I18n.t('favorite')}</Text>
           </Item>
           <Item onPress={deletePost} style={{ marginTop: 22 }}>
             <Icon>
               <Feather name="delete" size={22} color="#fff" />
             </Icon>
-            <Text>Excluir Post</Text>
+            <Text>{I18n.t('delete')}</Text>
           </Item>
         </>
       ) : (
@@ -168,14 +205,14 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
             <Icon>
               <FontAwesome name="bookmark" size={20} color="#fff" />
             </Icon>
-            <Text>{favorited ? 'Desfavoritar' : 'Favoritar'} Publicação</Text>
+            <Text>{favorited ? I18n.t('disfavor') : I18n.t('favorite')}</Text>
           </Item>
           <Item onPress={handleFollow} style={{ marginTop: 20 }}>
             <Icon>
               <FontAwesome name="plus" size={20} color="#fff" />
             </Icon>
             <Text>
-              {follower ? 'Deixar de seguir' : 'Seguir'} {firstName}
+              {follower ? I18n.t('unfollow') : I18n.t('follow')} {firstName}
             </Text>
           </Item>
         </>

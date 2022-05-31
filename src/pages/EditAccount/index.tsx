@@ -7,6 +7,7 @@ import {
   MaterialIcons
 } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
+import I18n from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { Alert, Platform } from 'react-native'
 import app, { database } from '../../../firebase'
@@ -84,13 +85,13 @@ export const EditAccount: React.FC = () => {
               .doc(userId)
               .set({ userPhoto: url }, { merge: true })
               .catch((e) => {
-                Alert.alert('Erro', 'Ocorreu algum erro')
+                Alert.alert(I18n.t('error'), I18n.t('errorOccurred'))
                 console.log(e)
               })
           })
         })
         .catch((e) => {
-          Alert.alert('Erro', 'Ocorreu algum erro')
+          Alert.alert(I18n.t('error'), I18n.t('errorOccurred'))
           console.log(e)
         })
     }
@@ -102,9 +103,9 @@ export const EditAccount: React.FC = () => {
         .collection('users')
         .doc(userId)
         .set({ name, email, telephone }, { merge: true })
-        .then(() => Alert.alert('Sucesso', 'Dados alterados com sucesso!'))
+        .then(() => Alert.alert(I18n.t('success'), I18n.t('successfully')))
         .catch((e) => {
-          Alert.alert('Aviso', 'Algo deu errado')
+          Alert.alert(I18n.t('warning'), I18n.t('errorOccurred'))
           console.log(e)
         })
     } else {
@@ -112,11 +113,44 @@ export const EditAccount: React.FC = () => {
         .collection('users')
         .doc(userId)
         .set({ name, email, telephone, crm, institution }, { merge: true })
-        .then(() => Alert.alert('Sucesso', 'Dados alterados com sucesso!'))
+        .then(() => Alert.alert(I18n.t('success'), I18n.t('successfully')))
         .catch((e) => {
-          Alert.alert('Aviso', 'Algo deu errado')
+          Alert.alert(I18n.t('warning'), I18n.t('errorOccurred'))
           console.log(e)
         })
+    }
+  }
+
+  I18n.translations = {
+    pt: {
+      title: 'Edite seus dados',
+      registered: 'Cadastrado em',
+      error: 'Erro',
+      errorOccurred: 'Ocorreu algum erro',
+      warning: 'Aviso',
+      success: 'Sucesso',
+      successfully: 'Dados alterados com sucesso',
+      button: 'Atualizar Dados'
+    },
+    en: {
+      title: 'Edit your data',
+      registered: 'Registered in',
+      error: 'Error',
+      errorOccurred: 'Some error occurred',
+      warning: 'Warning',
+      success: 'Success',
+      successfully: 'Successfully changed data',
+      button: 'Update Data'
+    },
+    es: {
+      title: 'Edita tus datos',
+      registered: 'Registrado en',
+      error: 'Erro',
+      errorOccurred: 'Ocurrió algún error',
+      warning: 'Advertencia',
+      success: 'Éxito',
+      successfully: 'Datos cambiados con éxito',
+      button: 'Actualizar datos'
     }
   }
 
@@ -142,10 +176,12 @@ export const EditAccount: React.FC = () => {
       </UserPhotoArea>
       <Info>
         <Name>{user!.name}</Name>
-        <Date>Cadastrado em {user!.dataCriacao}</Date>
+        <Date>
+          {I18n.t('registered')} {user!.dataCriacao}
+        </Date>
       </Info>
       <Wrapper>
-        <Title>Edite seus dados</Title>
+        <Title>{I18n.t('title')}</Title>
         <InputItem style={{ elevation: 10 }}>
           <Icon>
             <FontAwesome name="user-o" size={28} color="rgba(77, 86, 109, 0.46)" />
@@ -211,7 +247,7 @@ export const EditAccount: React.FC = () => {
             </InputItem> */}
 
         <Button onPress={handleSubmit}>
-          <ButtonText>Atualizar Dados</ButtonText>
+          <ButtonText>{I18n.t('button')}</ButtonText>
         </Button>
       </Wrapper>
     </Container>

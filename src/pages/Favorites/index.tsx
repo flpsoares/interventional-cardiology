@@ -1,5 +1,6 @@
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/core'
+import I18n from 'i18n-js'
 import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
 import { ModalImage } from '../../components/ModalImage'
@@ -61,6 +62,24 @@ export const Favorites: React.FC = () => {
     }, [user, isFocused])
   )
 
+  I18n.translations = {
+    pt: {
+      favorites: 'SEUS FAVORITOS',
+      popular: 'MAIS POPULARES',
+      search: 'Pesquisar...'
+    },
+    en: {
+      favorites: 'YOUR FAVORITES',
+      popular: 'MORE POPULAR',
+      search: 'Search...'
+    },
+    es: {
+      favorites: 'TUS FAVORITOS',
+      popular: 'MÁS POPULAR',
+      search: 'Búsqueda...'
+    }
+  }
+
   return (
     <Container>
       {modalChoosePlanIsOpen && <ModalChoosePlan />}
@@ -75,18 +94,20 @@ export const Favorites: React.FC = () => {
           <TopInput
             value={search}
             onChangeText={setSearch}
-            placeholder="Pesquisar..."
+            placeholder={I18n.t('search')}
           />
         </TopInputArea>
         <Ionicons name="notifications-outline" size={22} color="#777d8c" />
       </Top>
       <ChooseArea>
         <ChooseItem onPress={activeFavorite} isActive={favoriteIsActive}>
-          <ChooseItemText isActive={favoriteIsActive}>SEUS FAVORITOS</ChooseItemText>
+          <ChooseItemText isActive={favoriteIsActive}>
+            {I18n.t('favorites')}
+          </ChooseItemText>
         </ChooseItem>
         <ChooseItem onPress={activePopular} isActive={!favoriteIsActive}>
           <ChooseItemText isActive={!favoriteIsActive}>
-            MAIS POPULARES
+            {I18n.t('popular')}
           </ChooseItemText>
         </ChooseItem>
       </ChooseArea>

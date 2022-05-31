@@ -102,8 +102,6 @@ export const Login: React.FC = () => {
     }
   }
 
-  i18n.locale = language
-
   i18n.translations = {
     pt: {
       title: 'Faça seu Login',

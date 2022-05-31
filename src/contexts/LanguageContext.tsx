@@ -11,7 +11,7 @@ interface LanguageProviderProps {
 export const LanguageContext = createContext({} as LanguageContextData)
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  const [language, setLanguage] = useState('pt')
+  const [language, setLanguage] = useState('en')
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>
