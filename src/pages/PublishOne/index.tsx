@@ -1,5 +1,6 @@
 import { Picker } from '@react-native-picker/picker'
 import { useIsFocused } from '@react-navigation/core'
+import I18n from 'i18n-js'
 import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import Modal from 'react-native-modal'
@@ -53,7 +54,7 @@ export const PublishOne: React.FC = () => {
 
   const [area, setArea] = useState<string[]>([])
   const [idade, setIdade] = useState('')
-  const [genero, setGenero] = useState('Masculino')
+  const [genero, setGenero] = useState(I18n.t('firstOptionGenre'))
   const [sintoma, setSintoma] = useState<string[]>([])
   const [comorbidades, setComorbidades] = useState<string[]>([])
   const [medicamentos, setMedicamentos] = useState<string[]>([])
@@ -63,155 +64,119 @@ export const PublishOne: React.FC = () => {
   const areaItems = [
     {
       id: '1',
-      name: 'Doença coronariana'
+      name: I18n.t('firstOptionArea')
     },
     {
       id: '2',
-      name: 'Valvopatia'
+      name: I18n.t('secondOptionArea')
     },
     {
       id: '3',
-      name: 'Cardiopatias congênitas'
+      name: I18n.t('thirdOptionArea')
     },
     {
       id: '4',
-      name: 'Arritmias'
+      name: I18n.t('fourthOptionArea')
     },
     {
       id: '5',
-      name: 'Outros'
+      name: I18n.t('fifthOptionArea')
     }
   ]
 
   const sintomasItems = [
     {
       id: '1',
-      name: 'Dor precordial'
+      name: I18n.t('firstOptionSymptoms')
     },
     {
       id: '2',
-      name: 'Dispnéia'
+      name: I18n.t('secondOptionSymptoms')
     },
     {
       id: '3',
-      name: 'Palpitações'
+      name: I18n.t('thirdOptionSymptoms')
     },
     {
       id: '4',
-      name: 'Síncope'
+      name: I18n.t('fourthOptionSymptoms')
     },
     {
       id: '5',
-      name: 'Cianose'
+      name: I18n.t('fifthOptionSymptoms')
     },
     {
       id: '6',
-      name: 'Outros'
+      name: I18n.t('sixthOptionSymptoms')
     }
   ]
 
   const comorbidadesItems = [
     {
       id: '1',
-      name: 'Hipertensão arterial sistêmica'
+      name: I18n.t('firstOptionComorbidities')
     },
     {
       id: '2',
-      name: 'Diabetes melitus'
+      name: I18n.t('secondOptionComorbidities')
     },
     {
       id: '3',
-      name: 'Dislipedemia'
+      name: I18n.t('thirdOptionComorbidities')
     },
     {
       id: '4',
-      name: 'Obesidade'
+      name: I18n.t('fourthOptionComorbidities')
     },
     {
       id: '5',
-      name: 'Sedentarismo'
+      name: I18n.t('fifthOptionComorbidities')
     },
     {
       id: '6',
-      name: 'Tabagismo'
+      name: I18n.t('sixthOptionComorbidities')
     },
     {
       id: '7',
-      name: 'Doença renal'
+      name: I18n.t('seventhOptionComorbidities')
     },
     {
       id: '8',
-      name: 'Doença coronariana previamente conhecida'
+      name: I18n.t('eighthOptionComorbidities')
     },
     {
       id: '9',
-      name: 'Histórico familiar para coronariopatia'
+      name: I18n.t('ninthOptionComorbidities')
     },
     {
       id: '10',
-      name: 'Sem comorvidades'
+      name: I18n.t('tenthOptionComorbidities')
     },
     {
       id: '11',
-      name: 'Outros'
+      name: I18n.t('eleventhOptionComorbidities')
     }
   ]
 
   const medicamentosItems = [
     {
       id: '1',
-      name: 'Medicamento 1'
+      name: I18n.t('firstOptionMedicines')
     },
     {
       id: '2',
-      name: 'Medicamento 2'
+      name: I18n.t('secondOptionMedicines')
     },
     {
       id: '3',
-      name: 'Medicamento 3'
-    },
-    {
-      id: '4',
-      name: 'Medicamento 4'
-    },
-    {
-      id: '5',
-      name: 'Medicamento 5'
-    },
-    {
-      id: '6',
-      name: 'Medicamento 6'
-    },
-    {
-      id: '7',
-      name: 'Medicamento 7'
-    },
-    {
-      id: '8',
-      name: 'Medicamento 8'
-    },
-    {
-      id: '9',
-      name: 'Medicamento 9'
-    },
-    {
-      id: '10',
-      name: 'Medicamento 10'
-    },
-    {
-      id: '11',
-      name: 'Medicamento 11'
-    },
-    {
-      id: '12',
-      name: 'Medicamento 12'
+      name: I18n.t('thirdOptionMedicines')
     }
   ]
 
   const clear = () => {
     setArea([])
     setIdade('')
-    setGenero('Masculino')
+    setGenero(I18n.t('firstOptionGenre'))
     setComorbidades([])
     setMedicamentos([])
     setSintoma([])
@@ -228,7 +193,7 @@ export const PublishOne: React.FC = () => {
       clear()
       navigateToPublish(area, genero, idade, sintoma, comorbidades, medicamentos)
     } else {
-      Alert.alert('Aviso', 'Preencha todos os campos')
+      Alert.alert(I18n.t('warning'), I18n.t('fill'))
     }
   }
 
@@ -241,6 +206,157 @@ export const PublishOne: React.FC = () => {
     }, [user, isFocused])
   )
 
+  I18n.translations = {
+    pt: {
+      title: 'Publicar caso clínico',
+      inputTitleArea: 'Escolha a área',
+      inputPlaceholderArea: 'Selecionar áreas',
+      inputSearchArea: 'Pesquise as áreas...',
+      firstOptionArea: 'Doença coronariana',
+      secondOptionArea: 'Valvopatia',
+      thirdOptionArea: 'Cardiopatias congênitas',
+      fourthOptionArea: 'Arritmias',
+      fifthOptionArea: 'Outros',
+      inputTitleAge: 'Idade',
+      inputPlaceholderAge: 'Digite aqui...',
+      inputTitleGenre: 'Gênero',
+      firstOptionGenre: 'Masculino',
+      secondOptionGenre: 'Feminino',
+      inputTitleSymptoms: 'Escolha os sintomas',
+      inputPlaceholderSymptoms: 'Selecionar sintomas',
+      inputSearchSymptoms: 'Pesquise os sintomas...',
+      firstOptionSymptoms: 'Dor precordial',
+      secondOptionSymptoms: 'Dispnéia',
+      thirdOptionSymptoms: 'Palpitações',
+      fourthOptionSymptoms: 'Síncope',
+      fifthOptionSymptoms: 'Cianose',
+      sixthOptionSymptoms: 'Outros',
+      inputTitleComorbidities: 'Escolha as comorbidades',
+      inputPlaceholderComorbidities: 'Selecionar comorbidades',
+      inputSearchComorbidities: 'Pesquise as comorbidades...',
+      firstOptionComorbidities: 'Hipertensão arterial sistêmica',
+      secondOptionComorbidities: 'Diabetes melitus',
+      thirdOptionComorbidities: 'Dislipedemia',
+      forthOptionComorbidities: 'Obesidade',
+      fifthOptionComorbidities: 'Sedentarismo',
+      sixthOptionComorbidities: 'Tabagismo',
+      seventhOptionComorbidities: 'Doença renal',
+      eighthOptionComorbidities: 'Doença coronariana previamente conhecida',
+      ninthOptionComorbidities: 'Histórico familiar para coronariopatia',
+      tenthOptionComorbidities: 'Sem comorbidades',
+      eleventhOptionComorbidities: 'Outros',
+      inputTitleMedicines: 'Medicamentos em uso',
+      inputPlaceholderMedicines: 'Selecionar medicamentos',
+      inputSearchMedicines: 'Pesquise os medicamentos...',
+      firstOptionMedicines: 'Medicamento 1',
+      secondOptionMedicines: 'Medicamento 2',
+      thirdOptionMedicines: 'Medicamento 3',
+      button: 'Prosseguir',
+      notFound: 'Nenhum item encontrado',
+      error: 'Erro',
+      fill: 'Preencha todos os campos'
+    },
+    en: {
+      title: 'Publish clinical case',
+      inputTitleArea: 'Choose the area',
+      inputPlaceholderArea: 'Select areas',
+      inputSearchArea: 'Search the areas...',
+      firstOptionArea: 'Coronary disease',
+      secondOptionArea: 'Valvulopathy',
+      thirdOptionArea: 'Congenital heart diseases',
+      fourthOptionArea: 'Arrhythmias',
+      fifthOptionArea: 'Others',
+      inputTitleAge: 'Age',
+      inputPlaceholderAge: 'Type here...',
+      inputTitleGenre: 'Genre',
+      firstOptionGenre: 'Masculine',
+      secondOptionGenre: 'Feminine',
+      inputTitleSymptoms: 'Choose the symptoms',
+      inputPlaceholderSymptoms: 'Select symptoms',
+      inputSearchSymptoms: 'Search for symptoms...',
+      firstOptionSymptoms: 'Chest pain',
+      secondOptionSymptoms: 'Dyspnea',
+      thirdOptionSymptoms: 'Palpitations',
+      fourthOptionSymptoms: 'Syncope',
+      fifthOptionSymptoms: 'Cyanosis',
+      sixthOptionSymptoms: 'Others',
+      inputTitleComorbidities: 'Choose comorbidities',
+      inputPlaceholderComorbidities: 'Select comorbidities',
+      inputSearchComorbidities: 'Search for comorbidities...',
+      firstOptionComorbidities: 'Systemic arterial hypertension',
+      secondOptionComorbidities: 'Diabetes Mellitus',
+      thirdOptionComorbidities: 'Dyslipidemia',
+      fourthOptionComorbidities: 'Obesity',
+      fifthOptionComorbidities: 'Sedentary lifestyle',
+      sixthOptionComorbidities: 'Smoking',
+      seventhOptionComorbidities: 'Kidney disease',
+      eighthOptionComorbidities: 'Previously known coronary heart disease',
+      ninthOptionComorbidities: 'Family history of coronary artery disease',
+      tenthOptionComorbidities: 'No comorbidities',
+      eleventhOptionComorbidities: 'Others',
+      inputTitleMedicines: 'Medications in use',
+      inputPlaceholderMedicines: 'Select medications',
+      inputSearchMedicines: 'Search for medicines...',
+      firstOptionMedicines: 'Medication 1',
+      secondOptionMedicines: 'Medication 2',
+      thirdOptionMedicines: 'Medication 3',
+      button: 'Proceed',
+      notFound: 'No items found',
+      error: 'Error',
+      fill: 'Fill in all fields'
+    },
+    es: {
+      title: 'Publicar caso clínico',
+      inputTitleArea: 'Elige la zona',
+      inputPlaceholderArea: 'Seleccionar áreas',
+      inputSearchArea: 'Busca en las zonas..',
+      firstOptionArea: 'Enfermedad coronaria',
+      secondOptionArea: 'Valvulopatía',
+      thirdOptionArea: 'Cardiopatías congénitas',
+      fourthOptionArea: 'Arritmias',
+      fifthOptionArea: 'Otros',
+      inputTitleAge: 'Años',
+      inputPlaceholderAge: 'Digite aquí...',
+      inputTitleGenre: 'Género',
+      firstOptionGenre: 'Masculino',
+      secondOptionGenre: 'Femenino',
+      inputTitleSymptoms: 'Elige los sintomas',
+      inputPlaceholderSymptoms: 'Seleccionar síntomas',
+      inputSearchSymptoms: 'Busca síntomas...',
+      firstOptionSymptoms: 'Dolor de pecho',
+      secondOptionSymptoms: 'Disnea',
+      thirdOptionSymptoms: 'Palpitaciones',
+      fourthOptionSymptoms: 'Síncope',
+      fifthOptionSymptoms: 'Cianosis',
+      sixthOptionSymptoms: 'Otros',
+      inputTitleComorbidities: 'Elija comorbilidades',
+      inputPlaceholderComorbidities: 'Seleccionar comorbilidades',
+      inputSearchComorbidities: 'Busca comorbilidades...',
+      firstOptionComorbidities: 'Hipertensión arterial sistémica',
+      secondOptionComorbidities: 'Diabetes mellitus',
+      thirdOptionComorbidities: 'Dislipidemia',
+      fourthOptionComorbidities: 'Obesidad',
+      fifthOptionComorbidities: 'Estilo de vida sedentario',
+      sixthOptionComorbidities: 'De fumar',
+      seventhOptionComorbidities: 'Enfermedad del riñon',
+      eighthOptionComorbidities: 'Enfermedad coronaria conocida previamente',
+      ninthOptionComorbidities:
+        'Antecedentes familiares de enfermedad de las arterias coronarias',
+      tenthOptionComorbidities: 'Sin comorbilidades',
+      eleventhOptionComorbidities: 'Otros',
+      inputTitleMedicines: 'Medicamentos en uso',
+      inputPlaceholderMedicines: 'Seleccionar medicamentos',
+      inputSearchMedicines: 'Buscar medicinas...',
+      firstOptionMedicines: 'Medicamento 1',
+      secondOptionMedicines: 'Medicamento 2',
+      thirdOptionMedicines: 'Medicamento 3',
+      button: 'Proceder',
+      notFound: 'No se encontraron artículos',
+      error: 'Error',
+      fill: 'Rellene todos los campos'
+    }
+  }
+
   return (
     <Container contentContainerStyle={{ flexGrow: 1 }}>
       {modalChoosePlanIsOpen && <ModalChoosePlan />}
@@ -250,14 +366,14 @@ export const PublishOne: React.FC = () => {
         ) : (
           <UserPhoto source={require('../../../assets/default-user.png')} />
         )}
-        <Title>Publicar caso clínico</Title>
+        <Title>{I18n.t('title')}</Title>
         <Button></Button>
       </Header>
       <Wrapper>
         <InputItem>
-          <InputTitle>Escolha a Área</InputTitle>
+          <InputTitle>{I18n.t('inputTitleArea')}</InputTitle>
           <ModalButton onPress={openModalArea}>
-            <ModalButtonText>Selecionar áreas</ModalButtonText>
+            <ModalButtonText>{I18n.t('inputPlaceholderArea')}</ModalButtonText>
           </ModalButton>
         </InputItem>
         {modalAreaIsOpen && (
@@ -273,8 +389,8 @@ export const PublishOne: React.FC = () => {
                 uniqueKey="name"
                 onSelectedItemsChange={setArea}
                 selectedItems={area}
-                selectText="Selecione as áreas"
-                searchInputPlaceholderText="Pesquise as áreas..."
+                selectText={I18n.t('inputPlaceholderArea')}
+                searchInputPlaceholderText={I18n.t('inputSearchArea')}
                 hideSubmitButton
                 hideDropdown
                 styleDropdownMenuSubsection={{
@@ -291,7 +407,7 @@ export const PublishOne: React.FC = () => {
                   height: 70,
                   fontSize: 16
                 }}
-                noItemsText="Nenhum item foi encontrado"
+                noItemsText={I18n.t('notFound')}
               />
             </Wrapper>
           </Modal>
@@ -303,11 +419,11 @@ export const PublishOne: React.FC = () => {
         </ItemPreview>
         <HalfItemArea>
           <HalfItem>
-            <InputTitle>Idade</InputTitle>
+            <InputTitle>{I18n.t('inputTitleAge')}</InputTitle>
             <Input
               keyboardType="number-pad"
               style={{ elevation: 10 }}
-              placeholder="Digite aqui..."
+              placeholder={I18n.t('inputPlaceholderAge')}
               value={idade}
               onChangeText={(value) => setIdade(value)}
             />
@@ -321,16 +437,22 @@ export const PublishOne: React.FC = () => {
                 selectedValue={genero}
                 onValueChange={(value) => setGenero(value)}
               >
-                <Picker.Item label="Masculino" value="Masculino" />
-                <Picker.Item label="Feminino" value="Feminino" />
+                <Picker.Item
+                  label={I18n.t('firstOptionGenre')}
+                  value={I18n.t('firstOptionGenre')}
+                />
+                <Picker.Item
+                  label={I18n.t('secondOptionGenre')}
+                  value={I18n.t('secondOptionGenre')}
+                />
               </Picker>
             </PickerButton>
           </HalfItem>
         </HalfItemArea>
         <InputItem>
-          <InputTitle>Escolha os Sintomas</InputTitle>
+          <InputTitle>{I18n.t('inputTitleSymptoms')}</InputTitle>
           <ModalButton onPress={openModalSymptom}>
-            <ModalButtonText>Selecionar sintomas</ModalButtonText>
+            <ModalButtonText>{I18n.t('inputPlaceholderSymptoms')}</ModalButtonText>
           </ModalButton>
         </InputItem>
         {modalSymptomIsOpen && (
@@ -346,8 +468,8 @@ export const PublishOne: React.FC = () => {
                 uniqueKey="name"
                 onSelectedItemsChange={setSintoma}
                 selectedItems={sintoma}
-                selectText="Selecione os sintomas"
-                searchInputPlaceholderText="Pesquise os sintomas..."
+                selectText={I18n.t('inputPlaceholderSymptoms')}
+                searchInputPlaceholderText={I18n.t('inputSearchSymptoms')}
                 hideSubmitButton
                 hideDropdown
                 styleDropdownMenuSubsection={{
@@ -364,7 +486,7 @@ export const PublishOne: React.FC = () => {
                   height: 70,
                   fontSize: 16
                 }}
-                noItemsText="Nenhum item foi encontrado"
+                noItemsText={I18n.t('notFound')}
               />
             </Wrapper>
           </Modal>
@@ -375,9 +497,11 @@ export const PublishOne: React.FC = () => {
           })}
         </ItemPreview>
         <InputItem>
-          <InputTitle>Escolha as comorbidades</InputTitle>
+          <InputTitle>{I18n.t('inputTitleComorbidities')}</InputTitle>
           <ModalButton onPress={openModalComorbidity}>
-            <ModalButtonText>Selecionar comorbidades</ModalButtonText>
+            <ModalButtonText>
+              {I18n.t('inputPlaceholderComorbidities')}
+            </ModalButtonText>
           </ModalButton>
         </InputItem>
         {modalComorbidityIsOpen && (
@@ -393,8 +517,8 @@ export const PublishOne: React.FC = () => {
                 uniqueKey="name"
                 onSelectedItemsChange={setComorbidades}
                 selectedItems={comorbidades}
-                selectText="Selecione as comorbidades"
-                searchInputPlaceholderText="Pesquise as comorbidades..."
+                selectText={I18n.t('inputPlaceholderComorbidities')}
+                searchInputPlaceholderText={I18n.t('inputSearchComorbidities')}
                 hideSubmitButton
                 hideDropdown
                 styleDropdownMenuSubsection={{
@@ -411,7 +535,7 @@ export const PublishOne: React.FC = () => {
                   height: 70,
                   fontSize: 16
                 }}
-                noItemsText="Nenhum item foi encontrado"
+                noItemsText={I18n.t('notFound')}
               />
             </Wrapper>
           </Modal>
@@ -422,9 +546,9 @@ export const PublishOne: React.FC = () => {
           })}
         </ItemPreview>
         <InputItem>
-          <InputTitle>Medicamentos em Uso</InputTitle>
+          <InputTitle>{I18n.t('inputTitleMedicines')}</InputTitle>
           <ModalButton onPress={openModalMedicine}>
-            <ModalButtonText>Selecionar medicamentos</ModalButtonText>
+            <ModalButtonText>{I18n.t('inputPlaceholderMedicines')}</ModalButtonText>
           </ModalButton>
         </InputItem>
         {modalMedicineIsOpen && (
@@ -440,8 +564,8 @@ export const PublishOne: React.FC = () => {
                 uniqueKey="name"
                 onSelectedItemsChange={setMedicamentos}
                 selectedItems={medicamentos}
-                selectText="Selecione os medicamentos"
-                searchInputPlaceholderText="Pesquise os medicamentos..."
+                selectText={I18n.t('inputPlaceholderMedicines')}
+                searchInputPlaceholderText={I18n.t('inputSearchMedicines')}
                 hideSubmitButton
                 hideDropdown
                 styleDropdownMenuSubsection={{
@@ -458,7 +582,7 @@ export const PublishOne: React.FC = () => {
                   height: 70,
                   fontSize: 16
                 }}
-                noItemsText="Nenhum item foi encontrado"
+                noItemsText={I18n.t('notFound')}
               />
             </Wrapper>
           </Modal>
@@ -469,7 +593,7 @@ export const PublishOne: React.FC = () => {
           })}
         </ItemPreview>
         <SubmitButton onPress={handleSubmit}>
-          <SubmitButtonText>Prosseguir</SubmitButtonText>
+          <SubmitButtonText>{I18n.t('button')}</SubmitButtonText>
         </SubmitButton>
       </Wrapper>
     </Container>
