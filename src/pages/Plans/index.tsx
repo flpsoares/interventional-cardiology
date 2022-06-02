@@ -39,6 +39,27 @@ export const Plans: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [url, setUrl] = useState('')
 
+  i18n.translations = {
+    pt: {
+      title: 'Contrate um plano para poder publicar',
+      description: 'Lorem ipsum',
+      months: 'meses',
+      button: 'Contratar'
+    },
+    en: {
+      title: 'Hire a plan to be able to publish',
+      description: 'Lorem ipsum',
+      months: 'months',
+      button: 'To hire'
+    },
+    es: {
+      title: 'Contrata un plan para poder publicar',
+      description: 'Lorem ipsum',
+      months: 'meses',
+      button: 'Contratar'
+    }
+  }
+
   const activeThreeMonth = () => {
     setThreeMonthIsActive(true)
     setSixMonthIsActive(false)
@@ -96,27 +117,6 @@ export const Plans: React.FC = () => {
         />
       </WebViewContainer>
     )
-  }
-
-  i18n.translations = {
-    pt: {
-      title: 'Contrate um plano para poder publicar',
-      description: 'Lorem ipsum',
-      months: 'meses',
-      button: 'Contratar'
-    },
-    en: {
-      title: 'Hire a plan to be able to publish',
-      description: 'Lorem ipsum',
-      months: 'months',
-      button: 'To hire'
-    },
-    es: {
-      title: 'Contrata un plan para poder publicar',
-      description: 'Lorem ipsum',
-      months: 'meses',
-      button: 'Contratar'
-    }
   }
 
   return (

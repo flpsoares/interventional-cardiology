@@ -59,6 +59,66 @@ export const Register: React.FC = () => {
 
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
 
+  i18n.translations = {
+    pt: {
+      title: 'Faça seu cadastro',
+      name: 'Nome Completo',
+      doctor: 'Médico',
+      student: 'Estudante',
+      institution: 'Instituição',
+      telephone: 'Telefone',
+      password: 'Digite sua senha',
+      register: 'Cadastrar',
+      error: 'Erro',
+      fill: 'Preencha todos os campos',
+      success: 'Sucesso',
+      created: 'Conta criada com sucesso',
+      inUse: 'Email já está em uso',
+      warning: 'Aviso',
+      invalid: 'Email inválido',
+      sixDigits: 'A senha deve contem pelo menos 6 dígitos',
+      validCrm: 'Por favor, informe um CRM válido'
+    },
+    en: {
+      title: 'Register',
+      name: 'Full Name',
+      doctor: 'Doctor',
+      student: 'Student',
+      institution: 'Institution',
+      telephone: 'Telephone',
+      password: 'Type your password',
+      register: 'Register',
+      error: 'Erro',
+      fill: 'Fill in all fields',
+      success: 'Success',
+      created: 'Account created successfully',
+      inUse: 'Email is already in use',
+      warning: 'Warning',
+      invalid: 'Invalid email',
+      sixDigits: 'The password must contain at least 6 digits',
+      validCrm: 'Please enter a valid CRM'
+    },
+    es: {
+      title: 'Haz tu registro',
+      name: 'Nombre Completo',
+      doctor: 'Médico',
+      student: 'Alumno',
+      institution: 'Institución',
+      telephone: 'Teléfono',
+      password: 'Escribe tu contraseña',
+      register: 'Registrar',
+      error: 'Erro',
+      fill: 'Rellene todos los campos',
+      success: 'Éxito',
+      created: 'Cuenta creada con éxito',
+      inUse: 'Correo electrónico ya está en uso',
+      warning: 'Advertencia',
+      invalid: 'Email inválido',
+      sixDigits: 'La contraseña debe contener al menos 6 dígitos',
+      validCrm: 'Introduce un CRM válido'
+    }
+  }
+
   const isValidated = (value: string) => {
     return value !== ''
   }
@@ -181,66 +241,6 @@ export const Register: React.FC = () => {
   }
 
   i18n.locale = language
-
-  i18n.translations = {
-    pt: {
-      title: 'Faça seu cadastro',
-      name: 'Nome Completo',
-      doctor: 'Médico',
-      student: 'Estudante',
-      institution: 'Instituição',
-      telephone: 'Telefone',
-      password: 'Digite sua senha',
-      register: 'Cadastrar',
-      error: 'Erro',
-      fill: 'Preencha todos os campos',
-      success: 'Sucesso',
-      created: 'Conta criada com sucesso',
-      inUse: 'Email já está em uso',
-      warning: 'Aviso',
-      invalid: 'Email inválido',
-      sixDigits: 'A senha deve contem pelo menos 6 dígitos',
-      validCrm: 'Por favor, informe um CRM válido'
-    },
-    en: {
-      title: 'Register',
-      name: 'Full Name',
-      doctor: 'Doctor',
-      student: 'Student',
-      institution: 'Institution',
-      telephone: 'Telephone',
-      password: 'Type your password',
-      register: 'Register',
-      error: 'Erro',
-      fill: 'Fill in all fields',
-      success: 'Success',
-      created: 'Account created successfully',
-      inUse: 'Email is already in use',
-      warning: 'Warning',
-      invalid: 'Invalid email',
-      sixDigits: 'The password must contain at least 6 digits',
-      validCrm: 'Please enter a valid CRM'
-    },
-    es: {
-      title: 'Haz tu registro',
-      name: 'Nombre Completo',
-      doctor: 'Médico',
-      student: 'Alumno',
-      institution: 'Institución',
-      telephone: 'Teléfono',
-      password: 'Escribe tu contraseña',
-      register: 'Registrar',
-      error: 'Erro',
-      fill: 'Rellene todos los campos',
-      success: 'Éxito',
-      created: 'Cuenta creada con éxito',
-      inUse: 'Correo electrónico ya está en uso',
-      warning: 'Advertencia',
-      invalid: 'Email inválido',
-      sixDigits: 'La contraseña debe contener al menos 6 dígitos',
-      validCrm: 'Introduce un CRM válido'
-    }
-  }
 
   return (
     <KeyboardAvoidingView

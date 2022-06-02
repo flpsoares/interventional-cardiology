@@ -40,6 +40,57 @@ export const Login: React.FC = () => {
 
   const toggleHidePassword = () => setPasswordIsHide(!passwordIsHide)
 
+  i18n.translations = {
+    pt: {
+      title: 'Faça seu Login',
+      password: 'Senha',
+      forgot: 'Esqueceu sua senha?',
+      login: 'Login',
+      register: 'Cadastre-se',
+      email: 'Informe o email para recuperar sua senha',
+      back: 'Voltar ao Login',
+      send: 'Enviar',
+      error: 'Erro',
+      fill: 'Preencha todos os campos',
+      invalid: 'Email ou senha inválidos',
+      checkEmail: 'Confira o email e tente novamente',
+      redefine: 'Redefinir senha',
+      emailSent: 'Enviamos um email para você'
+    },
+    en: {
+      title: 'Login',
+      password: 'Password',
+      forgot: 'Forgot your password?',
+      login: 'Login',
+      register: 'Register',
+      email: 'Enter your email to recover your password',
+      back: 'Back to Login',
+      send: 'Send',
+      error: 'Error',
+      fill: 'Fill in all fields',
+      invalid: 'Invalid email or password',
+      checkEmail: 'Check the email and try again',
+      redefine: 'Redefine password',
+      emailSent: 'We sent you an email'
+    },
+    es: {
+      title: 'Acceso',
+      password: 'Clave',
+      forgot: 'Olvidaste tu contraseña?',
+      login: 'Acceso',
+      register: 'Registro',
+      email: 'Introduce tu email para recuperar tu contraseña',
+      back: 'Atrás para iniciar sesión',
+      send: 'Enviar',
+      error: 'Error',
+      fill: 'Rellene todos los campos',
+      invalid: 'Correo electrónico o contraseña no válidos',
+      checkEmail: 'Revisa el correo electrónico e inténtalo de nuevo',
+      redefine: 'Redefinir contraseña',
+      emailSent: 'Te enviamos un correo electrónico'
+    }
+  }
+
   const handleLogin = () => {
     if (email !== '' && password !== '') {
       setIsClicked(true)
@@ -99,57 +150,6 @@ export const Login: React.FC = () => {
         })
     } else {
       Alert.alert(i18n.t('error'), i18n.t('fill'))
-    }
-  }
-
-  i18n.translations = {
-    pt: {
-      title: 'Faça seu Login',
-      password: 'Senha',
-      forgot: 'Esqueceu sua senha?',
-      login: 'Login',
-      register: 'Cadastre-se',
-      email: 'Informe o email para recuperar sua senha',
-      back: 'Voltar ao Login',
-      send: 'Enviar',
-      error: 'Erro',
-      fill: 'Preencha todos os campos',
-      invalid: 'Email ou senha inválidos',
-      checkEmail: 'Confira o email e tente novamente',
-      redefine: 'Redefinir senha',
-      emailSent: 'Enviamos um email para você'
-    },
-    en: {
-      title: 'Login',
-      password: 'Password',
-      forgot: 'Forgot your password?',
-      login: 'Login',
-      register: 'Register',
-      email: 'Enter your email to recover your password',
-      back: 'Back to Login',
-      send: 'Send',
-      error: 'Error',
-      fill: 'Fill in all fields',
-      invalid: 'Invalid email or password',
-      checkEmail: 'Check the email and try again',
-      redefine: 'Redefine password',
-      emailSent: 'We sent you an email'
-    },
-    es: {
-      title: 'Acceso',
-      password: 'Clave',
-      forgot: 'Olvidaste tu contraseña?',
-      login: 'Acceso',
-      register: 'Registro',
-      email: 'Introduce tu email para recuperar tu contraseña',
-      back: 'Atrás para iniciar sesión',
-      send: 'Enviar',
-      error: 'Error',
-      fill: 'Rellene todos los campos',
-      invalid: 'Correo electrónico o contraseña no válidos',
-      checkEmail: 'Revisa el correo electrónico e inténtalo de nuevo',
-      redefine: 'Redefinir contraseña',
-      emailSent: 'Te enviamos un correo electrónico'
     }
   }
 

@@ -28,16 +28,6 @@ export const Initial: React.FC = () => {
 
   const [carousel, setCarousel] = useState<any>()
 
-  const nextItem = () => {
-    if (activeSlide !== carouselData.length - 1) {
-      carousel.snapToNext()
-    } else {
-      navigateToChooseAuth()
-    }
-  }
-
-  i18n.locale = language
-
   i18n.translations = {
     pt: {
       subTitleOne: 'Entenda como funciona',
@@ -76,6 +66,16 @@ export const Initial: React.FC = () => {
       next: 'Próximo'
     }
   }
+
+  const nextItem = () => {
+    if (activeSlide !== carouselData.length - 1) {
+      carousel.snapToNext()
+    } else {
+      navigateToChooseAuth()
+    }
+  }
+
+  i18n.locale = language
 
   const carouselData = [
     {

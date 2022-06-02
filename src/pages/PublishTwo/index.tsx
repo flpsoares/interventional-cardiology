@@ -44,6 +44,51 @@ export const PublishTwo: React.FC = () => {
   const timestamp = firebase.firestore.FieldValue.serverTimestamp()
   const dateNow = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY H:mm:ss')
 
+  I18n.translations = {
+    pt: {
+      title: 'Publicar caso clínico',
+      firstInputTitle: 'Descreva o caso',
+      firstInputPlaceholder: 'Digite aqui...',
+      inputImagePlaceholder: 'Insira até 8 imagens ou vídeos sobre o caso',
+      secondInputTitle: 'Desfecho do caso',
+      secondInputPlaceholder: 'Digite aqui o desfecho do caso',
+      button: 'Publicar',
+      error: 'Erro',
+      uploadError: 'Erro ao fazer o upload dos arquivos',
+      maxSelected: 'Você já selecionou 8 arquivos',
+      somethingWrong: 'Algo deu errado',
+      fill: 'Preencha todos os campos'
+    },
+    en: {
+      title: 'Publish clinical case',
+      firstInputTitle: 'Describe the case',
+      firstInputPlaceholder: 'Type here...',
+      inputImagePlaceholder: 'Insert up to 8 images or videos about the case',
+      secondInputTitle: 'Case outcome',
+      secondInputPlaceholder: 'Enter case outcome here',
+      button: 'Publish',
+      error: 'Error',
+      uploadError: 'Error uploading files',
+      maxSelected: 'You have already selected 8 files',
+      somethingWrong: 'Something went wrong',
+      fill: 'Fill in all fields'
+    },
+    es: {
+      title: 'Publicar caso clínico',
+      firstInputTitle: 'Describir el caso',
+      firstInputPlaceholder: 'Digite aquí...',
+      inputImagePlaceholder: 'Inserta hasta 8 imágenes o videos sobre el caso',
+      secondInputTitle: 'Resultado del caso',
+      secondInputPlaceholder: 'Ingrese el resultado del caso aquí',
+      button: 'Publicar',
+      error: 'Error',
+      uploadError: 'Error al cargar archivos',
+      maxSelected: 'Ya has seleccionado 8 archivos',
+      somethingWrong: 'Algo salió mal',
+      fill: 'Rellene todos los campos'
+    }
+  }
+
   useEffect(() => {
     const verifyPermission = async () => {
       if (Platform.OS !== 'web') {
@@ -141,51 +186,6 @@ export const PublishTwo: React.FC = () => {
         })
     } else {
       Alert.alert(I18n.t('error'), I18n.t('fill'))
-    }
-  }
-
-  I18n.translations = {
-    pt: {
-      title: 'Publicar caso clínico',
-      firstInputTitle: 'Descreva o caso',
-      firstInputPlaceholder: 'Digite aqui...',
-      inputImagePlaceholder: 'Insira até 8 imagens ou vídeos sobre o caso',
-      secondInputTitle: 'Desfecho do caso',
-      secondInputPlaceholder: 'Digite aqui o desfecho do caso',
-      button: 'Publicar',
-      error: 'Erro',
-      uploadError: 'Erro ao fazer o upload dos arquivos',
-      maxSelected: 'Você já selecionou 8 arquivos',
-      somethingWrong: 'Algo deu errado',
-      fill: 'Preencha todos os campos'
-    },
-    en: {
-      title: 'Publish clinical case',
-      firstInputTitle: 'Describe the case',
-      firstInputPlaceholder: 'Type here...',
-      inputImagePlaceholder: 'Insert up to 8 images or videos about the case',
-      secondInputTitle: 'Case outcome',
-      secondInputPlaceholder: 'Enter case outcome here',
-      button: 'Publish',
-      error: 'Error',
-      uploadError: 'Error uploading files',
-      maxSelected: 'You have already selected 8 files',
-      somethingWrong: 'Something went wrong',
-      fill: 'Fill in all fields'
-    },
-    es: {
-      title: 'Publicar caso clínico',
-      firstInputTitle: 'Describir el caso',
-      firstInputPlaceholder: 'Digite aquí...',
-      inputImagePlaceholder: 'Inserta hasta 8 imágenes o videos sobre el caso',
-      secondInputTitle: 'Resultado del caso',
-      secondInputPlaceholder: 'Ingrese el resultado del caso aquí',
-      button: 'Publicar',
-      error: 'Error',
-      uploadError: 'Error al cargar archivos',
-      maxSelected: 'Ya has seleccionado 8 archivos',
-      somethingWrong: 'Algo salió mal',
-      fill: 'Rellene todos los campos'
     }
   }
 

@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import { AntDesign, Entypo, Fontisto } from '@expo/vector-icons'
 import { Video } from 'expo-av'
+import I18n from 'i18n-js'
 import moment from 'moment'
 import 'moment-timezone'
 import 'moment/locale/pt-br'
@@ -66,6 +67,54 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const [isFollower, setIsFollower] = useState(false)
 
   const SCREEN_WIDTH = Dimensions.get('window').width
+
+  I18n.translations = {
+    pt: {
+      favorites: 'Favoritos',
+      area: 'Area',
+      age: 'Idade',
+      genre: 'Gênero',
+      symptom: 'Sintoma',
+      comorbidity: 'Comorbidade',
+      medicine: 'Medicamento',
+      likes: 'curtidas',
+      comments: 'comentários',
+      comment: 'Comentar',
+      likeTitle: 'Você tem uma nova curtida',
+      likeMessage: 'curtiu sua postagem',
+      details: 'Ver detalhes'
+    },
+    en: {
+      favorites: 'Favorites',
+      area: 'Area',
+      age: 'Age',
+      genre: 'Genre',
+      symptom: 'Symptom',
+      comorbidity: 'Comorbidity',
+      medicine: 'Medicine',
+      likes: 'likes',
+      comments: 'comments',
+      comment: 'Comment',
+      likeTitle: 'You have a new like',
+      likeMessage: 'liked your post',
+      details: 'See details'
+    },
+    es: {
+      favorites: 'Favoritos',
+      area: 'Área',
+      age: 'Años',
+      genre: 'Género',
+      symptom: 'Síntoma',
+      comorbidity: 'Comorbilidad',
+      medicine: 'Medicamento',
+      likes: 'gustos',
+      comments: 'comentarios',
+      comment: 'Comentario',
+      likeTitle: 'Tienes un nuevo me gusta',
+      likeMessage: 'me gustó tu publicación',
+      details: 'Ver detalhes'
+    }
+  }
 
   // count
   useEffect(() => {
@@ -136,8 +185,8 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
                 .then((res) => {
                   const token = res.data()!.notificationToken
                   sendRemoteNotification(
-                    'Você tem uma nova curtida!',
-                    `${user?.name} curtiu sua postagem`,
+                    I18n.t('likeTitle'),
+                    `${user?.name} ${I18n.t('likeMessage')}`,
                     token
                   )
                 })
@@ -181,8 +230,11 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
                 .tz('America/Sao_Paulo')
                 .fromNow()}
             </Date>
-            {/* <Date>{data.dataExibicao}</Date> */}
-            {isFavoriteList && <Date>Favoritos: {data.favorites}</Date>}
+            {isFavoriteList && (
+              <Date>
+                {I18n.t('favorites')}: {data.favorites}
+              </Date>
+            )}
           </Info>
         </TopLeftContent>
         <Options onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
@@ -207,33 +259,33 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           {isDetail && (
             <>
               <Content style={{ marginTop: 18 }}>
-                <HighlightedContent>Área: </HighlightedContent>
+                <HighlightedContent>{I18n.t('area')}: </HighlightedContent>
                 {data.area.map((area) => {
                   return `${area} `
                 })}
               </Content>
               <Content>
-                <HighlightedContent>Idade: </HighlightedContent>
+                <HighlightedContent>{I18n.t('age')}: </HighlightedContent>
                 {data.idade}
               </Content>
               <Content>
-                <HighlightedContent>Gênero: </HighlightedContent>
+                <HighlightedContent>{I18n.t('genre')}: </HighlightedContent>
                 {data.genero}
               </Content>
               <Content>
-                <HighlightedContent>Sintoma: </HighlightedContent>
+                <HighlightedContent>{I18n.t('symptom')}: </HighlightedContent>
                 {data.sintoma.map((sintoma) => {
                   return `${sintoma} `
                 })}
               </Content>
               <Content>
-                <HighlightedContent>Comorbidade: </HighlightedContent>
+                <HighlightedContent>{I18n.t('comorbidity')}: </HighlightedContent>
                 {data.comorbidades.map((comorbidade) => {
                   return `${comorbidade} `
                 })}
               </Content>
               <Content>
-                <HighlightedContent>Medicamentos: </HighlightedContent>
+                <HighlightedContent>{I18n.t('medicine')}: </HighlightedContent>
                 {data.medicamentos.map((med) => {
                   return `${med} `
                 })}
@@ -243,7 +295,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           )}
           {!isDetail && (
             <SeeMoreButton onPress={() => navigateToPostDetails(data.id!)}>
-              <SeeMoreButtonText>Ver detalhes</SeeMoreButtonText>
+              <SeeMoreButtonText>{I18n.t('details')}</SeeMoreButtonText>
             </SeeMoreButton>
           )}
         </ContentArea>
@@ -297,9 +349,12 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           />
         )}
         <PostInfoArea>
-          {/* <PostInfo></PostInfo> */}
-          <PostInfo>{likeCount} curtidas</PostInfo>
-          <PostInfo>{commentCount} comentários</PostInfo>
+          <PostInfo>
+            {likeCount} {I18n.t('likes')}
+          </PostInfo>
+          <PostInfo>
+            {commentCount} {I18n.t('comments')}
+          </PostInfo>
         </PostInfoArea>
         <ButtonArea>
           <Button onPress={() => handleLike(userId)}>
@@ -312,7 +367,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
           </Button>
           <Button onPress={() => navigateToPostDetails(data.id!)}>
             <Fontisto name="commenting" size={22} color="rgba(4, 20, 50, 0.8)" />
-            <ButtonTitle>Comentar</ButtonTitle>
+            <ButtonTitle>{I18n.t('comment')}</ButtonTitle>
           </Button>
         </ButtonArea>
       </Wrapper>

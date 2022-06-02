@@ -46,6 +46,39 @@ export const EditAccount: React.FC = () => {
 
   const [image, setImage] = useState<any>()
 
+  I18n.translations = {
+    pt: {
+      title: 'Edite seus dados',
+      registered: 'Cadastrado em',
+      error: 'Erro',
+      errorOccurred: 'Ocorreu algum erro',
+      warning: 'Aviso',
+      success: 'Sucesso',
+      successfully: 'Dados alterados com sucesso',
+      button: 'Atualizar Dados'
+    },
+    en: {
+      title: 'Edit your data',
+      registered: 'Registered in',
+      error: 'Error',
+      errorOccurred: 'Some error occurred',
+      warning: 'Warning',
+      success: 'Success',
+      successfully: 'Successfully changed data',
+      button: 'Update Data'
+    },
+    es: {
+      title: 'Edita tus datos',
+      registered: 'Registrado en',
+      error: 'Erro',
+      errorOccurred: 'Ocurrió algún error',
+      warning: 'Advertencia',
+      success: 'Éxito',
+      successfully: 'Datos cambiados con éxito',
+      button: 'Actualizar datos'
+    }
+  }
+
   useEffect(() => {
     const verifyPermission = async () => {
       if (Platform.OS !== 'web') {
@@ -118,39 +151,6 @@ export const EditAccount: React.FC = () => {
           Alert.alert(I18n.t('warning'), I18n.t('errorOccurred'))
           console.log(e)
         })
-    }
-  }
-
-  I18n.translations = {
-    pt: {
-      title: 'Edite seus dados',
-      registered: 'Cadastrado em',
-      error: 'Erro',
-      errorOccurred: 'Ocorreu algum erro',
-      warning: 'Aviso',
-      success: 'Sucesso',
-      successfully: 'Dados alterados com sucesso',
-      button: 'Atualizar Dados'
-    },
-    en: {
-      title: 'Edit your data',
-      registered: 'Registered in',
-      error: 'Error',
-      errorOccurred: 'Some error occurred',
-      warning: 'Warning',
-      success: 'Success',
-      successfully: 'Successfully changed data',
-      button: 'Update Data'
-    },
-    es: {
-      title: 'Edita tus datos',
-      registered: 'Registrado en',
-      error: 'Erro',
-      errorOccurred: 'Ocurrió algún error',
-      warning: 'Advertencia',
-      success: 'Éxito',
-      successfully: 'Datos cambiados con éxito',
-      button: 'Actualizar datos'
     }
   }
 

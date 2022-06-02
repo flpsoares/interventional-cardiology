@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import { RouteProp, useRoute } from '@react-navigation/core'
+import I18n from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { database } from '../../../firebase'
 import { Post } from '../../components/Post'
@@ -39,6 +40,24 @@ export const UserProfile: React.FC = () => {
   const [countFollowings, setCountFollowings] = useState(0)
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
   const [user, setUser] = useState<UserProps | any>()
+
+  I18n.translations = {
+    pt: {
+      follower: 'Seguidor',
+      followers: 'Seguidores',
+      following: 'Seguindo'
+    },
+    en: {
+      follower: 'Follower',
+      followers: 'Followers',
+      following: 'Following'
+    },
+    es: {
+      follower: 'Seguidor',
+      followers: 'Seguidores',
+      following: 'Siguiendo'
+    }
+  }
 
   useEffect(() => {
     // posts
@@ -105,16 +124,19 @@ export const UserProfile: React.FC = () => {
         </UserPhotoBack>
         <Info>
           <Name>{user?.name}</Name>
+          <Email>{user?.email}</Email>
           {countFollowers === 1 ? (
-            <Email>{countFollowers} Seguidor</Email>
+            <Email>
+              {countFollowers} {I18n.t('follower')}
+            </Email>
           ) : (
-            <Email>{countFollowers} Seguidores</Email>
+            <Email>
+              {countFollowers} {I18n.t('followers')}
+            </Email>
           )}
-          {countFollowings === 1 ? (
-            <Email>{countFollowings} Seguindo</Email>
-          ) : (
-            <Email>{countFollowings} Seguindo</Email>
-          )}
+          <Email>
+            {countFollowings} {I18n.t('following')}
+          </Email>
         </Info>
       </Profile>
       <PostArea>

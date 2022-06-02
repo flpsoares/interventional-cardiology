@@ -34,6 +34,30 @@ export const Account: React.FC = () => {
 
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false)
 
+  I18n.translations = {
+    pt: {
+      follower: 'Seguidor',
+      followers: 'Seguidores',
+      following: 'Seguindo',
+      day: 'dia de assinatura restante',
+      days: 'dias de assinatura restantes'
+    },
+    en: {
+      follower: 'Follower',
+      followers: 'Followers',
+      following: 'Following',
+      day: 'subscription day remaining',
+      days: 'days of subscription remaining'
+    },
+    es: {
+      follower: 'Seguidor',
+      followers: 'Seguidores',
+      following: 'Siguiendo',
+      day: 'día de suscripción restante',
+      days: 'días de suscripción restante'
+    }
+  }
+
   useEffect(() => {
     // posts
     if (user?.isDoctor) {
@@ -78,30 +102,6 @@ export const Account: React.FC = () => {
         setRemainingDays(moment(remainingDays).diff(dateNow, 'days'))
       })
   }, [])
-
-  I18n.translations = {
-    pt: {
-      follower: 'Seguidor',
-      followers: 'Seguidores',
-      following: 'Seguindo',
-      day: 'dia de assinatura restante',
-      days: 'dias de assinatura restantes'
-    },
-    en: {
-      follower: 'Seguidor',
-      followers: 'Seguidores',
-      following: 'Seguindo',
-      day: 'subscription day remaining',
-      days: 'days of subscription remaining'
-    },
-    es: {
-      follower: 'Seguidor',
-      followers: 'Seguidores',
-      following: 'Seguindo',
-      day: 'día de suscripción restante',
-      days: 'días de suscripción restante'
-    }
-  }
 
   return (
     <Container>

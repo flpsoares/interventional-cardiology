@@ -43,6 +43,24 @@ export const Favorites: React.FC = () => {
 
   const [search, setSearch] = useState('')
 
+  I18n.translations = {
+    pt: {
+      favorites: 'SEUS FAVORITOS',
+      popular: 'MAIS POPULARES',
+      search: 'Pesquisar...'
+    },
+    en: {
+      favorites: 'YOUR FAVORITES',
+      popular: 'MORE POPULAR',
+      search: 'Search...'
+    },
+    es: {
+      favorites: 'TUS FAVORITOS',
+      popular: 'MÁS POPULAR',
+      search: 'Búsqueda...'
+    }
+  }
+
   const activeFavorite = () => {
     setFavoriteIsActive(true)
     setPopularIsActive(false)
@@ -61,24 +79,6 @@ export const Favorites: React.FC = () => {
       return () => closeModalChoosePlan()
     }, [user, isFocused])
   )
-
-  I18n.translations = {
-    pt: {
-      favorites: 'SEUS FAVORITOS',
-      popular: 'MAIS POPULARES',
-      search: 'Pesquisar...'
-    },
-    en: {
-      favorites: 'YOUR FAVORITES',
-      popular: 'MORE POPULAR',
-      search: 'Search...'
-    },
-    es: {
-      favorites: 'TUS FAVORITOS',
-      popular: 'MÁS POPULAR',
-      search: 'Búsqueda...'
-    }
-  }
 
   return (
     <Container>
