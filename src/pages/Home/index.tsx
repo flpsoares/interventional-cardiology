@@ -1,6 +1,7 @@
 /* eslint-disable array-callback-return */
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/core'
+import I18n from 'i18n-js'
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { database } from '../../../firebase'
@@ -29,6 +30,12 @@ export const Home: React.FC = () => {
   const [list, setList] = useState(posts)
 
   const isFocused = useIsFocused()
+
+  I18n.translations = {
+    pt: { search: 'Pesquisar...' },
+    en: { search: 'Search...' },
+    es: { search: 'Búsqueda...' }
+  }
 
   useEffect(() => {
     const subscriber = database
@@ -87,7 +94,7 @@ export const Home: React.FC = () => {
           <TopInput
             value={search}
             onChangeText={setSearch}
-            placeholder="Pesquisar..."
+            placeholder={I18n.t('search')}
           />
         </TopInputArea>
         <Ionicons name="notifications-outline" size={22} color="#777d8c" />

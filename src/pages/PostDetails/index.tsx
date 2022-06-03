@@ -1,6 +1,7 @@
 import { EvilIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
 import { RouteProp, useRoute } from '@react-navigation/core'
 import firebase from 'firebase'
+import I18n from 'i18n-js'
 import moment from 'moment'
 import 'moment-timezone'
 import React, { useEffect, useState } from 'react'
@@ -36,6 +37,36 @@ export const PostDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [commentText, setCommentText] = useState('')
 
+  I18n.translations = {
+    pt: {
+      newCommentTitle: 'Você tem um novo comentário',
+      newCommentMessage: 'comentou na sua postagem',
+      error: 'Erro',
+      errorOcurred: 'Ocorreu algum erro',
+      search: 'Pesquisar...',
+      comments: 'Comentários',
+      comment: 'Comentar'
+    },
+    en: {
+      newCommentTitle: 'You have a new comment',
+      newCommentMessage: 'commented on your post',
+      error: 'Error',
+      errorOcurred: 'some error occurred',
+      search: 'Search...',
+      comments: 'Comments',
+      comment: 'Comment'
+    },
+    es: {
+      newCommentTitle: 'Tienes un nuevo comentario',
+      newCommentMessage: 'comentó en tu publicación',
+      error: 'Error',
+      errorOcurred: 'ocurrió algún error',
+      search: 'Búsqueda...',
+      comments: 'Comentarios',
+      comment: 'Comentario'
+    }
+  }
+
   const dateNow = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY H:mm:ss')
 
   const createComment = () => {
@@ -57,15 +88,15 @@ export const PostDetails: React.FC = () => {
           .then((res) => {
             const token = res.data()!.notificationToken
             sendRemoteNotification(
-              'Você tem um novo comentário!',
-              `${user?.name} comentou na sua postagem`,
+              I18n.t('newCommentTitle'),
+              `${user?.name} ${I18n.t('newCommentMessage')}`,
               token
             )
           })
         setCommentText('')
       })
       .catch((e) => {
-        Alert.alert('Erro', 'Ocorreu algum erro')
+        Alert.alert(I18n.t('error'), I18n.t('errorOcurred'))
         console.log(e)
       })
   }
@@ -116,13 +147,13 @@ export const PostDetails: React.FC = () => {
         )}
         <TopInputArea>
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
-          <TopInput placeholder="Pesquisar..." />
+          <TopInput placeholder={I18n.t('search')} />
         </TopInputArea>
         <Ionicons name="notifications-outline" size={24} />
       </Top>
       <Wrapper>
         <Post isDetail data={post} />
-        <Title>Comentários</Title>
+        <Title>{I18n.t('comments')}</Title>
         <CommentInputArea>
           {user?.userPhoto ? (
             <UserPhoto source={{ uri: user.userPhoto }} />
@@ -133,7 +164,7 @@ export const PostDetails: React.FC = () => {
             <CommentInput
               onChangeText={setCommentText}
               value={commentText}
-              placeholder="Comentar"
+              placeholder={I18n.t('comment')}
             />
             <SendButton onPress={createComment}>
               <FontAwesome name="send" size={24} color="#596988" />
