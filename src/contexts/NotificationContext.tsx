@@ -1,13 +1,16 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Notifications from 'expo-notifications'
+import firebase from 'firebase'
+import moment from 'moment'
+import 'moment-timezone'
 import React, {
   createContext,
-  useContext,
   ReactNode,
-  useState,
-  useRef,
-  useEffect
+  useContext,
+  useEffect,
+  useState
 } from 'react'
-import * as Notifications from 'expo-notifications'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { database } from '../../firebase'
 
 interface NotificationContextData {
   expoPushToken: string | null
@@ -74,6 +77,24 @@ export const NotificationProvider = ({ children }: NotificationProviderProps) =>
       },
       body: JSON.stringify(message)
     })
+
+    database
+      .collection('/users')
+      .where('notificationToken', '==', token)
+      .get()
+      .then((res) => {
+        if (!res.empty) {
+          database
+            .collection(`/users/${res.docs[0].id}/notifications`)
+            .add({
+              title,
+              message: body,
+              dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
+              dataExibicao: moment().tz('America/Sao_Paulo').format('DD/MM/YYYY')
+            })
+            .catch((e) => console.log(e))
+        }
+      })
   }
 
   return (
