@@ -4,8 +4,10 @@ import moment from 'moment'
 import 'moment-timezone'
 import React, { useEffect, useState } from 'react'
 import { database } from '../../../firebase'
+import { ModalNotifications } from '../../components/ModalNotifications'
 import { Post } from '../../components/Post'
 import { SettingsDropdown } from '../../components/SettingsDropdown'
+import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
 import { useFollowingPosts } from '../../hooks/useFollowingPosts'
 import {
@@ -24,6 +26,7 @@ import {
 
 export const Account: React.FC = () => {
   const { user, userId } = useUser()
+  const { openNotificationModal } = useModal()
 
   const followingPosts = useFollowingPosts()
 
@@ -105,13 +108,14 @@ export const Account: React.FC = () => {
 
   return (
     <Container>
+      <ModalNotifications />
       <Profile onPress={() => setDropdownIsOpen(false)}>
         <Banner>
           <Header>
             <Notification onPress={() => setDropdownIsOpen(!dropdownIsOpen)}>
               <Ionicons name="settings-outline" size={22} color="#fff" />
             </Notification>
-            <Notification>
+            <Notification onPress={openNotificationModal}>
               <Ionicons name="notifications-outline" size={22} color="#fff" />
             </Notification>
           </Header>

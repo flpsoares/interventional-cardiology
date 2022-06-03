@@ -34,6 +34,7 @@
     "react-native-gesture-handler": "~1.10.2",
     "react-native-image-crop-picker": "^0.37.3",
     "react-native-modal": "^13.0.1",
+    "react-native-modalize": "^2.0.13",
     "react-native-multi-selectbox": "^1.5.0",
     "react-native-multiple-select": "^0.5.9",
     "react-native-reanimated": "~2.2.0",

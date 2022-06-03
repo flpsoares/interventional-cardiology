@@ -7,10 +7,19 @@ import { FlatList } from 'react-native'
 import { database } from '../../../firebase'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
 import { ModalImage } from '../../components/ModalImage'
+import { ModalNotifications } from '../../components/ModalNotifications'
 import { Post } from '../../components/Post'
 import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
-import { Container, Top, TopInput, TopInputArea, UserPhoto, Wrapper } from './style'
+import {
+  Container,
+  NotificationButton,
+  Top,
+  TopInput,
+  TopInputArea,
+  UserPhoto,
+  Wrapper
+} from './style'
 
 export const Home: React.FC = () => {
   const { user } = useUser()
@@ -22,7 +31,8 @@ export const Home: React.FC = () => {
     modalImageOpenItem,
     modalChoosePlanIsOpen,
     openModalChoosePlan,
-    closeModalChoosePlan
+    closeModalChoosePlan,
+    openNotificationModal
   } = useModal()
 
   const [posts, setPosts] = useState<App.Post[]>()
@@ -82,6 +92,7 @@ export const Home: React.FC = () => {
   return (
     <Container>
       {modalChoosePlanIsOpen && <ModalChoosePlan />}
+      <ModalNotifications />
       <ModalChoosePlan />
       <Top>
         {user?.userPhoto ? (
@@ -97,7 +108,9 @@ export const Home: React.FC = () => {
             placeholder={I18n.t('search')}
           />
         </TopInputArea>
-        <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+        <NotificationButton onPress={openNotificationModal}>
+          <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+        </NotificationButton>
       </Top>
       <Wrapper>
         {modalImageIsOpen && (

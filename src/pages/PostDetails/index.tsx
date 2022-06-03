@@ -8,7 +8,9 @@ import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, View } from 'react-native'
 import { database } from '../../../firebase'
 import { Comment } from '../../components/Comment'
+import { ModalNotifications } from '../../components/ModalNotifications'
 import { Post } from '../../components/Post'
+import { useModal } from '../../contexts/ModalContext'
 import { useNotification } from '../../contexts/NotificationContext'
 import { useUser } from '../../contexts/UserContext'
 import { RootStackParamsList } from '../../routes/RootStackParamsList'
@@ -18,6 +20,7 @@ import {
   CommentInputArea,
   CommentInputBox,
   Container,
+  NotificationButton,
   SendButton,
   Title,
   Top,
@@ -29,6 +32,7 @@ import {
 
 export const PostDetails: React.FC = () => {
   const { user, userId } = useUser()
+  const { openNotificationModal } = useModal()
   const route = useRoute<RouteProp<RootStackParamsList, 'PostDetails'>>()
   const { sendRemoteNotification } = useNotification()
 
@@ -139,6 +143,7 @@ export const PostDetails: React.FC = () => {
 
   return (
     <Container>
+      <ModalNotifications />
       <Top>
         {user?.userPhoto ? (
           <UserPhoto source={{ uri: user.userPhoto }} />
@@ -149,7 +154,9 @@ export const PostDetails: React.FC = () => {
           <EvilIcons name="search" size={24} color="rgba(77, 86, 109, 0.46)" />
           <TopInput placeholder={I18n.t('search')} />
         </TopInputArea>
-        <Ionicons name="notifications-outline" size={24} />
+        <NotificationButton onPress={openNotificationModal}>
+          <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+        </NotificationButton>
       </Top>
       <Wrapper>
         <Post isDetail data={post} />

@@ -3,7 +3,7 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/core'
 import i18n from 'i18n-js'
 import React, { useCallback, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { useLanguage } from '../../contexts/LanguageContext'
+import { ModalNotifications } from '../../components/ModalNotifications'
 import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
 import MercadoPagoApi from '../../services/MercadoPagoApi'
@@ -15,6 +15,7 @@ import {
   Description,
   Header,
   Notification,
+  NotificationButton,
   Plan,
   PlanArea,
   PlanNumber,
@@ -27,8 +28,7 @@ import {
 } from './style'
 export const Plans: React.FC = () => {
   const { userId } = useUser()
-  const { closeModalChoosePlan } = useModal()
-  const { language } = useLanguage()
+  const { closeModalChoosePlan, openNotificationModal } = useModal()
 
   const isFocused = useIsFocused()
 
@@ -121,9 +121,12 @@ export const Plans: React.FC = () => {
 
   return (
     <Container>
+      <ModalNotifications />
       <Header>
         <Notification>
-          <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+          <NotificationButton onPress={openNotificationModal}>
+            <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+          </NotificationButton>
         </Notification>
       </Header>
       <Wrapper>

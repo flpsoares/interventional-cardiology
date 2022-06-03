@@ -29,6 +29,8 @@ export const TopInputArea = styled.View`
   padding: 0 4px;
 `
 
+export const NotificationButton = styled.TouchableOpacity``
+
 export const TopInput = styled.TextInput`
   width: 90%;
   height: 100%;

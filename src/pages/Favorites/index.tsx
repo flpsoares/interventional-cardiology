@@ -4,6 +4,7 @@ import I18n from 'i18n-js'
 import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
 import { ModalImage } from '../../components/ModalImage'
+import { ModalNotifications } from '../../components/ModalNotifications'
 import { Post } from '../../components/Post'
 import { useModal } from '../../contexts/ModalContext'
 import { useUser } from '../../contexts/UserContext'
@@ -14,6 +15,7 @@ import {
   ChooseItem,
   ChooseItemText,
   Container,
+  NotificationButton,
   Top,
   TopInput,
   TopInputArea,
@@ -29,7 +31,8 @@ export const Favorites: React.FC = () => {
     modalImageOpenItem,
     modalChoosePlanIsOpen,
     openModalChoosePlan,
-    closeModalChoosePlan
+    closeModalChoosePlan,
+    openNotificationModal
   } = useModal()
   const { user } = useUser()
 
@@ -83,6 +86,7 @@ export const Favorites: React.FC = () => {
   return (
     <Container>
       {modalChoosePlanIsOpen && <ModalChoosePlan />}
+      <ModalNotifications />
       <Top>
         {user?.userPhoto ? (
           <UserPhoto source={{ uri: user.userPhoto }} />
@@ -97,7 +101,9 @@ export const Favorites: React.FC = () => {
             placeholder={I18n.t('search')}
           />
         </TopInputArea>
-        <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+        <NotificationButton onPress={openNotificationModal}>
+          <Ionicons name="notifications-outline" size={22} color="#777d8c" />
+        </NotificationButton>
       </Top>
       <ChooseArea>
         <ChooseItem onPress={activeFavorite} isActive={favoriteIsActive}>

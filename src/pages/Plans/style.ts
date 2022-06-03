@@ -31,6 +31,8 @@ export const Notification = styled.TouchableOpacity`
   z-index: 2;
 `
 
+export const NotificationButton = styled.TouchableOpacity``
+
 export const Wrapper = styled.View`
   padding: 0 22px;
 `

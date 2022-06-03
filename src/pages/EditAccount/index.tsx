@@ -11,6 +11,8 @@ import I18n from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { Alert, Platform } from 'react-native'
 import app, { database } from '../../../firebase'
+import { ModalNotifications } from '../../components/ModalNotifications'
+import { useModal } from '../../contexts/ModalContext'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { useUser } from '../../contexts/UserContext'
 import {
@@ -36,6 +38,7 @@ import {
 export const EditAccount: React.FC = () => {
   const { user, userId } = useUser()
   const { editAccountGoBack } = useNavigate()
+  const { openNotificationModal } = useModal()
 
   const [name, setName] = useState(user!.name)
   const [email, setEmail] = useState(user!.email)
@@ -156,11 +159,12 @@ export const EditAccount: React.FC = () => {
 
   return (
     <Container>
+      <ModalNotifications />
       <Header>
         <BackButton onPress={editAccountGoBack}>
           <FontAwesome name="arrow-left" size={24} color="#777d8c" />
         </BackButton>
-        <Notification>
+        <Notification onPress={openNotificationModal}>
           <Ionicons name="notifications-outline" size={22} color="#777d8c" />
         </Notification>
       </Header>

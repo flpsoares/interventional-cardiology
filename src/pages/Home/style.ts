@@ -33,4 +33,6 @@ export const TopInput = styled.TextInput`
   height: 100%;
 `
 
+export const NotificationButton = styled.TouchableOpacity``
+
 export const Wrapper = styled.View``
