@@ -147,15 +147,26 @@ export const Favorites: React.FC = () => {
         )}
         {popularIsActive && (
           <>
-            {popularPosts.map((post, index) => {
-              return (
-                <Post
-                  isFavoriteList={popularIsActive}
-                  key={index}
-                  data={post.post!}
-                />
-              )
-            })}
+            {popularPosts
+              // eslint-disable-next-line array-callback-return
+              .filter((values: any) => {
+                if (search === '') {
+                  return values
+                } else if (
+                  values.post.autorNome.toLowerCase().includes(search.toLowerCase())
+                ) {
+                  return values
+                }
+              })
+              .map((post, index) => {
+                return (
+                  <Post
+                    isFavoriteList={popularIsActive}
+                    key={index}
+                    data={post.post!}
+                  />
+                )
+              })}
           </>
         )}
       </Wrapper>
