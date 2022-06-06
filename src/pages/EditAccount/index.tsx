@@ -55,7 +55,6 @@ export const EditAccount: React.FC = () => {
       registered: 'Cadastrado em',
       error: 'Erro',
       errorOccurred: 'Ocorreu algum erro',
-      warning: 'Aviso',
       success: 'Sucesso',
       successfully: 'Dados alterados com sucesso',
       button: 'Atualizar Dados'
@@ -65,7 +64,6 @@ export const EditAccount: React.FC = () => {
       registered: 'Registered in',
       error: 'Error',
       errorOccurred: 'Some error occurred',
-      warning: 'Warning',
       success: 'Success',
       successfully: 'Successfully changed data',
       button: 'Update Data'
@@ -75,12 +73,16 @@ export const EditAccount: React.FC = () => {
       registered: 'Registrado en',
       error: 'Erro',
       errorOccurred: 'Ocurrió algún error',
-      warning: 'Advertencia',
       success: 'Éxito',
       successfully: 'Datos cambiados con éxito',
       button: 'Actualizar datos'
     }
   }
+
+  const success = I18n.t('success')
+  const successfully = I18n.t('successfully')
+  const error = I18n.t('error')
+  const errorOccurred = I18n.t('errorOccurred')
 
   useEffect(() => {
     const verifyPermission = async () => {
@@ -121,13 +123,13 @@ export const EditAccount: React.FC = () => {
               .doc(userId)
               .set({ userPhoto: url }, { merge: true })
               .catch((e) => {
-                Alert.alert(I18n.t('error'), I18n.t('errorOccurred'))
+                Alert.alert(error, errorOccurred)
                 console.log(e)
               })
           })
         })
         .catch((e) => {
-          Alert.alert(I18n.t('error'), I18n.t('errorOccurred'))
+          Alert.alert(error, errorOccurred)
           console.log(e)
         })
     }
@@ -139,9 +141,9 @@ export const EditAccount: React.FC = () => {
         .collection('users')
         .doc(userId)
         .set({ name, email, telephone }, { merge: true })
-        .then(() => Alert.alert(I18n.t('success'), I18n.t('successfully')))
+        .then(() => Alert.alert(success, successfully))
         .catch((e) => {
-          Alert.alert(I18n.t('warning'), I18n.t('errorOccurred'))
+          Alert.alert(error, errorOccurred)
           console.log(e)
         })
     } else {
@@ -149,9 +151,9 @@ export const EditAccount: React.FC = () => {
         .collection('users')
         .doc(userId)
         .set({ name, email, telephone, crm, institution }, { merge: true })
-        .then(() => Alert.alert(I18n.t('success'), I18n.t('successfully')))
+        .then(() => Alert.alert(success, successfully))
         .catch((e) => {
-          Alert.alert(I18n.t('warning'), I18n.t('errorOccurred'))
+          Alert.alert(error, errorOccurred)
           console.log(e)
         })
     }

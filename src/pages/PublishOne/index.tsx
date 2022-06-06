@@ -6,6 +6,7 @@ import { Alert } from 'react-native'
 import Modal from 'react-native-modal'
 import MultiSelect from 'react-native-multiple-select'
 import { ModalChoosePlan } from '../../components/ModalChoosePlan'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { useModal } from '../../contexts/ModalContext'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { useUser } from '../../contexts/UserContext'
@@ -33,6 +34,7 @@ import {
 export const PublishOne: React.FC = () => {
   const { user } = useUser()
   const { navigateToPublish } = useNavigate()
+  const { language } = useLanguage()
   const { modalChoosePlanIsOpen, openModalChoosePlan, closeModalChoosePlan } =
     useModal()
 
@@ -51,6 +53,8 @@ export const PublishOne: React.FC = () => {
   const [modalSymptomIsOpen, setModalSymptomIsOpen] = useState(false)
   const closeModalSymptom = () => setModalSymptomIsOpen(false)
   const openModalSymptom = () => setModalSymptomIsOpen(true)
+
+  I18n.locale = language
 
   I18n.translations = {
     pt: {
@@ -333,6 +337,9 @@ export const PublishOne: React.FC = () => {
     setSintoma([])
   }
 
+  const error = I18n.t('error')
+  const fill = I18n.t('fill')
+
   const handleSubmit = () => {
     if (
       idade !== '' &&
@@ -344,7 +351,7 @@ export const PublishOne: React.FC = () => {
       clear()
       navigateToPublish(area, genero, idade, sintoma, comorbidades, medicamentos)
     } else {
-      Alert.alert(I18n.t('warning'), I18n.t('fill'))
+      Alert.alert(error, fill)
     }
   }
 

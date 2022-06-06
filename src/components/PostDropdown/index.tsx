@@ -135,6 +135,18 @@ export const PostDropdown: React.FC<PostDropdownProps> = ({
       .collection('/posts')
       .doc(postId)
       .delete()
+      .then(() => {
+        database
+          .collection('/posts_favorites')
+          .where('postId', '==', postId)
+          .get()
+          .then((res) => {
+            // eslint-disable-next-line array-callback-return
+            res.docs.map((post) => {
+              database.collection('/posts_favorites').doc(post.id).delete()
+            })
+          })
+      })
       .catch(() => Alert.alert(I18n.t('error'), I18n.t('errorOccurred')))
   }
 

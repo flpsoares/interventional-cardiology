@@ -89,6 +89,12 @@ export const PublishTwo: React.FC = () => {
     }
   }
 
+  const error = I18n.t('error')
+  const maxSelected = I18n.t('maxSelected')
+  const uploadError = I18n.t('uploadError')
+  const somethingWrong = I18n.t('somethingWrong')
+  const fill = I18n.t('fill')
+
   useEffect(() => {
     const verifyPermission = async () => {
       if (Platform.OS !== 'web') {
@@ -112,7 +118,7 @@ export const PublishTwo: React.FC = () => {
       if (files.length <= 7) {
         !files[0] ? setFiles([result.uri]) : setFiles([...files, result.uri])
       } else {
-        Alert.alert(I18n.t('error'), I18n.t('maxSelected'))
+        Alert.alert(error, maxSelected)
       }
     }
   }
@@ -138,7 +144,7 @@ export const PublishTwo: React.FC = () => {
           const resolvedUrl = await uploadedfile.ref.getDownloadURL()
           nextUrls.push(resolvedUrl)
         } catch (e) {
-          Alert.alert(I18n.t('error'), I18n.t('uploadError'))
+          Alert.alert(error, uploadError)
           setIsLoading(false)
           setFiles([''])
           nextUrls = []
@@ -181,11 +187,11 @@ export const PublishTwo: React.FC = () => {
           setFiles([''])
         })
         .catch((e) => {
-          Alert.alert(I18n.t('error'), I18n.t('somethingWrong'))
+          Alert.alert(error, somethingWrong)
           console.log(e)
         })
     } else {
-      Alert.alert(I18n.t('error'), I18n.t('fill'))
+      Alert.alert(error, fill)
     }
   }
 
