@@ -73,36 +73,41 @@ export const PostDetails: React.FC = () => {
 
   const dateNow = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY H:mm:ss')
 
+  const newCommentTitle = I18n.t('newCommentTitle')
+  const newCommentMessage = I18n.t('newCommentMessage')
+
   const createComment = () => {
-    database
-      .collection(`/posts/${route.params.postId}/comments`)
-      .add({
-        autorId: userId,
-        autorNome: user?.name,
-        autorFoto: user?.userPhoto || '',
-        texto: commentText,
-        dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
-        dataExibicao: dateNow
-      })
-      .then(() => {
-        database
-          .collection('users')
-          .doc(post.autorId)
-          .get()
-          .then((res) => {
-            const token = res.data()!.notificationToken
-            sendRemoteNotification(
-              I18n.t('newCommentTitle'),
-              `${user?.name} ${I18n.t('newCommentMessage')}`,
-              token
-            )
-          })
-        setCommentText('')
-      })
-      .catch((e) => {
-        Alert.alert(I18n.t('error'), I18n.t('errorOcurred'))
-        console.log(e)
-      })
+    if (commentText !== '') {
+      database
+        .collection(`/posts/${route.params.postId}/comments`)
+        .add({
+          autorId: userId,
+          autorNome: user?.name,
+          autorFoto: user?.userPhoto || '',
+          texto: commentText,
+          dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
+          dataExibicao: dateNow
+        })
+        .then(() => {
+          database
+            .collection('users')
+            .doc(post.autorId)
+            .get()
+            .then((res) => {
+              const token = res.data()!.notificationToken
+              sendRemoteNotification(
+                newCommentTitle,
+                `${user?.name} ${newCommentMessage}`,
+                token
+              )
+            })
+          setCommentText('')
+        })
+        .catch((e) => {
+          Alert.alert(I18n.t('error'), I18n.t('errorOcurred'))
+          console.log(e)
+        })
+    }
   }
 
   const getComments = () => {

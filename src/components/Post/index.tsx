@@ -50,7 +50,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
   const { openModalImage } = useModal()
   const { navigateToPostDetails, navigateToUserProfile } = useNavigate()
   const { userId, user } = useUser()
-  const { sendRemoteNotification, expoPushToken } = useNotification()
+  const { sendRemoteNotification } = useNotification()
 
   const video = useRef(null)
   const [status, setStatus] = useState({})
@@ -77,6 +77,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
       symptom: 'Sintoma',
       comorbidity: 'Comorbidade',
       medicine: 'Medicamento',
+      like: 'Curtir',
       likes: 'curtidas',
       comments: 'comentários',
       comment: 'Comentar',
@@ -92,6 +93,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
       symptom: 'Symptom',
       comorbidity: 'Comorbidity',
       medicine: 'Medicine',
+      like: 'Like',
       likes: 'likes',
       comments: 'comments',
       comment: 'Comment',
@@ -107,6 +109,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
       symptom: 'Síntoma',
       comorbidity: 'Comorbilidad',
       medicine: 'Medicamento',
+      like: 'Disfrutar',
       likes: 'gustos',
       comments: 'comentarios',
       comment: 'Comentario',
@@ -363,7 +366,7 @@ export const Post: React.FC<Props> = ({ data, isDetail, isFavoriteList }) => {
               size={22}
               color="rgba(4, 20, 50, 0.8)"
             />
-            <ButtonTitle>Curtir</ButtonTitle>
+            <ButtonTitle>{I18n.t('like')}</ButtonTitle>
           </Button>
           <Button onPress={() => navigateToPostDetails(data.id!)}>
             <Fontisto name="commenting" size={22} color="rgba(4, 20, 50, 0.8)" />

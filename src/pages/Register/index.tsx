@@ -222,7 +222,7 @@ export const Register: React.FC = () => {
                 dataCriacao: moment().subtract(3, 'hours').format('DD/MM/YYYY')
               })
             })
-            .then(() => Alert.alert('Sucesso', 'Conta criada com sucesso'))
+            .then(() => Alert.alert(i18n.t('success'), i18n.t('created')))
             .catch((error) => {
               if (error.code === 'auth/email-already-in-use') {
                 Alert.alert(i18n.t('warning'), i18n.t('inUse'))

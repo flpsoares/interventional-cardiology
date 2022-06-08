@@ -139,7 +139,7 @@ export const Routes: React.FC = () => {
         .collection('/users')
         .doc(app.auth().currentUser!.uid)
         .onSnapshot((querySnapshot) => {
-          const expiration_date = querySnapshot.data()!.expiration_date
+          const expiration_date = querySnapshot.data()?.expiration_date
           const dateNow = moment().tz('America/Sao_Paulo')
           const isExpirated = moment(expiration_date).diff(dateNow, 'days') < 0
           if (isExpirated) {
