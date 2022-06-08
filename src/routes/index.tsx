@@ -150,12 +150,14 @@ export const Routes: React.FC = () => {
         .onSnapshot((querySnapshot) => {
           const expiration_date = querySnapshot.data()?.expiration_date
           const dateNow = moment().tz('America/Sao_Paulo')
-          const isExpirated = moment(expiration_date).diff(dateNow, 'days') < 0
-          if (isExpirated) {
-            database
-              .collection('/users')
-              .doc(app.auth().currentUser!.uid)
-              .set({ isSubscriber: false }, { merge: true })
+          if (expiration_date) {
+            const isExpirated = moment(expiration_date).diff(dateNow, 'days') < 0
+            if (isExpirated) {
+              database
+                .collection('/users')
+                .doc(app.auth().currentUser!.uid)
+                .set({ isSubscriber: false }, { merge: true })
+            }
           }
         })
       setIsLoading(false)

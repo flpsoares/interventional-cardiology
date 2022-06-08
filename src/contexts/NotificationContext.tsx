@@ -83,6 +83,10 @@ export const NotificationProvider = ({ children }: NotificationProviderProps) =>
       .where('notificationToken', '==', token)
       .get()
       .then((res) => {
+        // eslint-disable-next-line array-callback-return
+        res.docs.map((docs) => {
+          console.log(docs.data().email)
+        })
         if (!res.empty) {
           database
             .collection(`/users/${res.docs[0].id}/notifications`)
@@ -90,7 +94,9 @@ export const NotificationProvider = ({ children }: NotificationProviderProps) =>
               title,
               message: body,
               dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
-              dataExibicao: moment().tz('America/Sao_Paulo').format('DD/MM/YYYY')
+              dataExibicao: moment()
+                .tz('America/Sao_Paulo')
+                .format('DD/MM/YYYY H:mm:ss')
             })
             .catch((e) => console.log(e))
         }
