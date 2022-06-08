@@ -240,8 +240,6 @@ export const Register: React.FC = () => {
     }
   }
 
-  i18n.locale = language
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

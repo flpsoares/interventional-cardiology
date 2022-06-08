@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useState } from 'react'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { Container, Image, Item } from './style'
@@ -39,6 +40,7 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
+                  AsyncStorage.setItem('language', 'en')
                   setLanguage('en')
                   setIsActive(false)
                 }}
@@ -47,6 +49,7 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
+                  AsyncStorage.setItem('language', 'es')
                   setLanguage('es')
                   setIsActive(false)
                 }}
@@ -62,6 +65,7 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
+                  AsyncStorage.setItem('language', 'pt')
                   setLanguage('pt')
                   setIsActive(false)
                 }}
@@ -70,6 +74,7 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
+                  AsyncStorage.setItem('language', 'es')
                   setLanguage('es')
                   setIsActive(false)
                 }}
@@ -85,6 +90,7 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
+                  AsyncStorage.setItem('language', 'en')
                   setLanguage('en')
                   setIsActive(false)
                 }}
@@ -93,6 +99,7 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
               </Item>
               <Item
                 onPress={() => {
+                  AsyncStorage.setItem('language', 'pt')
                   setLanguage('pt')
                   setIsActive(false)
                 }}

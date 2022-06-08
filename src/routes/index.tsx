@@ -1,4 +1,5 @@
 import { Entypo, FontAwesome, Foundation } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications'
@@ -21,13 +22,21 @@ const Tab = createBottomTabNavigator()
 
 export const Routes: React.FC = () => {
   const { setUser, user, setUserId, setIsSubscriber } = useUser()
-  const { language } = useLanguage()
+  const { language, setLanguage } = useLanguage()
 
   const [isLoading, setIsLoading] = useState(true)
 
   const [notification, setNotification] = useState<Notifications.Notification>()
   const notificationListener = useRef<any>()
   const responseListener = useRef<any>()
+
+  useEffect(() => {
+    const verifyLanguage = () => {
+      const lang = AsyncStorage.getItem('language')
+      lang.then((res) => setLanguage(res))
+    }
+    verifyLanguage()
+  }, [])
 
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -161,7 +170,7 @@ export const Routes: React.FC = () => {
     )
   }
 
-  I18n.locale = language
+  I18n.locale = language!
 
   I18n.translations = {
     pt: {

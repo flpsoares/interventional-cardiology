@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import * as Updates from 'expo-updates'
 import React, { useEffect, useState } from 'react'
@@ -15,14 +16,23 @@ export default function App() {
   const [user, setUser] = useState<boolean>()
   const [isLoading, setIsLoading] = useState(true)
 
+  const verifyLanguage = async () => {
+    const local_language = AsyncStorage.getItem('language')
+    if ((await local_language) === null) {
+      AsyncStorage.setItem('language', 'pt')
+    }
+  }
+
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUser(true)
         setIsLoading(false)
+        verifyLanguage()
       } else {
         setUser(false)
         setIsLoading(false)
+        verifyLanguage()
       }
     })
 
