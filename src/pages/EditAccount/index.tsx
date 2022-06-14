@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert, Platform } from 'react-native'
 import app, { database } from '../../../firebase'
 import { ModalNotifications } from '../../components/ModalNotifications'
+import { ModalPassword } from '../../components/ModalPassword'
 import { useModal } from '../../contexts/ModalContext'
 import { useNavigate } from '../../contexts/NavigateContext'
 import { useUser } from '../../contexts/UserContext'
@@ -38,7 +39,7 @@ import {
 export const EditAccount: React.FC = () => {
   const { user, userId } = useUser()
   const { editAccountGoBack } = useNavigate()
-  const { openNotificationModal } = useModal()
+  const { openNotificationModal, openPasswordModal } = useModal()
 
   const [name, setName] = useState(user!.name)
   const [email, setEmail] = useState(user!.email)
@@ -57,7 +58,8 @@ export const EditAccount: React.FC = () => {
       errorOccurred: 'Ocorreu algum erro',
       success: 'Sucesso',
       successfully: 'Dados alterados com sucesso',
-      button: 'Atualizar Dados'
+      button: 'Atualizar Dados',
+      changePassword: 'Alterar senha'
     },
     en: {
       title: 'Edit your data',
@@ -66,7 +68,8 @@ export const EditAccount: React.FC = () => {
       errorOccurred: 'Some error occurred',
       success: 'Success',
       successfully: 'Successfully changed data',
-      button: 'Update Data'
+      button: 'Update Data',
+      changePassword: 'Change Password'
     },
     es: {
       title: 'Edita tus datos',
@@ -75,7 +78,8 @@ export const EditAccount: React.FC = () => {
       errorOccurred: 'Ocurrió algún error',
       success: 'Éxito',
       successfully: 'Datos cambiados con éxito',
-      button: 'Actualizar datos'
+      button: 'Actualizar datos',
+      changePassword: 'Cambiar contraseña'
     }
   }
 
@@ -162,6 +166,7 @@ export const EditAccount: React.FC = () => {
   return (
     <Container>
       <ModalNotifications />
+      <ModalPassword />
       <Header>
         <BackButton onPress={editAccountGoBack}>
           <FontAwesome name="arrow-left" size={24} color="#777d8c" />
@@ -230,30 +235,11 @@ export const EditAccount: React.FC = () => {
             </InputItem>
           </>
         )}
-        {/* <InputItem style={{ elevation: 10 }}>
-              <Icon>
-                <FontAwesome name="key" size={28} color="rgba(77, 86, 109, 0.46)" />
-              </Icon>
-              <Input placeholder="Alterar Senha" secureTextEntry={passwordIsHide} />
-              <PasswordIcon onPress={toggleHidePassword}>
-                {passwordIsHide ? (
-                  <FontAwesome
-                    name="eye"
-                    size={28}
-                    color="rgba(77, 86, 109, 0.46)"
-                  />
-                ) : (
-                  <FontAwesome
-                    name="eye-slash"
-                    size={28}
-                    color="rgba(77, 86, 109, 0.46)"
-                  />
-                )}
-              </PasswordIcon>
-            </InputItem> */}
-
         <Button onPress={handleSubmit}>
           <ButtonText>{I18n.t('button')}</ButtonText>
+        </Button>
+        <Button onPress={openPasswordModal}>
+          <ButtonText>{I18n.t('changePassword')}</ButtonText>
         </Button>
       </Wrapper>
     </Container>

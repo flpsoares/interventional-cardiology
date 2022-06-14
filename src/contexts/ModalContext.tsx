@@ -19,10 +19,12 @@ interface ModalContextData {
   closeModalMedicine: () => void
   selectedMedicines: string[]
   setSelectedMedicines: React.Dispatch<React.SetStateAction<string[]>>
-  notificationModalIsOpen: boolean
   openNotificationModal: () => void
   closeNotificationModal: () => void
   modalizeRef: React.MutableRefObject<any>
+  openPasswordModal: () => void
+  closePasswordModal: () => void
+  modalizePasswordRef: React.MutableRefObject<any>
 }
 
 interface ModalProviderProps {
@@ -45,8 +47,8 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [postDropdownIsOpen, setPostDropdownIsOpen] = useState(false)
   const [postDropdownUserName, setPostDropdownUserName] = useState('')
 
-  const [notificationModalIsOpen, setNotificationModalIsOpen] = useState(false)
   const modalizeRef = useRef<any>(null)
+  const modalizePasswordRef = useRef<any>(null)
 
   const openModalImage = (data: string[], quantity: number, openItem: number) => {
     setModalImageIsOpen(true)
@@ -94,6 +96,14 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
     modalizeRef.current?.close()
   }
 
+  const openPasswordModal = () => {
+    modalizePasswordRef.current?.open()
+  }
+
+  const closePasswordModal = () => {
+    modalizePasswordRef.current?.close()
+  }
+
   return (
     <ModalContext.Provider
       value={{
@@ -115,10 +125,12 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
         closeModalMedicine,
         selectedMedicines,
         setSelectedMedicines,
-        notificationModalIsOpen,
         openNotificationModal,
         closeNotificationModal,
-        modalizeRef
+        modalizeRef,
+        openPasswordModal,
+        closePasswordModal,
+        modalizePasswordRef
       }}
     >
       {children}
