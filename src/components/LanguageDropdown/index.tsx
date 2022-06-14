@@ -12,7 +12,11 @@ export const LanguageDropdown = ({ isOpen }: LanguageDropdownProps) => {
   const [isActive, setIsActive] = useState(isOpen)
 
   return (
-    <Container onPress={() => setIsActive(!isActive)} isOpen={isActive}>
+    <Container
+      onPress={() => setIsActive(!isActive)}
+      isOpen={isActive}
+      isProfile={true}
+    >
       {!isActive ? (
         <>
           {language === 'pt' && (

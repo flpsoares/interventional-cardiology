@@ -2,17 +2,20 @@ import styled from 'styled-components/native'
 
 interface ContainerProps {
   isOpen: boolean
+  isProfile: boolean
 }
 
 export const Container = styled.Pressable<ContainerProps>`
   background: #fff;
   position: absolute;
   top: 0;
-  right: 0;
+  right: ${(props) => (props.isProfile ? '0' : 'auto')};
+  left: ${(props) => (props.isProfile ? '0' : 'auto')};
   width: 59px;
   height: ${(props) => (props.isOpen ? '160px' : '56px')};
-  border-bottom-left-radius: 20px;
-  z-index: 10;
+  border-bottom-left-radius: ${(props) => (props.isProfile ? '0' : '20px')};
+  border-bottom-right-radius: ${(props) => (props.isProfile ? '20px' : '0')};
+  z-index: 30;
   padding-top: 12px;
 
   display: flex;

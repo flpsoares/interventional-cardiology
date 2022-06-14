@@ -54,8 +54,6 @@ export const PublishOne: React.FC = () => {
   const closeModalSymptom = () => setModalSymptomIsOpen(false)
   const openModalSymptom = () => setModalSymptomIsOpen(true)
 
-  I18n.locale = language
-
   I18n.translations = {
     pt: {
       title: 'Publicar caso clínico',
@@ -87,7 +85,7 @@ export const PublishOne: React.FC = () => {
       firstOptionComorbidities: 'Hipertensão arterial sistêmica',
       secondOptionComorbidities: 'Diabetes melitus',
       thirdOptionComorbidities: 'Dislipedemia',
-      forthOptionComorbidities: 'Obesidade',
+      fourthOptionComorbidities: 'Obesidade',
       fifthOptionComorbidities: 'Sedentarismo',
       sixthOptionComorbidities: 'Tabagismo',
       seventhOptionComorbidities: 'Doença renal',

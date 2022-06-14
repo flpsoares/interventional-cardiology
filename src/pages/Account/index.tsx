@@ -4,6 +4,7 @@ import moment from 'moment'
 import 'moment-timezone'
 import React, { useEffect, useState } from 'react'
 import { database } from '../../../firebase'
+import { LanguageDropdown } from '../../components/LanguageDropdown'
 import { ModalNotifications } from '../../components/ModalNotifications'
 import { Post } from '../../components/Post'
 import { SettingsDropdown } from '../../components/SettingsDropdown'
@@ -109,6 +110,7 @@ export const Account: React.FC = () => {
   return (
     <Container>
       <ModalNotifications />
+      <LanguageDropdown isOpen={false} />
       <Profile onPress={() => setDropdownIsOpen(false)}>
         <Banner>
           <Header>
