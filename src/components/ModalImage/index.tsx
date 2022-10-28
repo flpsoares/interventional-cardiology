@@ -1,20 +1,19 @@
 /* eslint-disable indent */
 import React, { useRef, useState } from 'react'
+import { Dimensions, StyleSheet } from 'react-native'
 import {
-  CarouselButton,
   Container,
   Photo,
   PhotoQuantity,
   VideoButton,
   Wrapper
 } from './style'
-import { StyleSheet, Dimensions } from 'react-native'
 
 import Modal from 'react-native-modal'
 import Carousel from 'react-native-snap-carousel'
 
-import { useModal } from '../../contexts/ModalContext'
 import { Video } from 'expo-av'
+import { useModal } from '../../contexts/ModalContext'
 
 type Props = {
   data: string[]

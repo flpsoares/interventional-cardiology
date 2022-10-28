@@ -1,7 +1,9 @@
+import { AntDesign } from '@expo/vector-icons'
 import React from 'react'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { database } from '../../../firebase'
 import { useUser } from '../../contexts/UserContext'
-import { Button, ButtonText, Container, Left, Text } from './style'
+import { Container, Left, Text } from './style'
 
 interface NotificationItemProps {
   title: string
@@ -33,9 +35,9 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
         <Text numberOfLines={1}>{message}</Text>
         <Text numberOfLines={1}>{data}</Text>
       </Left>
-      <Button onPress={deleteNotification}>
-        <ButtonText>Excluir</ButtonText>
-      </Button>
+      <TouchableOpacity onPress={deleteNotification}>
+        <AntDesign name="delete" color="#8b0003" size={28} />
+      </TouchableOpacity>
     </Container>
   )
 }

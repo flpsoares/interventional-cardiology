@@ -96,9 +96,20 @@ export const PublishOne: React.FC = () => {
       inputTitleMedicines: 'Medicamentos em uso',
       inputPlaceholderMedicines: 'Selecionar medicamentos',
       inputSearchMedicines: 'Pesquise os medicamentos...',
-      firstOptionMedicines: 'Medicamento 1',
-      secondOptionMedicines: 'Medicamento 2',
-      thirdOptionMedicines: 'Medicamento 3',
+      firstOptionMedicines: 'Anti-agregantes plaquetários',
+      secondOptionMedicines: 'Anti-arrítmicos',
+      thirdOptionMedicines: 'Anti-coagulantes',
+      fourthOptionMedicines: 'Anti-hipertensivos',
+      fifthOptionMedicines: 'Beta bloqueadores',
+      sixthOptionMedicines: 'Diuréticos',
+      seventhOptionMedicines: 'Inotrópicos positivos',
+      eighthOptionMedicines: 'Vasoconstritores',
+      ninthOptionMedicines: 'Hipoglicemiantes orais',
+      tenthOptionMedicines: 'Hipolipemiantes',
+      eleventhOptionMedicines: 'Insulina ',
+      twelfthOptionMedicines: 'Anti-inflamatórios não esteroides',
+      thirteenthOptionMedicines: 'Corticoides',
+      fourteenthOptionMedicines: 'Outros',
       button: 'Prosseguir',
       notFound: 'Nenhum item encontrado',
       error: 'Erro',
@@ -145,9 +156,20 @@ export const PublishOne: React.FC = () => {
       inputTitleMedicines: 'Medications in use',
       inputPlaceholderMedicines: 'Select medications',
       inputSearchMedicines: 'Search for medicines...',
-      firstOptionMedicines: 'Medication 1',
-      secondOptionMedicines: 'Medication 2',
-      thirdOptionMedicines: 'Medication 3',
+      firstOptionMedicines: 'Platelet anti-aggregants',
+      secondOptionMedicines: 'Anti-arrhythmics',
+      thirdOptionMedicines: 'Anticoagulants',
+      fourthOptionMedicines: 'Antihypertensives',
+      fifthOptionMedicines: 'Beta blockers',
+      sixthOptionMedicines: 'Diuretics',
+      seventhOptionMedicines: 'Positive inotropes',
+      eighthOptionMedicines: 'Vasoconstrictors',
+      ninthOptionMedicines: 'Oral hypoglycemic agents',
+      tenthOptionMedicines: 'Lipid-lowering drugs',
+      eleventhOptionMedicines: 'Insulin ',
+      twelfthOptionMedicines: 'Non-steroidal anti-inflammatory drugs',
+      thirteenthOptionMedicines: 'Corticosteroids',
+      fourteenthOptionMedicines: 'Others',
       button: 'Proceed',
       notFound: 'No items found',
       error: 'Error',
@@ -195,9 +217,20 @@ export const PublishOne: React.FC = () => {
       inputTitleMedicines: 'Medicamentos en uso',
       inputPlaceholderMedicines: 'Seleccionar medicamentos',
       inputSearchMedicines: 'Buscar medicinas...',
-      firstOptionMedicines: 'Medicamento 1',
-      secondOptionMedicines: 'Medicamento 2',
-      thirdOptionMedicines: 'Medicamento 3',
+      firstOptionMedicines: 'Antiagregantes plaquetarios',
+      secondOptionMedicines: 'Antiarrítmicos',
+      thirdOptionMedicines: 'Anticoagulantes',
+      fourthOptionMedicines: 'Antihipertensivos',
+      fifthOptionMedicines: 'Bloqueadores beta',
+      sixthOptionMedicines: 'Diuréticos',
+      seventhOptionMedicines: 'Inotropos positivos',
+      eighthOptionMedicines: 'Vasoconstrictores',
+      ninthOptionMedicines: 'Agentes hipoglucemiantes orales',
+      tenthOptionMedicines: 'Fármacos hipolipemiantes',
+      eleventhOptionMedicines: 'Insulina ',
+      twelfthOptionMedicines: 'Fármacos anti-inflamatorios no esteroideos',
+      thirteenthOptionMedicines: 'Corticosteroides',
+      fourteenthOptionMedicines: 'Otros',
       button: 'Proceder',
       notFound: 'No se encontraron artículos',
       error: 'Error',
@@ -323,6 +356,50 @@ export const PublishOne: React.FC = () => {
     {
       id: '3',
       name: I18n.t('thirdOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('fourthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('fifthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('sixthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('seventhOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('eighthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('ninthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('tenthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('eleventhOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('twelfthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('thirteenthOptionMedicines')
+    },
+    {
+      id: '3',
+      name: I18n.t('fourteenthOptionMedicines')
     }
   ]
 
