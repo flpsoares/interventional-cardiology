@@ -25,6 +25,11 @@
         "backgroundColor": "#fff"
       },
       "package": "com.interventionalcardiology"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "51703f2e-519c-4583-ba8a-722168271416"
+      }
     }
   }
 }
