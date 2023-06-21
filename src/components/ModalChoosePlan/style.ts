@@ -5,7 +5,7 @@ export const Container = styled.View``
 
 export const Wrapper = styled.View`
   background: #fff;
-  height: 70%;
+  /* height: 70%; */
   border-radius: 6px;
   padding: 26px;
   align-items: center;

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://interventional-cardiology-back.herokuapp.com'
+  baseURL: 'https://interventional-backend.onrender.com/'
   // baseURL: 'http://10.0.2.2:3333'
 })
 

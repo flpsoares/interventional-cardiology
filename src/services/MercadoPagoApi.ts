@@ -3,7 +3,10 @@ import { api } from './api'
 
 class MercadoPagoApi {
   public async createPreference(month: number, userId: string) {
-    return api.post('/preferences', { month: month, userId }).then((res) => res)
+    return api
+      .post('/preferences', { month: month, userId })
+      .then((res) => res)
+      .catch((e) => console.log(e.response))
   }
 
   public async saleInfo(id: string) {
